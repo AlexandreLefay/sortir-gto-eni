@@ -20,6 +20,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+//    #[ORM\Column(length: 30)]
+//    private ?string $nom = null;
+//
+//    #[ORM\Column(length: 30)]
+//    private ?string $prenom = null;
+//
+//    #[ORM\Column(length: 30)]
+//    private ?string $telephone = null;
+//
+//    #[ORM\Column]
+//    private ?bool $admin = null;
+//
+//    #[ORM\Column]
+//    private ?bool $actif = null;
+
     #[ORM\Column]
     private array $roles = [];
 
@@ -45,6 +60,67 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getAdmin(): ?string
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(string $admin): self
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    public function getActif(): ?string
+    {
+        return $this->actif;
+    }
+
+    public function setActif(string $actif): self
+    {
+        $this->actif = $actif;
+
+        return $this;
+    }
+
 
     /**
      * A visual identifier that represents this user.
