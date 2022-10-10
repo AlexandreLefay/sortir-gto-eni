@@ -20,20 +20,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-//    #[ORM\Column(length: 30)]
-//    private ?string $nom = null;
-//
-//    #[ORM\Column(length: 30)]
-//    private ?string $prenom = null;
-//
-//    #[ORM\Column(length: 30)]
-//    private ?string $telephone = null;
-//
-//    #[ORM\Column]
-//    private ?bool $admin = null;
-//
-//    #[ORM\Column]
-//    private ?bool $actif = null;
+    #[ORM\Column(length: 30)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 30)]
+    private ?string $telephone = null;
+
+    #[ORM\Column]
+    private ?bool $admin = null;
+
+    #[ORM\Column]
+    private ?bool $actif = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -43,6 +43,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+
 
     public function getId(): ?int
     {
@@ -81,7 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
