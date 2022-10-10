@@ -14,6 +14,7 @@
         {% endblock %}
     </head>
     <body>
+    <p>toto</p>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <a href="{{ path('app_logout') }}">Deconnexion</a>
 {#        {% if is_granted("ROLE_ADMIN") %}#}
