@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>Aficher une sortie</h1>
+    <h1>ça fonctionne il faut juste manipuler les datetime</h1>
+    {% for sortie in sorties %}
+        <div class="container">
+            <div>
+                <div>
+                    {{ sortie.nom }}
+                </div>
+{#                <div>#}
+{#                    {{ sortie.dateDebut }}#}
+{#                </div>#}
+{#                <div class="noteAuteur">#}
+{#                    {{ sortie.duree }}#}
+{#                </div>#}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
