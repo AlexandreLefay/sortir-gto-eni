@@ -43,7 +43,10 @@
     </table>
 
     <h2>Liste des participants inscrits :</h2>
-
+    {# in Entity.attribut #}
+    {% for participant in sortie.users %}
+         <li>{{ participant.nom}}</li>
+    {% endfor %}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
 
