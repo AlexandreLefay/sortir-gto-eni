@@ -3,6 +3,7 @@
 {% block title %}Connexion!{% endblock %}
 
 {% block body %}
+    <img src="{{ asset('img/image-loutre.png') }}" alt="loutre image">
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ "Mot de passe ou identifiant incorrect" }}</div>
