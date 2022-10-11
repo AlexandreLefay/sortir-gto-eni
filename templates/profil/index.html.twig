@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil !{% endblock %}
+
+{% block body %}
+    {{ form_start(formUser) }}
+    <input type="submit" value="Mettre un jour le profil">
+    {{ form_end(formUser) }}
+
+{% endblock %}
