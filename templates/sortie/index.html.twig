@@ -67,8 +67,6 @@
         </form>
     </div>
 
-
-
     <table class="table">
         <thead>
             <tr>
@@ -101,8 +99,12 @@
                 <td>X</td>
                 <td>{{ sortie.user.nom }}</td>
                 <td>
-                    <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">show</a>
-                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a>
+                    <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher</a>
+                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier</a>
+                    <a href="">Se désister</a>
+                    <a href="">S'inscrire</a>
+                    <a href="">Annuler</a>
+                    <a href="">Publier</a>
                 </td>
             </tr>
         {% else %}
