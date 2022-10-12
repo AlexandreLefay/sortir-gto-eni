@@ -147,13 +147,12 @@ create index IDX_596DC8CFCC72D953
 
 INSERT INTO user (site_id,email, pseudo, nom, prenom, telephone, actif, roles, password)
 VALUES
-    (1,'tbs@gmail.com', 'tbs', 'Wick', 'John', '0123456987',true,'["ROLE_USER"]','$2y$13$mH1cu9cw6wTh7sbIrqm4XOEDFFIDiN5hBB1yFkhCbgb9Wfg.CjMBa'),
+
     (1,'rose@flower.fr','rose','rosa','hong','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'lila@flower.fr','lila','lila','lililala','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'lys@flower.fr','lys','lys','hue','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'rose@flower.fr','rose','rosa','hong','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'lila@flower.fr','lila','lila','lililala','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW')
+    (1,'tbs@gmail.com', 'tbs', 'Wick', 'John', '0123456987',true,'["ROLE_USER"]','$2y$13$mH1cu9cw6wTh7sbIrqm4XOEDFFIDiN5hBB1yFkhCbgb9Wfg.CjMBa')
 ;
 
 INSERT INTO site (nom)
@@ -206,6 +205,6 @@ VALUES
     (3,4),
     (2,5),
     (1,6),
-    (1,7),
+    (1,7)
 ;
 
