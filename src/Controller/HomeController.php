@@ -24,6 +24,7 @@ class HomeController extends AbstractController
         ]);
     }
 
+
     //Villes et sites uniquement accessible à l'Admin
     #[Route('/home/villes', name: 'app_villes')]
     public function villes(): Response
