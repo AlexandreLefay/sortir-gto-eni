@@ -19,7 +19,7 @@
         {% endblock %}
     </head>
     {% block body %}
-    <body >
+    <body class="container-fluid">
         {% if app.user %}
             <nav class="navbar navbar-expand-lg navbar-light bg-light " >
                 <div class="container-fluid">
@@ -33,7 +33,7 @@
                             <a class="nav-link" href="{{ path('app_sites') }}">Sites</a>
 {#                            <a class="nav-link" href="{{ path('app_sortie_edit') }}">Sortie</a>#}
                             <a class="nav-link" href="{{ path('app_sortie_index') }}">Accueil</a>
-                            <a class="nav-link" href="{{ path('app_profil') }}">Mon profil</a>
+                            <a class="nav-link" href="{{ path('app_profil_view') }}">Mon profil</a>
                             <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                         </div>
                     </div>
@@ -52,8 +52,9 @@
                 {% endif %}
             </main>
         {% endblock %}
-        <footer>&#128007 Projet ENI 2022 - Les lapins sont suppérieurs aux loutres ! - Propulsé par Titi la loutre, BichAchu, et Rémi le chinchilla</footer>
-        {% endblock %}
-
+        <footer>&#128007 Projet ENI 2022 - Les lapins sont suppérieurs aux loutres ! - Propulsé par Titi la loutre, BichAchu, et Loulou le loup</footer>
     </body>
+    {% endblock %}
+
+
 </html>
