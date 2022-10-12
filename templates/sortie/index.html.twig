@@ -3,33 +3,103 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block main %}
-    <h1>Sortie index</h1>
+    <h1>Accueil : Sortie index</h1>
+    <div class="row">
+        {% if app.user %}
+            <div class="col-md-3 offset-md-9">
+                <div>
+                    Date du jour : {{ 'now'|date('d - m -Y') }}
+                </div>
+                <div>
+                    Participant : {{ app.user.nom}}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <h2>Filtrer les sorties</h2>
+        <form action="" method="post" id="filtresSortie">
+            <fieldset>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row form-group">
+                            <label class="col-xs-2" for="select-site">Sites</label>
+                            <select class="form-control col-xs-2" id="select-site">
+                                <option value="1">SAINT-HERBLAIN</option>
+                                <option value="2">SAINT-SEBASTIEN</option>
+                                <option value="3">NANTES</option>
+                            </select>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-xs-2" for="searchbarName">Le nom de la sortie contient :</label>
+                            <input class="form-control col-xs-2" id="searchbarName" type="text" placeholder="Search..">
+                        </div>
+                        <div class="row form-group">
+                            <p>Entre
+                            <input type="date" id="date-debut-sorti" name="date-debut-sortie">
+                            et
+                                <input type="date" id="date-fin-sortie" name="date-fin-sortie"></p>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div>
+                            <input type="checkbox" id="s-orga" name="sortie-organisateur">
+                            <label for="s-orga">Sortie dont je suis l'organisateur/trice</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="s-inscrit" name="sortie-inscrit">
+                            <label for="s-inscrit">Sorties auxquelles je suis inscrit</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="s-pas-inscrit" name="sortie-pas-inscrit">
+                            <label for="s-pas-inscrit">Sorties auxquelles je ne suis pas inscrit</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="s-fini" name="sortie-terminees">
+                            <label for="s-fini">Sortie passées</label>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit">Rechercher</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>DateDebut</th>
-                <th>Duree</th>
-                <th>DateCloture</th>
-                <th>NbInscriptionsMax</th>
-                <th>DescriptionsInfos</th>
-                <th>UrlPhoto</th>
+               {# <th>Id</th>#}
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+              {#  <th>Duree</th>#}
+                <th>Clôture</th>
+                <th>inscrits/place</th>
+                {#<th>DescriptionsInfos</th>#}
+                {#<th>UrlPhoto</th>#}
+                <th>Etat</th>
+                <th>inscrit</th>
+                <th>Organisateur</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for sortie in sorties %}
             <tr>
-                <td>{{ sortie.id }}</td>
+                {#<td>{{ sortie.id }}</td>#}
                 <td>{{ sortie.nom }}</td>
                 <td>{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.duree }}</td>
+               {# <td>{{ sortie.duree }}</td>#}
                 <td>{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.descriptionsInfos }}</td>
-                <td>{{ sortie.urlPhoto }}</td>
+                {#<td>{{ sortie.descriptionsInfos }}</td>#}
+              {#  <td>{{ sortie.urlPhoto }}</td>#}
+                <td>etat</td>
+                <td>X</td>
+                <td>{{ sortie.user.nom }}</td>
                 <td>
                     <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">show</a>
                     <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a>
@@ -44,4 +114,5 @@
     </table>
 
     <a href="{{ path('app_sortie_new') }}">Create new</a>
+
 {% endblock %}
