@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Sortie{% endblock %}
+
+{% block body %}
+    <h1>Create new Lieu</h1>
+
+    {{ form_start(formLieu) }}
+    {{ form_widget(formLieu) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(formLieu) }}
+
+
+
+    <a href="{{ path('app_sortie_index') }}">back to list</a>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,16 +21,20 @@ class SortieType extends AbstractType
             ->add('dateCloture')
             ->add('nbInscriptionsMax')
             ->add('descriptionsInfos')
-            ->add('urlPhoto')
-            ->add('users')
-            ->add('user')
-            ->add('site')
-            ->add('etat')
-            ->add('lieu')
-            ->add('user_sortie', EntityType::class, [
-                'choice_label' => 'name',
-                'class' => User::class,
-            ])
+            ->add('lieu', EntityType::class, [
+                'choice_label' => 'nom',
+                'class' => Lieu::class,
+            ]);
+//            ->add('urlPhoto')
+//            ->add('users')
+//            ->add('user')
+//            ->add('site')
+//            ->add('etat')
+//            ->add('lieu')
+//            ->add('user_sortie', EntityType::class, [
+//                'choice_label' => 'name',
+//                'class' => User::class,
+//            ])
         ;
     }
 
