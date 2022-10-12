@@ -29,7 +29,9 @@ class SortieController extends AbstractController
     #[Route('/new', name: 'app_sortie_new', methods: ['GET', 'POST'])]
     public function add(Request $request, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
+
         $sortieLieu = new Sortie();
+
 
         $formSortieLieu = $this->createForm(SortieType::class, $sortieLieu);
 
@@ -85,6 +87,8 @@ class SortieController extends AbstractController
     {
         $formSortie = $this->createForm(SortieType::class, $sortie);
         $formSortie->handleRequest($request);
+
+
 
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
             $sortieRepository->save($sortie, true);
