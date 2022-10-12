@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\LieuType;
 use App\Form\SortieLieuType;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,17 +31,21 @@ class SortieController extends AbstractController
     }
 
     #[Route('/new', name: 'app_sortie_new', methods: ['GET', 'POST'])]
-    public function add(Request $request, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, UserRepository $user, EtatRepository $etat, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
 
         $sortieLieu = new Sortie();
-
-
+//        $etat = new Etat();
+//        echo $etat->getId();
+//        //$idEtat = $etat->getLibelle();
         $formSortieLieu = $this->createForm(SortieType::class, $sortieLieu);
 
         $formSortieLieu->handleRequest($request);
 
-        if ($formSortieLieu->isSubmitted() && $formSortieLieu->isValid() ) {
+        if ($formSortieLieu->isSubmitted() && $formSortieLieu->isValid()) {
+            $sortieLieu->setUser($this->getUser());
+            $sortieLieu->setSite($this->getUser()->getSite());
+//            $sortieLieu->setEtat($etat);
             $entityManager->persist($sortieLieu);
             $entityManager->flush();
             return $this->redirectToRoute('app_sortie_index', ["id" => $sortieLieu->getId()]);
@@ -46,7 +54,6 @@ class SortieController extends AbstractController
         return $this->render('sortie/new.html.twig', [
             "formSortie" => $formSortieLieu->createView()
         ]);
-
 
 
     }
@@ -60,7 +67,7 @@ class SortieController extends AbstractController
 
         $formLieu->handleRequest($request);
 
-        if ($formLieu->isSubmitted() && $formLieu->isValid() ) {
+        if ($formLieu->isSubmitted() && $formLieu->isValid()) {
             $entityManager->persist($lieu);
             $entityManager->flush();
             return $this->redirectToRoute('app_sortie_new', ["id" => $lieu->getId()]);
@@ -69,7 +76,6 @@ class SortieController extends AbstractController
         return $this->render('sortie/new.lieu.html.twig', [
             "formLieu" => $formLieu->createView()
         ]);
-
 
 
     }
@@ -89,7 +95,6 @@ class SortieController extends AbstractController
         $formSortie->handleRequest($request);
 
 
-
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
             $sortieRepository->save($sortie, true);
 
@@ -105,7 +110,7 @@ class SortieController extends AbstractController
     #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$sortie->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
 
