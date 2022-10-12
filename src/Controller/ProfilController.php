@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil', name: 'app_profil')]
-    public function index(
+    #[Route('/profil_update', name: 'app_profil_update')]
+    public function profil_update(
         Request $request,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository
@@ -30,6 +30,18 @@ class ProfilController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->renderForm('profil/index.html.twig',compact('formUser'));
+        return $this->renderForm('profil/profilUpdate.html.twig',compact('formUser'));
+    }
+
+    #[Route('/profil_view', name: 'app_profil_view')]
+    public function index(
+        UserRepository $userRepository
+    ): Response
+    {
+        $user = $userRepository->findOneBy(
+            ['email'=>$this->getUser()->getUserIdentifier()]
+        );
+
+        return $this->render('profil/profilView.html.twig',compact('user'));
     }
 }
