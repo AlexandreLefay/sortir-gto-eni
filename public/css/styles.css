@@ -1,0 +1,23 @@
+#filtresSortie{
+    padding:50px
+}
+.form-group .col-xs-2
+{
+    width: 300px;
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+.form-group label
+{
+    display: inline-block;
+    font-weight: normal;
+    vertical-align: middle;
+    float: none;
+}
+
+.form-group select
+{
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
