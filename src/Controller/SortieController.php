@@ -150,4 +150,19 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
         ]);
     }
+
+    #[Route('/desinscription/{id}', name: 'app_sortie_desinscription', methods: ['GET'])]
+    public function unsubscribe(
+        Sortie                 $sortie,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $participant = $this->getUser();
+        $sortie->removeUsers($participant);
+        $entityManager->persist($sortie);
+        $entityManager->flush($sortie);
+        return $this->render('sortie/show.html.twig', [
+            'sortie' => $sortie,
+        ]);
+    }
 }

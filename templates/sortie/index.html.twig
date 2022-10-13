@@ -101,14 +101,12 @@
                     <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
                     <td>
                         <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher"></a>
-                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon"
-                                                                                               src="{{ asset('img/inscrire.svg') }}"
-                                                                                               alt="S'inscrire"></a>
-                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"></a>
-                        <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><img class="icon"
-                                                                                        src="{{ asset('img/modifier.svg') }}"
-                                                                                        alt="Modifier"></a>
-                        <a href=""><img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler"></a>
+                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"></a>
+                        <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"></a>
+                        <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/modifier.svg') }}" alt="Modifier"></a>
+                        {# TODO Alexandre : methode post non autorisé #}
+                        <a href="{{ path('app_sortie_delete', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler"></a>
+                        {# TODO Alexandre : créer une route pour publiquer #}
                         <a href=""><img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier"></a>
                     </td>
                 </tr>
