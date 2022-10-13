@@ -80,7 +80,7 @@ class SortieController extends AbstractController
 
     }
 
-    #[Route('/{id}', name: 'app_sortie_show', methods: ['GET'])]
+    #[Route('/afficher/{id}', name: 'app_sortie_show', methods: ['GET'])]
     public function show(Sortie $sortie): Response
     {
         return $this->render('sortie/show.html.twig', [
@@ -115,5 +115,22 @@ class SortieController extends AbstractController
         }
 
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+    #[Route('/inscription/{id}', name: 'app_sortie_inscription', methods: ['GET'])]
+    public function subscribe (
+        Sortie $sortie,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $participant = $this->getUser();
+        $sortie->addUsers($participant);
+        $entityManager->persist($sortie);
+        $entityManager->flush($sortie);
+        return $this->render('sortie/show.html.twig', [
+            'sortie' => $sortie,
+        ]);
     }
 }

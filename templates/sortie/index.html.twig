@@ -100,7 +100,7 @@
                 <td>{{ sortie.user.nom }}</td>
                 <td>
                     <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher"></a>
-                    <a href=""><img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"></a>
+                    <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"></a>
                     <a href=""><img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"></a>
                     <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/modifier.svg') }}" alt="Modifier"></a>
                     <a href=""><img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler"></a>
