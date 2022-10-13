@@ -125,12 +125,39 @@ class SortieController extends AbstractController
 
 
 
-    #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_sortie_delete', methods: ['POST', 'GET'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
+
+        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+    #[Route('/annuler/{id}', name: 'app_sortie_annuler', methods: ['POST', 'GET'])]
+    public function annuler(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    {
+        $etat = $etatRepository->findOneBy([
+            "id" => 6
+            ]);
+        $sortie->setEtat($etat);
+        $sortieRepository->save($sortie, true);
+
+        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
+    public function publier(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    {;
+
+        $etat = $etatRepository->findOneBy([
+            "id" => 2
+        ]);
+        $sortie->setEtat($etat);
+        $sortieRepository->save($sortie, true);
 
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
