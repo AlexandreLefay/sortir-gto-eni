@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\Lieu;
+use App\Entity\SearchData;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\LieuType;
+use App\Form\SearchFormType;
 use App\Form\SortieLieuType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
@@ -97,9 +99,7 @@ class SortieController extends AbstractController
     public function addLieu(Request $request, LieuRepository $lieuRepository, EntityManagerInterface $entityManager): Response
     {
         $lieu = new Lieu();
-
         $formLieu = $this->createForm(LieuType::class, $lieu);
-
         $formLieu->handleRequest($request);
 
         if ($formLieu->isSubmitted() && $formLieu->isValid()) {
@@ -107,11 +107,9 @@ class SortieController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_sortie_new', ["id" => $lieu->getId()]);
         }
-
         return $this->render('sortie/new.lieu.html.twig', [
             "formLieu" => $formLieu->createView()
         ]);
-
 
     }
 
@@ -122,8 +120,6 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
         ]);
     }
-
-
 
     #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
@@ -163,6 +159,17 @@ class SortieController extends AbstractController
         $entityManager->flush($sortie);
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
+        ]);
+    }
+
+    #[Route('/search', name: 'app_sortie_search', methods: ['GET'])]
+    public function search(SortieRepository $sortieRepository): Response
+    {
+        $search = new SearchData();
+        $formSearch = $this->createForm(SearchFormType::class, $search);
+        $formSearch>handleRequest($search);
+        return $this->render('sortie/index.html.twig', [
+            'sorties' => $sortieRepository->findAll(),
         ]);
     }
 }
