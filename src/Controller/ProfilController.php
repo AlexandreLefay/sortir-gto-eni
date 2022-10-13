@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\UserProfilType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,9 +20,7 @@ class ProfilController extends AbstractController
         UserRepository $userRepository
     ): Response
     {
-        $userNew = $userRepository->findOneBy(
-            ['email'=>$this->getUser()->getUserIdentifier()]
-        );
+        $userNew = $this->getUser();
         $formUser = $this->createForm(UserProfilType::class, $userNew);
         $formUser->handleRequest($request);
 
@@ -33,15 +32,12 @@ class ProfilController extends AbstractController
         return $this->renderForm('profil/profilUpdate.html.twig',compact('formUser'));
     }
 
-    #[Route('/profil_view', name: 'app_profil_view')]
+    #[Route('/profil_view/{id}', name: 'app_profil_view')]
     public function index(
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        User $user
     ): Response
     {
-        $user = $userRepository->findOneBy(
-            ['email'=>$this->getUser()->getUserIdentifier()]
-        );
-
         return $this->render('profil/profilView.html.twig',compact('user'));
     }
 }

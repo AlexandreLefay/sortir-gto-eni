@@ -11,7 +11,7 @@
                     Date du jour : {{ 'now'|date('d - m -Y') }}
                 </div>
                 <div>
-                    Participant : {{ app.user.nom}}
+                    Participant : {{ app.user.pseudo}}
                 </div>
             </div>
         {% endif %}
@@ -35,10 +35,12 @@
                             <input class="form-control col-xs-2" id="searchbarName" type="text" placeholder="Search..">
                         </div>
                         <div class="row form-group">
-                            <p>Entre
-                            <input type="date" id="date-debut-sorti" name="date-debut-sortie">
-                            et
-                                <input type="date" id="date-fin-sortie" name="date-fin-sortie"></p>
+                            <p>
+                                Entre
+                                <input type="date" id="date-debut-sorti" name="date-debut-sortie">
+                                et
+                                <input type="date" id="date-fin-sortie" name="date-fin-sortie">
+                            </p>
                         </div>
                     </div>
                     <div class="col-4">
@@ -97,7 +99,7 @@
               {#  <td>{{ sortie.urlPhoto }}</td>#}
                 <td>{{ sortie.etat.libelle }}</td>
                 <td>X</td>
-                <td>{{ sortie.user.nom }}</td>
+                <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{sortie.user.pseudo}}</a></td>
                 <td>
                     <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher"></a>
                     <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"></a>
