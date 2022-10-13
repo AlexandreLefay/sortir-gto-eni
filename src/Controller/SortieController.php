@@ -31,28 +31,28 @@ class SortieController extends AbstractController
     }
 
     #[Route('/new', name: 'app_sortie_new', methods: ['GET', 'POST'])]
-    public function add(Request $request, UserRepository $user, EtatRepository $etat, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, UserRepository $user, EtatRepository $etatRepository, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
 
-        $sortieLieu = new Sortie();
-//        $etat = new Etat();
-//        echo $etat->getId();
-//        //$idEtat = $etat->getLibelle();
-        $formSortieLieu = $this->createForm(SortieType::class, $sortieLieu);
+        $sortie = new Sortie();
+        $formSortie = $this->createForm(SortieType::class, $sortie);
 
-        $formSortieLieu->handleRequest($request);
-
-        if ($formSortieLieu->isSubmitted() && $formSortieLieu->isValid()) {
-            $sortieLieu->setUser($this->getUser());
-            $sortieLieu->setSite($this->getUser()->getSite());
-//            $sortieLieu->setEtat($etat);
-            $entityManager->persist($sortieLieu);
+        $formSortie->handleRequest($request);
+//        dd($request);
+        if ($formSortie->isSubmitted() && $formSortie->isValid()) {
+            $etat = $etatRepository->findOneBy([
+                "id" => 1
+            ]);
+            $sortie->setUser($this->getUser());
+            $sortie->setSite($this->getUser()->getSite());
+            $sortie->setEtat($etat);
+            $entityManager->persist($sortie);
             $entityManager->flush();
-            return $this->redirectToRoute('app_sortie_index', ["id" => $sortieLieu->getId()]);
+            return $this->redirectToRoute('app_sortie_index', ["id" => $sortie->getId()]);
         }
 
         return $this->render('sortie/new.html.twig', [
-            "formSortie" => $formSortieLieu->createView()
+            "formSortie" => $formSortie->createView()
         ]);
 
 
