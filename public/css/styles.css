@@ -5,7 +5,7 @@ body{
 footer{
     position: sticky;
     top: 80%;
-    margin-top:50px;
+    margin-top:30px;
     background: #155263;
     color:white;
 }
@@ -18,9 +18,7 @@ h1{
 .bg-light {
     background-color: transparent !important;
 }
-.navbar-nav{
-    font-size: xx-large;
-}
+
 .nav-link{
     color: #155263;
 }
@@ -67,7 +65,8 @@ a {
     text-decoration: none;
 }
 #filtresSortie{
-    padding:50px
+    padding-left: 50px;
+    padding-right: 200px;
 }
 .form-group .col-xs-2
 {
