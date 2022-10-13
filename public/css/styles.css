@@ -5,7 +5,7 @@ body{
 footer{
     position: sticky;
     top: 80%;
-    margin-top:50px;
+    margin-top:30px;
     background: #155263;
     color:white;
 }
@@ -18,9 +18,7 @@ h1{
 .bg-light {
     background-color: transparent !important;
 }
-.navbar-nav{
-    font-size: xx-large;
-}
+
 .nav-link{
     color: #155263;
 }
@@ -67,7 +65,8 @@ a {
     text-decoration: none;
 }
 #filtresSortie{
-    padding:50px
+    padding-left: 50px;
+    padding-right: 200px;
 }
 .form-group .col-xs-2
 {
@@ -204,8 +203,40 @@ a {
 .tab-sortie-nom{
     width:300px;
 }
+.sortie-participants{
+    width: 35%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+}
 
+.sortie-participants h2{
+    color:#155263;
+}
 
+#bnt-backtolist{
+    width: 15%;
+    margin-bottom:50px;
+}
+.sortie-detail{
+    border-color: #ffc107;
+    width: 90%;
+    box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
+    margin-top: 10px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+}
+.sortie-detail-label{
+    font-weight: bold;
+    color:#ffc107;
+}
+.sortie-participants th{
+    background-color: #ffc107;
+}
 /*page profil view */
 
 .profil_view_element_title
@@ -235,3 +266,30 @@ a {
 {
     text-align:center;
 }
+
+div.scroll {
+    margin-left:auto;
+    margin-right:auto;
+    width: 1500px;
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align:justify;
+}
+
+/*table, th, td {
+    border: 1px solid;
+    border-color: #ffc107;
+}*/
+/*twig New sorties*/
+.frame-form{
+    border-color: #ffc107;
+    width: 90%;
+    box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+}
+/*******/

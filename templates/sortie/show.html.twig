@@ -3,55 +3,79 @@
 {% block title %}Sortie{% endblock %}
 
 {% block main %}
-    <h1>Afficher une sortie</h1>
-    
+    <div class="row sortie-detail">
+        <div class="col-md-6">
+            <div class="row">ID : {{ sortie.id }}</div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Nom de la sortie :</span></div>
+                <div class="col-md-6">{{ sortie.nom }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Date et heure de la sortie : </span></div>
+                <div class="col-md-6">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Date limite d'inscription : </span></div>
+                <div class="col-md-6">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Duree: </span></div>
+                <div class="col-md-6">{{ sortie.duree }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Description et infos :</span></div>
+                <div class="col-md-6">{{ sortie.descriptionsInfos }}</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Lieu :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.nom}}</div></div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Rue :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.rue}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Ville :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.ville.nom}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Code postal :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.ville.codePostal}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Latitude :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.latitude}}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Longitude :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.longitude}}</div></div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ sortie.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ sortie.nom }}</td>
-            </tr>
-            <tr>
-                <th>DateDebut</th>
-                <td>{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Duree</th>
-                <td>{{ sortie.duree }}</td>
-            </tr>
-            <tr>
-                <th>DateCloture</th>
-                <td>{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>NbInscriptionsMax</th>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
-            </tr>
-            <tr>
-                <th>DescriptionsInfos</th>
-                <td>{{ sortie.descriptionsInfos }}</td>
-            </tr>
-            <tr>
-                <th>UrlPhoto</th>
-                <td>{{ sortie.urlPhoto }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>Liste des participants inscrits :</h2>
-    {# in Entity.attribut #}
-    {% for participant in sortie.users %}
-         <li>{{ participant.nom}}</li>
-    {% endfor %}
-
-    <a href="{{ path('app_sortie_index') }}">back to list</a>
-
-    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a>
-
-    {{ include('sortie/_delete_form.html.twig') }}
+{#    <div class="row"> <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">back to list</a></button> </div>
+    <div class="row">
+        <div class="col-md-6"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a></button></div>
+        <div class="col-md-6">{{ include('sortie/_delete_form.html.twig') }}</div>
+    </div>#}
+    <div class="scroll">
+        <div class="row sortie-participants">
+            <h2>Liste des participants inscrits :</h2>
+            {# for item in Entity.attribut #}
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Nom</th>
+                </tr>
+                {% for participant in sortie.users %}
+                    <tr>
+                        <td>{{ participant.pseudo}} </td>
+                        <td>{{ participant.nom}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
