@@ -11,7 +11,7 @@
                     Date du jour : {{ 'now'|date('d - m -Y') }}
                 </div>
                 <div>
-                    Participant : {{ app.user.pseudo}}
+                    Participant : {{ app.user.pseudo }}
                 </div>
             </div>
         {% endif %}
@@ -68,55 +68,61 @@
             </fieldset>
         </form>
     </div>
-
-    <table class="table">
-        <thead>
+    <div class="scroll">
+        <table class="table">
+            <thead>
             <tr>
-               {# <th>Id</th>#}
+                {# <th>Id</th> #}
                 <th>Nom de la sortie</th>
                 <th>Date de la sortie</th>
-              {#  <th>Duree</th>#}
+                {# <th>Duree</th> #}
                 <th>Clôture</th>
                 <th>inscrits/place</th>
-                {#<th>DescriptionsInfos</th>#}
-                {#<th>UrlPhoto</th>#}
+                {# <th>DescriptionsInfos</th> #}
+                {# <th>UrlPhoto</th> #}
                 <th>Etat</th>
                 <th>inscrit</th>
                 <th>Organisateur</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for sortie in sorties %}
-            <tr>
-                {#<td>{{ sortie.id }}</td>#}
-                <td class="tab-sortie-nom">{{ sortie.nom }}</td>
-                <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-               {# <td>{{ sortie.duree }}</td>#}
-                <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
-                {#<td>{{ sortie.descriptionsInfos }}</td>#}
-              {#  <td>{{ sortie.urlPhoto }}</td>#}
-                <td>{{ sortie.etat.libelle }}</td>
-                <td>X</td>
-                <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{sortie.user.pseudo}}</a></td>
-                <td>
-                    <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher"></a>
-                    <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"></a>
-                    <a href=""><img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"></a>
-                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/modifier.svg') }}" alt="Modifier"></a>
-                    <a href=""><img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler"></a>
-                    <a href=""><img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier"></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    {# <td>{{ sortie.id }}</td> #}
+                    <td class="tab-sortie-nom">{{ sortie.nom }}</td>
+                    <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                    {# <td>{{ sortie.duree }}</td> #}
+                    <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ sortie.nbInscriptionsMax }}</td>
+                    {# <td>{{ sortie.descriptionsInfos }}</td> #}
+                    {# <td>{{ sortie.urlPhoto }}</td> #}
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>X</td>
+                    <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
+                    <td>
+                        <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}"><img class="icon"
+                                                                                        src="{{ asset('img/afficher.svg') }}"
+                                                                                        alt="Afficher"></a>
+                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon"
+                                                                                               src="{{ asset('img/inscrire.svg') }}"
+                                                                                               alt="S'inscrire"></a>
+                        <a href=""><img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"></a>
+                        <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><img class="icon"
+                                                                                        src="{{ asset('img/modifier.svg') }}"
+                                                                                        alt="Modifier"></a>
+                        <a href=""><img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler"></a>
+                        <a href=""><img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier"></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
 
 {% endblock %}
