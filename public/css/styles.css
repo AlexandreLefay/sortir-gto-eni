@@ -203,7 +203,33 @@ a {
 .tab-sortie-nom{
     width:300px;
 }
+.sortie-participants{
+    width: 35%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+}
 
+.sortie-participants h2{
+    color:#155263;
+}
+
+#bnt-backtolist{
+    width: 15%;
+    margin-bottom:50px;
+}
+.sortie-detail{
+    border-color: #ffc107;
+    width: 90%;
+    box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+}
 
 /*page profil view */
 
@@ -248,3 +274,15 @@ div.scroll {
 table, th, td {
     border: 1px solid;
 }
+/*twig New sorties*/
+.frame-form{
+    border-color: #ffc107;
+    width: 90%;
+    box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    padding:10px;
+}
+/*******/

@@ -2,11 +2,12 @@
 
 {% block title %}New Sortie{% endblock %}
 
-{% block body %}
-    <h1>Create new Sortie</h1>
+{% block main %}
+    <div class="frame-form">
+        <h1>Create new Sortie</h1>
+        {{ include('sortie/_form.html.twig') }}
+    </div>
+    <button class="button-52" role="button"> <a href="{{ path('app_sortie_lieu') }}">Ajouter lieu</a></button>
+    <button class="button-52" role="button"> <a href="{{ path('app_sortie_index') }}">back to list</a></button>
 
-    {{ include('sortie/_form.html.twig') }}
-
-    <a href="{{ path('app_sortie_lieu') }}">Ajouter lieu</a>
-    <a href="{{ path('app_sortie_index') }}">back to list</a>
 {% endblock %}
