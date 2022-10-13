@@ -1,6 +1,20 @@
 body{
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
+
+footer{
+    position: sticky;
+    top: 80%;
+    margin-top:50px;
+    background: #155263;
+    color:white;
+}
+
+h1{
+    text-shadow: -1px 6px 5px rgba(21, 82, 99, 0.8);
+    color: #155263;
+}
+
 .bg-light {
     background-color: transparent !important;
 }
@@ -12,16 +26,6 @@ body{
 }
 .nav-link:focus, .nav-link:hover {
     color: #ff9a3c;
-}
-footer{
-    margin-top:50px;
-    background: #155263;
-    color:white;
-}
-
-h1{
-    text-shadow: -1px 6px 5px rgba(21, 82, 99, 0.8);
-    color: #155263;
 }
 /**********CSS texte sur le formulaire de connexion***************/
 .animate-charcter
@@ -199,4 +203,35 @@ a {
 }
 .tab-sortie-nom{
     width:300px;
+}
+
+
+/*page profil view */
+
+.profil_view_element_title
+{
+    text-align: right;
+}
+
+.profil_view_element_view, .profil_view_element_title
+{
+    width: 50%;
+    padding : 1%;
+}
+
+#view_table
+{
+    width: 50%;
+    margin : auto;
+    height: 100%;
+}
+
+.update_profil_button
+{
+    text-align: center;
+}
+
+.a_centrer
+{
+    text-align:center;
 }

@@ -178,7 +178,7 @@ VALUES
 INSERT INTO ville (nom, code_postal)
 VALUES
     ('Nantes','44000'),
-    ('Savenay','442620')
+    ('Savenay','44260')
 ;
 
 INSERT INTO lieu (ville_id, nom, rue)

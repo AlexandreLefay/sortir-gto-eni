@@ -5,8 +5,49 @@
 {% endblock %}
 
 {% block main %}
-    <form action="{{ path('app_profil_update') }}" method="post">
-    <button > MODIFIER SON PROFIL</button>
-    </form>
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4 fs-4">
+            <div class="row mt-3">
+                <div class="text-center fs-2 fw-bold">{{ user.pseudo }}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 text-end">Prénom : </div>
+                <div class="col-6">{{ user.prenom }}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 text-end">Nom : </div>
+                <div class="col-6">{{ user.nom }}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 text-end">Téléphone : </div>
+                <div class="col-6">{{ user.telephone}}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 text-end">Email : </div>
+                <div class="col-6">{{ user.email }}</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6 text-end">Site de rattachement : </div>
+                <div class="col-6">{{ user.site.nom}}</div>
+            </div>
+            <div class="row mt-3">
+                {%  if app.user == user%}
+                   <div class="text-center mt-3" >
+                        <form  action="{{ path('app_profil_update') }}" method="post">
+                            <button class="button-52" > MODIFIER SON PROFIL</button>
+                       </form>
+                   </div>
+                {% endif %}
+            </div>
+        </div>
+
+
+    </div>
+
+
+
 {% endblock %}
 
