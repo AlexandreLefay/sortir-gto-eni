@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,6 +22,8 @@ class SortieType extends AbstractType
             ->add('dateCloture')
             ->add('nbInscriptionsMax')
             ->add('descriptionsInfos')
+            ->add('save', SubmitType::class, ['label' => 'Enregistrer'])
+            ->add('publish', SubmitType::class, ['label' => 'Publier la sortie'])
             ->add('lieu', EntityType::class, [
                 'choice_label' => 'nom',
                 'class' => Lieu::class,

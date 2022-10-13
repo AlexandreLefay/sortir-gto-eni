@@ -33,16 +33,22 @@ class SortieController extends AbstractController
     #[Route('/new', name: 'app_sortie_new', methods: ['GET', 'POST'])]
     public function add(Request $request, UserRepository $user, EtatRepository $etatRepository, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
-
         $sortie = new Sortie();
         $formSortie = $this->createForm(SortieType::class, $sortie);
-
         $formSortie->handleRequest($request);
-//        dd($request);
+
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 1
-            ]);
+            //Il y a deux bouton différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même
+            if ($formSortie->getClickedButton() === $formSortie->get('save')) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 1
+                ]);
+            } else {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 2
+                ]);
+            }
             $sortie->setUser($this->getUser());
             $sortie->setSite($this->getUser()->getSite());
             $sortie->setEtat($etat);
@@ -50,12 +56,41 @@ class SortieController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_sortie_index', ["id" => $sortie->getId()]);
         }
-
         return $this->render('sortie/new.html.twig', [
             "formSortie" => $formSortie->createView()
         ]);
 
 
+    }
+
+    #[Route('/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    {
+        $formSortie = $this->createForm(SortieType::class, $sortie);
+        $formSortie->handleRequest($request);
+
+
+        if ($formSortie->isSubmitted() && $formSortie->isValid()) {
+            //Il y a deux bouton différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même
+            if ($formSortie->getClickedButton() === $formSortie->get('save')) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 1
+                ]);
+            } else {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 2
+                ]);
+            }
+            $sortie->setEtat($etat);
+            $sortieRepository->save($sortie, true);
+
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('sortie/edit.html.twig', [
+            'sortie' => $sortie,
+            'formSortie' => $formSortie,
+        ]);
     }
 
     #[Route('/lieu', name: 'app_sortie_lieu', methods: ['GET', 'POST'])]
@@ -88,24 +123,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
-    {
-        $formSortie = $this->createForm(SortieType::class, $sortie);
-        $formSortie->handleRequest($request);
 
-
-        if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            $sortieRepository->save($sortie, true);
-
-            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('sortie/edit.html.twig', [
-            'sortie' => $sortie,
-            'formSortie' => $formSortie,
-        ]);
-    }
 
     #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
@@ -118,10 +136,9 @@ class SortieController extends AbstractController
     }
 
 
-
     #[Route('/inscription/{id}', name: 'app_sortie_inscription', methods: ['GET'])]
-    public function subscribe (
-        Sortie $sortie,
+    public function subscribe(
+        Sortie                 $sortie,
         EntityManagerInterface $entityManager
     ): Response
     {
