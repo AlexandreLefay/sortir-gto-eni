@@ -19,7 +19,7 @@
         {% endblock %}
     </head>
 
-
+    {% block body %}
     <body class="container-fluid">
 
         {% if app.user %}
@@ -58,8 +58,5 @@
 
         <footer>&#128007 Projet ENI 2022 - Les lapins sont supérieurs aux loutres ! - Propulsé par Titi la loutre, BichAchu, et Loulou le loup</footer>
     </body>
-
-
-
-
+    {% endblock %}
 </html>
