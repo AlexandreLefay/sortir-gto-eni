@@ -6,13 +6,13 @@ use App\Entity\Site;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserProfilType extends AbstractType
 {
@@ -46,6 +46,23 @@ class UserProfilType extends AbstractType
                     'choice_label' => 'nom',
                 'label'=>'Selection du site',
                 'required'=>true
+            ])
+            ->add('image', FileType::class,[
+                'label' => false,
+                'multiple' => false,
+                'mapped' => false,
+                'required' => false,
+//                'constraints' => [
+//                    new File([
+//                        'maxSize' => '2024k',
+//                        'mimeTypes' => [
+//                            'image/jpeg',
+//                            'image/jpg',
+//                            'image/png',
+//                        ],
+//                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+//                    ])
+//                ]
             ])
         ;
     }
