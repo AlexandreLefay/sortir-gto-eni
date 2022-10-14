@@ -15,8 +15,14 @@
             </div>
         {% endif %}
     </div>
+    <h2>Form avec objet php et SearchFormType</h2>
+    <h2>Filtrer les sorties</h2>
+    {{ form_start(formSearch) }}
+    <input type="submit" value="Rechercher">
+    {{ form_end(formSearch) }}
+
     <div class="row">
-        <h2>Filtrer les sorties</h2>
+        <h2>Form classique</h2>
         <form action="{{ path('app_sortie_index')}}" method="post" id="filtresSortie">
             <fieldset>
                 <div class="row">

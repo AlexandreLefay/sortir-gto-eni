@@ -2,14 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\SearchData;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\LieuType;
 use App\Form\SearchFormType;
-use App\Form\SortieLieuType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
@@ -24,11 +22,16 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/', name: 'app_sortie_index', methods: ['GET'])]
+    #[Route('/', name: 'app_sortie_index', methods: ['GET', 'POST'])]
     public function index(SortieRepository $sortieRepository): Response
     {
+        $search = new SearchData();
+        $formSearch = $this->createForm(SearchFormType::class, $search,[
+            'action' => $this->generateUrl('app_sortie_index'),
+            'method' => 'POST',
+            ]);
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->findAll(),
+            'sorties' => $sortieRepository->findAll(), 'formSearch' =>$formSearch->createView()
         ]);
     }
 
@@ -138,13 +141,16 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $participant = $this->getUser();
+        $participant =
+            $entityManager->getRepository(User::class)->findOneBy(["email"=>$this->getUser()->getUserIdentifier()]);
         $sortie->addUsers($participant);
         $entityManager->persist($sortie);
-        $entityManager->flush($sortie);
+        $entityManager->persist($participant);
+        $entityManager->flush();
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
         ]);
+
     }
 
     #[Route('/desinscription/{id}', name: 'app_sortie_desinscription', methods: ['GET'])]
@@ -156,20 +162,11 @@ class SortieController extends AbstractController
         $participant = $this->getUser();
         $sortie->removeUsers($participant);
         $entityManager->persist($sortie);
-        $entityManager->flush($sortie);
+        $entityManager->persist($participant);
+        $entityManager->flush();
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
         ]);
     }
 
-    #[Route('/search', name: 'app_sortie_search', methods: ['GET'])]
-    public function search(SortieRepository $sortieRepository): Response
-    {
-        $search = new SearchData();
-        $formSearch = $this->createForm(SearchFormType::class, $search);
-        $formSearch>handleRequest($search);
-        return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->findAll(),
-        ]);
-    }
 }

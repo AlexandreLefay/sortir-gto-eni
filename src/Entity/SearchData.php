@@ -4,9 +4,15 @@ namespace App\Entity;
 
 class SearchData
 {
-    /**
-     * @var string
-     */
-    public $q = '';
+
+    public $sites;
+    public $searchbar = '';
+    public $organisateur;
+    public $inscrit ;
+    public $nonInscrit;
+    public $passees;
+    public ?\DateTimeInterface $dateSortie = null;
+    public ?\DateTimeInterface $dateCloture = null;
+
 
 }
