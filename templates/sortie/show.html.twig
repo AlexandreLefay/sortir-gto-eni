@@ -70,7 +70,7 @@
                 </tr>
                 {% for participant in sortie.users %}
                     <tr>
-                        <td>{{ participant.pseudo}} </td>
+                        <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ participant.pseudo }}</a> </td>
                         <td>{{ participant.nom}}</td>
                     </tr>
                 {% endfor %}
