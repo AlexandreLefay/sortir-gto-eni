@@ -22,9 +22,38 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/', name: 'app_sortie_index', methods: ['GET'])]
-    public function index(SortieRepository $sortieRepository): Response
+    #[Route('/', name: 'app_sortie_index', methods: ['GET', 'POST'])]
+    public function index(SortieRepository $sortieRepository, EtatRepository $etatRepository,  EntityManagerInterface $entityManager): Response
     {
+        $sortie = new sortie();
+        $sorties =  $sortieRepository->findAll();
+
+        foreach ($sorties as $sortie ) {
+            date_default_timezone_set('Europe/Paris');
+            $dateActuelle = date('Y-m-d h:i:s ', time());
+            $dateDebut = $sortie->getDateDebut();
+            $dateCloture = $sortie->getDateCloture();
+
+//            si la sortie a commencé et n'est pas terminé etat = ouvert :
+            if($dateActuelle >= $dateDebut && $dateActuelle <= $dateCloture){
+                $etat = $etatRepository->findOneBy([
+                    "id" => 4
+                ]);
+                $sortie->setEtat($etat);
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+            }
+//            si la sortie est terminé etat = Passée :
+            if ($dateActuelle >= $dateCloture) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 5
+                ]);
+                $sortie->setEtat($etat);
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+            }
+        }
+
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sortieRepository->findAll(),
         ]);
@@ -125,12 +154,39 @@ class SortieController extends AbstractController
 
 
 
-    #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
+    #[Route('/delete/{id}', name: 'app_sortie_delete', methods: ['POST', 'GET'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
+
+        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+
+    #[Route('/annuler/{id}', name: 'app_sortie_annuler', methods: ['POST', 'GET'])]
+    public function annuler(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    {
+        $etat = $etatRepository->findOneBy([
+            "id" => 6
+            ]);
+        $sortie->setEtat($etat);
+        $sortieRepository->save($sortie, true);
+
+        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
+    public function publier(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    {;
+
+        $etat = $etatRepository->findOneBy([
+            "id" => 2
+        ]);
+        $sortie->setEtat($etat);
+        $sortieRepository->save($sortie, true);
 
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
