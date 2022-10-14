@@ -18,16 +18,17 @@ class ProfilController extends AbstractController
     public function profil_update(
         Request $request,
         EntityManagerInterface $entityManager,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        UserRepository $userRepository
     ): Response
     {
-        $userNew = $this->getUser();
+        $userNew = $userRepository->findOneBy(
+            ['email'=>$this->getUser()->getUserIdentifier()]
+        );
         $formUser = $this->createForm(UserProfilType::class, $userNew);
         $formUser->handleRequest($request);
-
         if($formUser->isSubmitted() && $formUser->isValid()){
             $image = $formUser->get('image')->getData();
-
             if($image){
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
 
@@ -39,6 +40,7 @@ class ProfilController extends AbstractController
                 );
                 $userNew->setPhoto('uploads/'.$newFilename);
             }
+
             $entityManager->persist($userNew);
             $entityManager->flush();
         }

@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
-use App\Entity\User;
 use App\Form\LieuType;
-use App\Form\SortieLieuType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
@@ -15,6 +12,7 @@ use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,9 +21,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class SortieController extends AbstractController
 {
     #[Route('/', name: 'app_sortie_index', methods: ['GET', 'POST'])]
-    public function index(SortieRepository $sortieRepository, EtatRepository $etatRepository,  EntityManagerInterface $entityManager): Response
+    public function index(
+        SortieRepository $sortieRepository,
+        EtatRepository $etatRepository,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response
     {
-        $sortie = new sortie();
+        $res = new Response();
+        $res->headers->clearCookie('mail');
+        $res->send();
+
+        if($request->cookies->get('REMEMBERME')){
+            $cookie = new Cookie ('mail',$this->getUser()->getUserIdentifier() );
+            $res = new Response();
+            $res->headers->setCookie($cookie);
+            $res->send();
+
+        }
+
+
         $sorties =  $sortieRepository->findAll();
 
         foreach ($sorties as $sortie ) {
@@ -195,13 +210,16 @@ class SortieController extends AbstractController
     #[Route('/inscription/{id}', name: 'app_sortie_inscription', methods: ['GET'])]
     public function subscribe(
         Sortie                 $sortie,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository
     ): Response
     {
-        $participant = $this->getUser();
-        $sortie->addUsers($participant);
-        $entityManager->persist($sortie);
-        $entityManager->flush($sortie);
+        $participant = $userRepository->findOneBy(
+            ['email'=>$this->getUser()->getUserIdentifier()]
+        );
+        $participant->addInscrit($sortie);
+        $entityManager->persist($participant);
+        $entityManager->flush($participant);
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
         ]);
