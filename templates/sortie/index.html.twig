@@ -106,14 +106,20 @@
                     <td>X</td>
                     <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
                     <td>
-                        <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher"></a>
-                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"></a>
-                        <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"></a>
-                        <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/modifier.svg') }}" alt="Modifier"></a>
-                        {# TODO Alexandre : methode post non autorisé #}
-                        <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" ><img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler"></a>
-                        {# TODO Alexandre : créer une route pour publiquer #}
-                        <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}"><img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier"></a>
+                        <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher{#<img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher">#}</a>
+
+                        {% if sortie.etat.libelle == "Ouverte" and app.user.id != sortie.user.id %}
+                            <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{#<img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire">#}</a>
+                            <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se désister{#<img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister">#}</a>
+                        {% endif %}
+
+                        {% if app.user.id == sortie.user.id and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
+                            <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
+                        {% endif %}
+
+                        {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
+                            <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}
