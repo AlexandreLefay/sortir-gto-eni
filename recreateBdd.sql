@@ -145,14 +145,14 @@ create index IDX_596DC8CFCC72D953
 -- INSERTION DES DONNEES
 
 
-INSERT INTO user (site_id,email, pseudo, nom, prenom, telephone, actif, roles, password)
+INSERT INTO user (site_id,photo,email, pseudo, nom, prenom, telephone, actif, roles, password)
 VALUES
 
-    (1,'rose@flower.fr','rose','rosa','hong','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'lila@flower.fr','lila','lila','lililala','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'lys@flower.fr','lys','lys','hue','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'tbs@gmail.com', 'tbs', 'Wick', 'John', '0123456987',true,'["ROLE_USER"]','$2y$13$mH1cu9cw6wTh7sbIrqm4XOEDFFIDiN5hBB1yFkhCbgb9Wfg.CjMBa')
+    (1,'uploads/pikachu.jpg','rose@flower.fr','rose','rosa','hong','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','lila@flower.fr','lila','lila','lililala','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','lys@flower.fr','lys','lys','hue','0240987582',1,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'[]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/loup-634826e5c0fe4.jpg','tbs@gmail.com', 'tbs', 'Wick', 'John', '0123456987',true,'["ROLE_USER"]','$2y$13$mH1cu9cw6wTh7sbIrqm4XOEDFFIDiN5hBB1yFkhCbgb9Wfg.CjMBa')
 ;
 
 INSERT INTO site (nom)
@@ -164,15 +164,15 @@ VALUES
 
 INSERT INTO sortie (user_id, site_id, etat_id, lieu_id, nom, date_debut, duree, date_cloture, nb_inscriptions_max, descriptions_infos)
 VALUES
-    (1,1,1,1,'Soirée Jacky & Michelle','2022-11-08 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
-    (1,1,1,1,'Attrapper les Pokemons','2022-11-03 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
-    (2,1,1,1,'Butter le crud','2022-11-27 17:13:00',1,'2022-10-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
-    (2,1,1,1,'Admirer les lapins','2022-10-30 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
-    (2,1,1,1,'Chasser les pythons','2022-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
-    (2,1,1,1,'Contempler les papillions','2022-11-02 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
-    (3,1,1,1,'Caresser les loutres','2022-11-28 17:13:00',1,'2022-11-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ipsum nibh, ornare et mauris sed, pharetra gravida sapien. Etiam accumsan sollicitudin metus vitae rutrum. Donec id euismod orci, efficitur dictum massa. Sed auctor euismod efficitur. Maecenas accumsan, neque viverra imperdiet iaculis, risus augue interdum nulla, in molestie augue turpis in odio. Nunc fermentum justo lacus. Maecenas lectus orci, sagittis at feugiat nec, porttitor sed nisi. Donec non sodales neque. Sed ultrices euismod semper. Aliquam vel diam nec orci pulvinar tristique a finibus nisl. Aenean vitae rhoncus neque, sed finibus ipsum. Sed cursus auctor ligula eu gravida. Quisque pharetra commodo suscipit.'),
+    (1,1,2,1,'Soirée Jacky & Michelle','2022-10-10 17:13:00',5,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (1,1,4,1,'Attrapper les Pokemons','2022-10-03 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
+    (2,1,1,1,'Butter le crud','2022-11-27 17:13:00',1,'2022-10-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,1,1,'Admirer les lapins','2022-10-30 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,1,1,'Chasser les pythons','2022-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,1,1,'Contempler les papillions','2022-11-02 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (3,1,1,1,'Caresser les loutres','2022-11-28 17:13:00',1,'2022-11-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (1,2,1,1,'AMUSEMENT','2022-10-27 10:13:00',4,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
-    (2,2,2,2,'SOIREE DANSANTE','2022-11-27 20:13:00',4,'2022-10-27 17:13:00',5,'ceci est la description de la sortie')
+    (2,2,5,2,'SOIREE DANSANTE','2022-9-27 20:13:00',4,'2022-10-27 17:13:00',5,'ceci est la description de la sortie')
 ;
 
 INSERT INTO ville (nom, code_postal)
@@ -194,7 +194,8 @@ VALUES
     ('Clôturée'),
     ('Activité en cours'),
     ('Passée'),
-    ('Annulée')
+    ('Annulée'),
+    ('Archivée')
 ;
 
 INSERT INTO user_sortie (user_id, sortie_id)
