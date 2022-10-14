@@ -194,7 +194,8 @@ VALUES
     ('Clôturée'),
     ('Activité en cours'),
     ('Passée'),
-    ('Annulée')
+    ('Annulée'),
+    ('Archivée')
 ;
 
 INSERT INTO user_sortie (user_id, sortie_id)
