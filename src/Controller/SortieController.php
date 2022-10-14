@@ -27,15 +27,33 @@ class SortieController extends AbstractController
     {
         $sortie = new sortie();
         $sorties =  $sortieRepository->findAll();
+        $dateActuelle = new \DateTime("now");
+        $dateActuelle = $dateActuelle->format('Y-m-d H:i:s');
 
         foreach ($sorties as $sortie ) {
             date_default_timezone_set('Europe/Paris');
-            $dateActuelle = date('Y-m-d h:i:s ', time());
-            $dateDebut = $sortie->getDateDebut();
-            $dateCloture = $sortie->getDateCloture();
+            $dateDebut = $sortie->getDateDebut()->format('Y-m-d H:i:s');
+            $dateCloture = $sortie->getDateCloture()->format('Y-m-d H:i:s');
+            $heureDuree = $sortie->getDuree();
+            $dateFin = date('Y-m-d H:i:s',strtotime($heureDuree.' day',strtotime($dateDebut)));
+            $etatActuel = $sortie->getEtat()->getId();
 
-//            si la sortie a commencé et n'est pas terminé etat = ouvert :
-            if($dateActuelle >= $dateDebut && $dateActuelle <= $dateCloture){
+
+
+//            SI LA DATE DE CLOTURE EST ARRIVE OU QUE LE NOOMBRE DE PARTICIPANT MAX EST ATTEINT ETAT = CLOTUREE
+            if ($dateCloture <= $dateActuelle) {
+
+                $etat = $etatRepository->findOneBy([
+                    "id" => 3
+                ]);
+                $sortie->setEtat($etat);
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+            }
+
+//            SI LA SORTIE EST A L'ETAT PUBLIE(OUVERTE) OU PUBLIE(CLOTUREE),  A COMMENCE ET N'EST PAS TERMINE  ETAT = ACT EN COURS'
+            if($dateActuelle > $dateDebut && $dateActuelle < $dateFin && $etatActuel == 2 || $etatActuel == 3) {
+
                 $etat = $etatRepository->findOneBy([
                     "id" => 4
                 ]);
@@ -43,10 +61,26 @@ class SortieController extends AbstractController
                 $entityManager->persist($sortie);
                 $entityManager->flush();
             }
-//            si la sortie est terminé etat = Passée :
-            if ($dateActuelle >= $dateCloture) {
+
+//          SI LA DATE DE FIN DE SORTIE EST INFERIEUR A LA DATE ACTUELLE ET QUE LA SORTIE ETAIT EN COURS ALORS ETAT = PASSE
+            if ($dateCloture > $dateFin && $etatActuel == 4 ) {
+
                 $etat = $etatRepository->findOneBy([
                     "id" => 5
+                ]);
+                $sortie->setEtat($etat);
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+            }
+
+//            SI LA DATE DE FIN DE SORTTIE EST SUPERIEUR A 1 MONTH ET QUE L'ETAT ACTUEL  EST PASSE ALORS ETAT = ARCHIVE
+            $dateFin = strtotime($dateFin);
+            $dateActuelle = strtotime($dateActuelle);
+            $jourTotalArchive = ($dateActuelle-$dateFin)/86400;
+
+            if ($jourTotalArchive > 30 && $etatActuel == 5 ) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 7
                 ]);
                 $sortie->setEtat($etat);
                 $entityManager->persist($sortie);
