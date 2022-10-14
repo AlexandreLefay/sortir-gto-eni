@@ -52,17 +52,17 @@ class UserProfilType extends AbstractType
                 'multiple' => false,
                 'mapped' => false,
                 'required' => false,
-//                'constraints' => [
-//                    new File([
-//                        'maxSize' => '2024k',
-//                        'mimeTypes' => [
-//                            'image/jpeg',
-//                            'image/jpg',
-//                            'image/png',
-//                        ],
-//                        'mimeTypesMessage' => 'Please upload a valid PDF document',
-//                    ])
-//                ]
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Merci d\'indiquer un fichier Jpeg, jpg ou png',
+                    ])
+                ]
             ])
         ;
     }
