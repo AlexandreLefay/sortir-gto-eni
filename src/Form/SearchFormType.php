@@ -25,6 +25,7 @@ class SearchFormType extends AbstractType
             ->add('searchbar', TextType::class, [
                 'label' => false,
                 'required' => false,
+                'empty_data' => ' ',
                 'attr' => [
                     'placeholder' => 'Rechercher'
                 ]
@@ -33,10 +34,12 @@ class SearchFormType extends AbstractType
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
+                'required'=> false,
             ])
             ->add('dateCloture', DateType::class, [
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
+                'required'=> false,
             ])
             ->add('organisateur', CheckboxType::class, array(
                 'label' => 'Sortie dont je suis l\'organisateur.trice',

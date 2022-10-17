@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -63,4 +65,34 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    /*    public function findNotSubscribeEvent($userConnected) : array{
+            $query = $this->getEntityManager()->createQuery(
+                'SELECT s
+               FROM App\Entity\Sortie s
+               JOIN App\Entity\User u
+               ON s.user_id = u.id
+               WHERE u.id != :userConnected'
+            );
+        $query->setParameter('userConnected', $userConnected);
+            return $query->getResult();
+        }*/
+
+    public function findNotSubscribeEvent($userConnected): array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.user', 'u')
+            ->andWhere('u.id != :userConnected')
+            ->setParameter('userConnected', $userConnected)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findFinishedEvent(): array
+    {       return $this->createQueryBuilder('s')
+        ->andWhere('s.etat =5')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 }
+
