@@ -139,9 +139,16 @@ class SortieController extends AbstractController
             }
             if($nonInscritCheckbox){
                 $userConnected = $this->getUser()->getId();
-                dd($sortieRepository->findNotSubscribeEvent($userConnected));
                 return $this->render('sortie/index.html.twig', [
                     'sorties' => $sortieRepository->findNotSubscribeEvent($userConnected),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+            if($sortiesFiniesCheckbox){
+                 dd($sortieRepository->findFinishedEvent());
+                 return $this->render('sortie/index.html.twig', [
+                    'sorties' => $sortieRepository->findFinishedEvent(),
                     'formSearch' =>$formSearch->createView(),
                     'dateNow' => $dateActuelleString
                 ]);
