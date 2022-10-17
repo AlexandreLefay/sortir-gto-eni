@@ -16,43 +16,37 @@ class EventUpdate
     }
 
 
-    public function checkClotureOuEnCours($etatActuel) {
-        if($etatActuel == 2 || $etatActuel == 3) {
+    public function checkEtatClotureOuvert($etatActuel)
+    {
+        if ($etatActuel == 2 || $etatActuel == 3) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function checkClotureOuOuvert($dateActuelleString, $dateCloture, $etatActuel, $nbrInscritMax, $nbrInscrit) {
-        if($dateActuelleString < $dateCloture and $etatActuel == 2) {
-            return true;
-        } elseif($nbrInscrit == $nbrInscritMax) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function checkActEnCours($dateActuelleString, $dateDebut, $dateFin) {
-        if($dateActuelleString > $dateDebut && $dateActuelleString < $dateFin) {
+    public function checkActEnCours($dateActuelleString, $dateDebut, $dateFin)
+    {
+        if ($dateActuelleString > $dateDebut && $dateActuelleString < $dateFin) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function calculTempsEcoule($heureDuree, $dateDebut, $dateActuelleString) {
+    public function calculTempsEcoule($heureDuree, $dateDebut, $dateActuelleString)
+    {
 
-        $DateFin = date('Y-m-d H:i:s',strtotime($heureDuree.' hour',strtotime($dateDebut)));
+        $DateFin = date('Y-m-d H:i:s', strtotime($heureDuree . ' hour', strtotime($dateDebut)));
         $dateFinStrToTime = strtotime($DateFin);
         $dateActuelleStringStr = strtotime($dateActuelleString);
-        $jourTotalDepuisFin = ($dateActuelleStringStr-$dateFinStrToTime)/86400;
+        $jourTotalDepuisFin = ($dateActuelleStringStr - $dateFinStrToTime) / 86400;
 
         return $jourTotalDepuisFin;
     }
 
-    public function updateEtatFlush($etat, $sortie) {
+    public function updateEtatFlush($etat, $sortie)
+    {
 
         $entityManager = $this->doctrine->getManager();
 
@@ -60,5 +54,20 @@ class EventUpdate
         $entityManager->persist($sortie);
         $entityManager->flush();
     }
+
+//    public function updateCloture($nbrUsersInscrit, $nbrInscritMax, $etatRepository, $sortie)
+//    {
+//        if ($nbrUsersInscrit == $nbrInscritMax) {
+//            $etat = $etatRepository->findOneBy([
+//                "id" => 3
+//            ]);
+//            $this->updateEtatFlush($etat, $sortie);
+//
+//        } elseif ($nbrUsersInscrit < $nbrInscritMax) {
+//            $etat = $etatRepository->findOneBy([
+//                "id" => 3
+//            ]);
+//            $this->updateEtatFlush($etat, $sortie);
+//        }
 
 }
