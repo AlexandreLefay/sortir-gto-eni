@@ -50,6 +50,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    private ?string $passwordConfirm =null;
+
     #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'users')]
     private Collection $inscrit;
 
@@ -61,6 +63,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
+
+
 
     public function __construct()
     {
