@@ -34,7 +34,8 @@ class SortieController extends AbstractController
         EtatRepository $etatRepository,
         EntityManagerInterface $entityManager,
         Request $request,
-        EventUpdate $updateEvent
+        EventUpdate $updateEvent,
+        UserRepository $userRepository
     ): Response
 
     {
@@ -115,7 +116,37 @@ class SortieController extends AbstractController
             'action' => $this->generateUrl('app_sortie_index'),
             'method' => 'POST',
             ]);
-
+        $formSearch->handleRequest($request);
+        if ($formSearch->isSubmitted() && $formSearch->isValid()) {
+            $orgaCheckbox = $search->getOrganisateur();
+            $mesSortiesCheckbox = $search->getInscrit();
+            $nonInscritCheckbox = $search->getNonInscrit();
+            $sortiesFiniesCheckbox = $search->getPassees();
+            if($orgaCheckbox){
+                return $this->render('sortie/index.html.twig', [
+                    'sorties' => $sortieRepository->findBy(
+                    ['user' => $this->getUser()->getId()]),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+            if($mesSortiesCheckbox){
+                return $this->render('sortie/index.html.twig', [
+                    'sorties' => $this->getUser()->getInscrit(),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+            if($nonInscritCheckbox){
+                $userConnected = $this->getUser()->getId();
+                dd($sortieRepository->findNotSubscribeEvent($userConnected));
+                return $this->render('sortie/index.html.twig', [
+                    'sorties' => $sortieRepository->findNotSubscribeEvent($userConnected),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+        }
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sortieRepository->findAll(), 'formSearch' =>$formSearch->createView(), 'dateNow' => $dateActuelleString
         ]);

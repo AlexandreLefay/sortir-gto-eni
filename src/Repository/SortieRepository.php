@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -63,4 +64,17 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findNotSubscribeEvent($userConnected) : array{
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT s  
+           FROM App\Entity\Sortie s  
+           JOIN App\Entity\User u
+           ON s.user_id = u.id 
+           WHERE u.id != 4'
+        );
+/*        $query->setParameter('userConnected', $userConnected);*/
+        return $query->getResult();
+    }
+
 }
+
