@@ -31,7 +31,6 @@ class ProfilController extends AbstractController
             $image = $formUser->get('image')->getData();
             if($image){
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessClientExtension();
                 $image->move(
@@ -40,9 +39,9 @@ class ProfilController extends AbstractController
                 );
                 $userNew->setPhoto('uploads/'.$newFilename);
             }
-
             $entityManager->persist($userNew);
             $entityManager->flush();
+            return $this->redirectToRoute('app_profil_view',array('id'=>$userNew->getId()));
         }
 
         return $this->renderForm('profil/profilUpdate.html.twig',compact('formUser'));
@@ -50,7 +49,6 @@ class ProfilController extends AbstractController
 
     #[Route('/profil_view/{id}', name: 'app_profil_view')]
     public function index(
-        UserRepository $userRepository,
         User $user
     ): Response
     {
