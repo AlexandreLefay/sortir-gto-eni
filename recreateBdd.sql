@@ -172,6 +172,7 @@ VALUES
     (2,1,1,1,'Contempler les papillions','2022-11-02 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (3,1,2,1,'Caresser les loutres','2022-11-28 17:13:00',1,'2022-10-10 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (1,2,1,1,'AMUSEMENT','2022-10-27 10:13:00',4,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
+    (1,2,5,2,'SORTIE PASSEE','2022-10-14 10:13:00',2,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
     (2,2,5,2,'SOIREE DANSANTE','2021-9-27 20:13:00',4,'2022-10-27 17:13:00',5,'ceci est la description de la sortie')
 ;
 
