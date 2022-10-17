@@ -2,6 +2,9 @@
 
 namespace App\EtatUpdate;
 
+use App\Repository\EtatRepository;
+use App\Repository\SortieRepository;
+use App\Entity\Sortie;
 use Doctrine\Persistence\ManagerRegistry;
 
 class EventUpdate
@@ -12,8 +15,19 @@ class EventUpdate
         $this->doctrine = $doctrine;
     }
 
+
     public function checkClotureOuEnCours($etatActuel) {
         if($etatActuel == 2 || $etatActuel == 3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkClotureOuOuvert($dateActuelleString, $dateCloture, $etatActuel, $nbrInscritMax, $nbrInscrit) {
+        if($dateActuelleString < $dateCloture and $etatActuel == 2) {
+            return true;
+        } elseif($nbrInscrit == $nbrInscritMax) {
             return true;
         } else {
             return false;
@@ -38,7 +52,7 @@ class EventUpdate
         return $jourTotalDepuisFin;
     }
 
-    public function updateEtat($etat, $sortie) {
+    public function updateEtatFlush($etat, $sortie) {
 
         $entityManager = $this->doctrine->getManager();
 

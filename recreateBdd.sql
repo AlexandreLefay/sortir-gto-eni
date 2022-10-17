@@ -164,11 +164,11 @@ VALUES
 
 INSERT INTO sortie (user_id, site_id, etat_id, lieu_id, nom, date_debut, duree, date_cloture, nb_inscriptions_max, descriptions_infos)
 VALUES
-    (1,1,2,1,'Soirée Jacky & Michelle','2022-10-16 17:13:00',10,'2021-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (1,1,2,1,'Soirée Jacky & Michelle','2022-10-18 17:13:00',10,'2021-10-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (1,1,5,1,'Attrapper les Pokemons','2021-10-03 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
     (2,1,2,1,'Butter le crud','2022-11-27 18:13:00',1,'2022-11-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,1,5,1,'Admirer les lapins','2021-10-30 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (2,1,1,1,'Chasser les pythons','2022-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,5,1,'Chasser les pythons','2021-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,1,1,1,'Contempler les papillions','2022-11-02 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (3,1,2,1,'Caresser les loutres','2022-11-28 17:13:00',1,'2022-10-10 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (1,2,1,1,'AMUSEMENT','2022-10-27 10:13:00',4,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
