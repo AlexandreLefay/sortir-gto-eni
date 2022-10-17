@@ -30,10 +30,7 @@ class SortieController extends AbstractController
 
    public function index(
         SortieRepository $sortieRepository,
-        EtatRepository $etatRepository,
-        EntityManagerInterface $entityManager,
-        Request $request,
-        EventUpdate $updateEvent
+        Request $request
     ): Response
 
     {
@@ -66,7 +63,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/new', name: 'app_sortie_new', methods: ['GET', 'POST'])]
-    public function add(Request $request, UserRepository $user, EtatRepository $etatRepository, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, UserRepository $user, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
     {
         $sortie = new Sortie();
         $formSortie = $this->createForm(SortieType::class, $sortie);
@@ -217,10 +214,13 @@ class SortieController extends AbstractController
     #[Route('/desinscription/{id}', name: 'app_sortie_desinscription', methods: ['GET'])]
     public function unsubscribe(
         Sortie                 $sortie,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository
     ): Response
     {
-        $participant = $this->getUser();
+        $participant = $userRepository->findOneBy(
+            ['email'=>$this->getUser()->getUserIdentifier()]
+        );
         $sortie->removeUsers($participant);
         $entityManager->persist($sortie);
         $entityManager->persist($participant);
