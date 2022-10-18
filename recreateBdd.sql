@@ -37,9 +37,9 @@ create table user
             references site,
     email     VARCHAR(100) not null,
     pseudo    VARCHAR(30)  not null,
-    nom       VARCHAR(40)  not null,
-    prenom    VARCHAR(30)  not null,
-    telephone VARCHAR(10)  not null,
+    nom       VARCHAR(40)  default NULL,
+    prenom    VARCHAR(30)  default NULL,
+    telephone VARCHAR(10)  default NULL,
     actif     BOOLEAN      not null,
     roles     CLOB         not null,
     password  VARCHAR(255) not null,
@@ -150,10 +150,6 @@ create index IDX_596DC8CFA76ED395
 
 create index IDX_596DC8CFCC72D953
     on user_sortie (sortie_id);
-
-
-
-
 
 
 -- INSERTION DES DONNEES

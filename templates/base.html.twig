@@ -37,23 +37,20 @@
                             <a class="nav-link" href="{{ path('app_sortie_index') }}">Accueil</a>
                             <a class="nav-link" href="{{ path('app_profil_view',{'id':app.user.id}) }}"><img class="icon" src="{{ asset('img/profile_contact_account_man_icon_229517.svg') }}" alt="profil">Mon profil</a>
 
-                            <a class="nav-link" href="{{ path('app_logout') }}"><img class="icon" src="{{ asset('img/4115235-exit-logout-sign-out_114030.svg') }}" alt="deconnexion">Deconnexion</a>
+                            {% if app.user %}
+                                <a class="nav-link" href="{{ path('app_logout') }}"><img class="icon" src="{{ asset('img/4115235-exit-logout-sign-out_114030.svg') }}" alt="deconnexion">Deconnexion</a>
+
+                                {% if is_granted("ROLE_ADMIN") %}
+                                    <a class="nav-link" href="{{ path('app_admin') }}">Administration</a>
+                                {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </nav>
         {% endif %}
         {% block main %}
-            <main >
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_logout') }}">Deconnexion</a>
-                    {#        {% if is_granted("ROLE_ADMIN") %}#}
-                    {#            <a href="{{ path('app_admin') }}">Administration</a>#}
-                    {#        {% endif %}#}
-                    {#    {% else %}#}
-                    {#        <a href="{{ path('app_register') }}">Création de compte</a>#}
-                {% endif %}
-            </main>
+
         {% endblock %}
 
         <footer>&#128007 Projet ENI 2022 - Les lapins sont supérieurs aux loutres ! - Propulsé par Titi la loutre, BichAchu, et Loulou le loup</footer>

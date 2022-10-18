@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\EtatUpdate;
+//use App\EtatUpdate;
 use App\Entity\User;
 use App\Entity\Lieu;
 use App\Entity\SearchData;
@@ -15,15 +15,15 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
-use Container8wOy52z\get_ServiceLocator_ZFcJjKUService;
+//use Container8wOy52z\get_ServiceLocator_ZFcJjKUService;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+//use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Flex\Event\UpdateEvent;
+//use Symfony\Flex\Event\UpdateEvent;
 
 #[Route('/sortie')]
 class SortieController extends AbstractController
@@ -35,7 +35,7 @@ class SortieController extends AbstractController
     ): Response
 
     {
-//        Pour le cookie afin de garder en mémoire l'adresse mail si checkbox
+//     création cookie, avec mail si REMEMBERME coché pour affichage lors reconnexion
         $res = new Response();
         $res->headers->clearCookie('mail');
         $res->send();
