@@ -22,15 +22,15 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Flex\Event\UpdateEvent;
 
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
     #[Route('/', name: 'app_sortie_index', methods: ['GET', 'POST'])]
-
-   public function index(
+    public function index(
         SortieRepository $sortieRepository,
-        Request $request
+        Request          $request
     ): Response
 
     {
@@ -39,18 +39,17 @@ class SortieController extends AbstractController
         $res->headers->clearCookie('mail');
         $res->send();
 
-        if($request->cookies->get('REMEMBERME')){
-            $cookie = new Cookie ('mail',$this->getUser()->getUserIdentifier() );
+        if ($request->cookies->get('REMEMBERME')) {
+            $cookie = new Cookie ('mail', $this->getUser()->getUserIdentifier());
             $res = new Response();
             $res->headers->setCookie($cookie);
             $res->send();
         }
 
 
-
 //        Pour les filtres c'est un peu compliqué
         $search = new SearchData();
-        $formSearch = $this->createForm(SearchFormType::class, $search,[
+        $formSearch = $this->createForm(SearchFormType::class, $search, [
             'action' => $this->generateUrl('app_sortie_index'),
             'method' => 'POST',
         ]);
@@ -63,37 +62,39 @@ class SortieController extends AbstractController
             $mesSortiesCheckbox = $search->getInscrit();
             $nonInscritCheckbox = $search->getNonInscrit();
             $sortiesFiniesCheckbox = $search->getPassees();
+
             $dateSortieDebut = $search->getDateSortieDebut();
             $dateSortieFin = $search->getDateSortieFin();
             $searchbar = $search->getSearchbar();
             $site = $search->getSites();
             if($orgaCheckbox){
+
                 return $this->render('sortie/index.html.twig', [
                     'sorties' => $sortieRepository->findBy(
                         ['user' => $this->getUser()->getId()]),
-                    'formSearch' =>$formSearch->createView(),
+                    'formSearch' => $formSearch->createView(),
                     'dateNow' => $dateActuelleString
                 ]);
             }
-            if($mesSortiesCheckbox){
+            if ($mesSortiesCheckbox) {
                 return $this->render('sortie/index.html.twig', [
                     'sorties' => $this->getUser()->getInscrit(),
-                    'formSearch' =>$formSearch->createView(),
+                    'formSearch' => $formSearch->createView(),
                     'dateNow' => $dateActuelleString
                 ]);
             }
-            if($nonInscritCheckbox){
+            if ($nonInscritCheckbox) {
                 $userConnected = $this->getUser()->getId();
                 return $this->render('sortie/index.html.twig', [
                     'sorties' => $sortieRepository->findNotSubscribeEvent($userConnected),
-                    'formSearch' =>$formSearch->createView(),
+                    'formSearch' => $formSearch->createView(),
                     'dateNow' => $dateActuelleString
                 ]);
             }
-            if($sortiesFiniesCheckbox){
-                   return $this->render('sortie/index.html.twig', [
+            if ($sortiesFiniesCheckbox) {
+                return $this->render('sortie/index.html.twig', [
                     'sorties' => $sortieRepository->findFinishedEvent(),
-                    'formSearch' =>$formSearch->createView(),
+                    'formSearch' => $formSearch->createView(),
                     'dateNow' => $dateActuelleString
                 ]);
             }
@@ -121,7 +122,7 @@ class SortieController extends AbstractController
             }
         }
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->findAll(), 'formSearch' =>$formSearch->createView(), 'dateNow' => $dateActuelleString
+            'sorties' => $sortieRepository->findAll(), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
         ]);
     }
 
@@ -159,7 +160,7 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    public function edit(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
         $formSortie = $this->createForm(SortieType::class, $sortie);
         $formSortie->handleRequest($request);
@@ -215,7 +216,6 @@ class SortieController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'app_sortie_delete', methods: ['POST', 'GET'])]
-    
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
@@ -226,13 +226,12 @@ class SortieController extends AbstractController
     }
 
 
-
     #[Route('/annuler/{id}', name: 'app_sortie_annuler', methods: ['POST', 'GET'])]
-    public function annuler(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    public function annuler(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
         $etat = $etatRepository->findOneBy([
             "id" => 6
-            ]);
+        ]);
         $sortie->setEtat($etat);
         $sortieRepository->save($sortie, true);
 
@@ -240,8 +239,9 @@ class SortieController extends AbstractController
     }
 
     #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
-    public function publier(Request $request, Sortie $sortie,EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
-    {;
+    public function publier(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    {
+        ;
 
         $etat = $etatRepository->findOneBy([
             "id" => 2
@@ -257,16 +257,27 @@ class SortieController extends AbstractController
     public function subscribe(
         Sortie                 $sortie,
         EntityManagerInterface $entityManager,
-        UserRepository $userRepository
+        UserRepository         $userRepository,
+        EtatRepository         $etatRepository,
+        EventUpdate            $updateEvent
     ): Response
     {
+        $Users = $sortie->getUsers();
+        $nbrUsersInscrit = count($Users);
+        $nbrInscritMax = $sortie->getNbInscriptionsMax();
 
-        $participant =
-            $entityManager->getRepository(User::class)->findOneBy(["email"=>$this->getUser()->getUserIdentifier()]);
+        $participant = $entityManager->getRepository(User::class)->findOneBy(["email" => $this->getUser()->getUserIdentifier()]);
         $sortie->addUsers($participant);
         $entityManager->persist($sortie);
         $entityManager->persist($participant);
         $entityManager->flush();
+
+        if ($nbrUsersInscrit == $nbrInscritMax) {
+            $etat = $etatRepository->findOneBy([
+                "id" => 3
+            ]);
+            $updateEvent->updateEtatFlush($etat, $sortie);
+        }
 
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
@@ -278,11 +289,11 @@ class SortieController extends AbstractController
     public function unsubscribe(
         Sortie                 $sortie,
         EntityManagerInterface $entityManager,
-        UserRepository $userRepository
+        UserRepository         $userRepository
     ): Response
     {
         $participant = $userRepository->findOneBy(
-            ['email'=>$this->getUser()->getUserIdentifier()]
+            ['email' => $this->getUser()->getUserIdentifier()]
         );
         $sortie->removeUsers($participant);
         $entityManager->persist($sortie);

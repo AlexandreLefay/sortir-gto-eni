@@ -111,12 +111,12 @@
                     <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
                     <td>
                         <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher{#<img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher">#}</a>
-                        {# TODO : Les boutons s'inscrire et se désister ne s'affiche pas au bon moment#}
-                        {% if nbrParticipant < sortie.nbInscriptionsMax and  dateNow < sortie.dateCloture and sortie.user.id != app.user.id and sortie.etat.libelle != "Activité en cours" and sortie.etat.libelle != "Clôturée" and sortie.etat.libelle != "Créée"%}
+
+                        {% if nbrParticipant < sortie.nbInscriptionsMax and  dateNow < sortie.dateCloture and sortie.user.id != app.user.id and sortie.etat.libelle != "Activité en cours" and sortie.etat.libelle != "Clôturée" and sortie.etat.libelle != "Créée" and sortie.etat.libelle != "Archivée"%}
                             <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{#<img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire">#}</a>
                         {% endif %}
-                        {# TODO : Les boutons s'inscrire et se désister ne s'affiche pas au bon moment#}
-                        {% if sortie.user.id != app.user.id and  (sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée")%}
+                        {# TODO : Le bouton se désister ne s'affiche pas au bon moment, Il faut qu'il soit afficher seulement quand l'act est ouvert ou cloturé, si je suis inscrit à la sortie et qu'elle ne soit pas à moi#}
+                        {% if sortie.user.id != app.user.id %}
                         <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se désister{#<img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister">#}</a>
                         {% endif %}
 

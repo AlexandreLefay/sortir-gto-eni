@@ -62,67 +62,58 @@ class EtatUpdateCommand extends Command
             $Users = $sortie->getUsers();
             $nbrUsersInscrit = count($Users);
             $nbrInscritMax = $sortie->getNbInscriptionsMax();
-            for ($i = 0; $i < 5; $i++) {
-//                Récupération des dates et états pour chaque sortie
-                $etatActuel = $sortie->getEtat()->getId();
-                $dateDebut = $sortie->getDateDebut()->format('Y-m-d H:i:s');
-                $dateCloture = $sortie->getDateCloture()->format('Y-m-d H:i:s');
-                $heureDuree = $sortie->getDuree();
-                $DateFin = date('Y-m-d H:i:s', strtotime($heureDuree . ' hour', strtotime($dateDebut)));
+
+//                Récupération des dates et états pour chaques sorties
+            $etatActuel = $sortie->getEtat()->getId();
+            $dateDebut = $sortie->getDateDebut()->format('Y-m-d H:i:s');
+            $dateCloture = $sortie->getDateCloture()->format('Y-m-d H:i:s');
+            $heureDuree = $sortie->getDuree();
+            $DateFin = date('Y-m-d H:i:s', strtotime($heureDuree . ' hour', strtotime($dateDebut)));
 //              Fonction qui calcul le temps écoulé depuis la fin en jours
-                $calculTempsEcoule = $updateEvent->calculTempsEcoule($heureDuree, $dateDebut, $dateActuelleString);
-
+            $calculTempsEcoule = $updateEvent->calculTempsEcoule($heureDuree, $dateDebut, $dateActuelleString);
 //              Fonctions qui checks les états, si l'activité est en cours et les retournes pour les conditions
-                $checkEtatClotureEnCour = $updateEvent->checkClotureOuEnCours($etatActuel);
-                $checkActEnCours = $updateEvent->checkActEnCours($dateActuelleString, $dateDebut, $DateFin);
-//                Fonction qui check les nbrInscrit et par rapport à la date de cloture et retourne un boolean
-                $checkClotureOuOuvert = $updateEvent->checkClotureOuOuvert($dateActuelleString, $dateCloture, $etatActuel, $nbrInscritMax, $nbrUsersInscrit);
+            $checkEtatClotureOuvert = $updateEvent->checkEtatClotureOuvert($etatActuel);
+            $checkActEnCours = $updateEvent->checkActEnCours($dateActuelleString, $dateDebut, $DateFin);
 
 
-
-//                Si la date de cloture est arrivé ou que le nombre de participants max est atteint etat = cloturee
-                if ($checkClotureOuOuvert == true) {
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 3
-                    ]);
-                    $updateEvent->updateEtatFlush($etat, $sortie);
-                }
-
-//              Si la sortie est à l'etat publie(cloturée) et que le nombre user_max < aux user inscrit, -- Fonctionne
-                if (!$checkClotureOuOuvert and $etatActuel = "clôturée") {
-
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 2
-                    ]);
-                    $updateEvent->updateEtatFlush($etat, $sortie);
-                }
+//                Si la date de cloture est arrivé etat = cloturee
+            if ($dateActuelleString > $dateCloture and $etatActuel == 2) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 3
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            } elseif ($dateActuelleString < $dateCloture and $nbrUsersInscrit < $nbrInscritMax) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 2
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
 
 //              Si la sortie est à l'etat publie(ouverte) ou publie(cloturee),  à commencé et n'est pas terminé etat = act en cours' - Fonctionne
-                if ($checkActEnCours == true && $checkEtatClotureEnCour == true) {
+            if ($checkActEnCours == true && $checkEtatClotureOuvert == true) {
 
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 4
-                    ]);
-                    $updateEvent->updateEtatFlush($etat, $sortie);
-                }
+                $etat = $etatRepository->findOneBy([
+                    "id" => 4
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
 
 //              Si la date de fin de sortie est inferieur à la date actuelle et que la sortie etait en cours alors etat = passe - Fonctionne
-                if ($dateActuelleString > $DateFin && $etatActuel == 4) {
+            if ($dateActuelleString > $DateFin && $etatActuel == 4) {
 
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 5
-                    ]);
-                    $updateEvent->updateEtatFlush($etat, $sortie);
-                }
+                $etat = $etatRepository->findOneBy([
+                    "id" => 5
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
 
 //              Si la date de fin de sortie est superieur à 1 mois et que l'etat actuel est passé alors etat = archive - Fonctionne
-                if ($calculTempsEcoule > 30 and $etatActuel == 5) {
-//                dd($jourTotalDepuisFin);
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 7
-                    ]);
-                    $updateEvent->updateEtatFlush($etat, $sortie);
-                }
+            if ($calculTempsEcoule > 30 and ($etatActuel == 5 || $etatActuel == 4 || $etatActuel == 3 || $etatActuel == 2)) {
+
+                $etat = $etatRepository->findOneBy([
+                    "id" => 7
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
             }
         }
         return 1;
