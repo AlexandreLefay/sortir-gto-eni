@@ -15,6 +15,7 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
+use Container8wOy52z\get_ServiceLocator_ZFcJjKUService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -93,6 +94,7 @@ class SortieController extends AbstractController
                 ]);
             }
         }
+//        dd($sortieRepository->findAll());
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sortieRepository->findAll(), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
         ]);
@@ -234,15 +236,17 @@ class SortieController extends AbstractController
         EventUpdate            $updateEvent
     ): Response
     {
-        $Users = $sortie->getUsers();
-        $nbrUsersInscrit = count($Users);
-        $nbrInscritMax = $sortie->getNbInscriptionsMax();
 
+//        dd('$nbrUsersInscrit '.$nbrUsersInscrit.'$nbrInscritMax '.$nbrInscritMax);
         $participant = $entityManager->getRepository(User::class)->findOneBy(["email" => $this->getUser()->getUserIdentifier()]);
         $sortie->addUsers($participant);
         $entityManager->persist($sortie);
         $entityManager->persist($participant);
         $entityManager->flush();
+
+        $Users = $sortie->getUsers();
+        $nbrUsersInscrit = count($Users);
+        $nbrInscritMax = $sortie->getNbInscriptionsMax();
 
         if ($nbrUsersInscrit == $nbrInscritMax) {
             $etat = $etatRepository->findOneBy([
@@ -261,7 +265,9 @@ class SortieController extends AbstractController
     public function unsubscribe(
         Sortie                 $sortie,
         EntityManagerInterface $entityManager,
-        UserRepository         $userRepository
+        UserRepository         $userRepository,
+        EventUpdate            $updateEvent,
+        EtatRepository         $etatRepository,
     ): Response
     {
         $participant = $userRepository->findOneBy(
@@ -271,6 +277,17 @@ class SortieController extends AbstractController
         $entityManager->persist($sortie);
         $entityManager->persist($participant);
         $entityManager->flush();
+
+        $Users = $sortie->getUsers();
+        $nbrUsersInscrit = count($Users);
+        $nbrInscritMax = $sortie->getNbInscriptionsMax();
+
+        if ($nbrUsersInscrit < $nbrInscritMax) {
+            $etat = $etatRepository->findOneBy([
+                "id" => 2
+            ]);
+            $updateEvent->updateEtatFlush($etat, $sortie);
+        }
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
         ]);

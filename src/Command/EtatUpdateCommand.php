@@ -51,7 +51,7 @@ class EtatUpdateCommand extends Command
         $etatRepository = $this->etatRepository;
         $updateEvent = $this->updateEvent;
 
-        //      Changement des états en fonction des dates etc (Je dois refactoriser un """peu""" le code parce que c'est pas très beau, MAIS ça marche)
+//      Changement des états en fonction des dates etc (Je dois refactoriser un """peu""" le code parce que c'est pas très beau, MAIS ça marche)
         $sorties = $sortieRepository->findAll();
         date_default_timezone_set('Europe/Paris');
         $dateActuelle = new \DateTime("now");
@@ -108,7 +108,7 @@ class EtatUpdateCommand extends Command
             }
 
 //              Si la date de fin de sortie est superieur à 1 mois et que l'etat actuel est passé alors etat = archive - Fonctionne
-            if ($calculTempsEcoule > 30 and ($etatActuel == 5 || $etatActuel == 4 || $etatActuel == 3 || $etatActuel == 2)) {
+            if ($calculTempsEcoule > 30 and $etatActuel != 1) {
 
                 $etat = $etatRepository->findOneBy([
                     "id" => 7
