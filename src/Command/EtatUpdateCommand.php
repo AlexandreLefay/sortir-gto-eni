@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\EtatUpdate;
-use App\EtatUpdate\EventUpdate;
+use App\EtatUpdate\EtatUpdateFunction;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManager;
@@ -33,7 +33,7 @@ class EtatUpdateCommand extends Command
             ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
     }
 
-    public function __construct(SortieRepository $sortieRepository, EtatRepository $etatRepository, EventUpdate $updateEvent)
+    public function __construct(SortieRepository $sortieRepository, EtatRepository $etatRepository, EtatUpdateFunction $updateEvent)
     {
         $this->sortieRepository = $sortieRepository;
         $this->etatRepository = $etatRepository;
@@ -51,7 +51,7 @@ class EtatUpdateCommand extends Command
         $etatRepository = $this->etatRepository;
         $updateEvent = $this->updateEvent;
 
-//      Changement des états en fonction des dates etc (Je dois refactoriser un """peu""" le code parce que c'est pas très beau, MAIS ça marche)
+//      Changement des états en fonction des dates
         $sorties = $sortieRepository->findAll();
         date_default_timezone_set('Europe/Paris');
         $dateActuelle = new \DateTime("now");
@@ -63,7 +63,7 @@ class EtatUpdateCommand extends Command
             $nbrUsersInscrit = count($Users);
             $nbrInscritMax = $sortie->getNbInscriptionsMax();
 
-//                Récupération des dates et états pour chaques sorties
+//                Récupération des dates et états pour les sorties
             $etatActuel = $sortie->getEtat()->getId();
             $dateDebut = $sortie->getDateDebut()->format('Y-m-d H:i:s');
             $dateCloture = $sortie->getDateCloture()->format('Y-m-d H:i:s');
@@ -89,7 +89,7 @@ class EtatUpdateCommand extends Command
                 $updateEvent->updateEtatFlush($etat, $sortie);
             }
 
-//              Si la sortie est à l'etat publie(ouverte) ou publie(cloturee),  à commencé et n'est pas terminé etat = act en cours' - Fonctionne
+//              Si la sortie est à l'etat publie(ouverte) ou publie(cloturee), commencé et n'est pas terminé etat = act en cours' - Fonctionne
             if ($checkActEnCours == true && $checkEtatClotureOuvert == true) {
 
                 $etat = $etatRepository->findOneBy([

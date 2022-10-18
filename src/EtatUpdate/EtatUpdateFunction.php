@@ -7,7 +7,7 @@ use App\Repository\SortieRepository;
 use App\Entity\Sortie;
 use Doctrine\Persistence\ManagerRegistry;
 
-class EventUpdate
+class EtatUpdateFunction
 {
 
     public function __construct(ManagerRegistry $doctrine)

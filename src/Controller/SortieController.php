@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Entity\Lieu;
 use App\Entity\SearchData;
 use App\Entity\Sortie;
-use App\EtatUpdate\EventUpdate;
+use App\EtatUpdate\EtatUpdateFunction;
 use App\Form\LieuType;
 use App\Form\SearchFormType;
 use App\Form\SortieType;
@@ -139,8 +139,8 @@ class SortieController extends AbstractController
         $formSortie->handleRequest($request);
 
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            //Il y a deux bouton différents, un pour enregistrer et l'autre pour publier
-            //en fonction du bouton l'état de la sortie ne sera pas le même
+            //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même.
             if ($formSortie->getClickedButton() === $formSortie->get('save')) {
                 $etat = $etatRepository->findOneBy([
                     "id" => 1
@@ -173,8 +173,8 @@ class SortieController extends AbstractController
 
 
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            //Il y a deux bouton différents, un pour enregistrer et l'autre pour publier
-            //en fonction du bouton l'état de la sortie ne sera pas le même
+            //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même.
             if ($formSortie->getClickedButton() === $formSortie->get('save')) {
                 $etat = $etatRepository->findOneBy([
                     "id" => 1
@@ -290,7 +290,7 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository         $userRepository,
         EtatRepository         $etatRepository,
-        EventUpdate            $updateEvent
+        EtatUpdateFunction $updateEvent
     ): Response
     {
 
@@ -323,7 +323,7 @@ class SortieController extends AbstractController
         Sortie                 $sortie,
         EntityManagerInterface $entityManager,
         UserRepository         $userRepository,
-        EventUpdate            $updateEvent,
+        EtatUpdateFunction     $updateEvent,
         EtatRepository         $etatRepository,
     ): Response
     {
