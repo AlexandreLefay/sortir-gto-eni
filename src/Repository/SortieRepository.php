@@ -94,5 +94,30 @@ class SortieRepository extends ServiceEntityRepository
         ->getResult()
         ;
     }
+    public function findEventByStartPeriod($dateSortieDebut) : array{
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.dateDebut >= :dateSortieDebut')
+            ->setParameter('dateSortieDebut',$dateSortieDebut)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findEventByStartEndPeriod($dateSortieFin) : array{
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.dateDebut <= :dateSortieFin')
+            ->setParameter('dateSortieFin',$dateSortieFin)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByEventName($searchbar) : array {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.nom LIKE :searchbar')
+            ->setParameter('searchbar',"%{$searchbar}%")
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
 

@@ -63,6 +63,10 @@ class SortieController extends AbstractController
             $mesSortiesCheckbox = $search->getInscrit();
             $nonInscritCheckbox = $search->getNonInscrit();
             $sortiesFiniesCheckbox = $search->getPassees();
+            $dateSortieDebut = $search->getDateSortieDebut();
+            $dateSortieFin = $search->getDateSortieFin();
+            $searchbar = $search->getSearchbar();
+            $site = $search->getSites();
             if($orgaCheckbox){
                 return $this->render('sortie/index.html.twig', [
                     'sorties' => $sortieRepository->findBy(
@@ -89,6 +93,28 @@ class SortieController extends AbstractController
             if($sortiesFiniesCheckbox){
                    return $this->render('sortie/index.html.twig', [
                     'sorties' => $sortieRepository->findFinishedEvent(),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+            if($dateSortieDebut){
+
+                return $this->render('sortie/index.html.twig', [
+                    'sorties' => $sortieRepository->findEventByStartPeriod($dateSortieDebut),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+            if($dateSortieFin){
+                return $this->render('sortie/index.html.twig', [
+                    'sorties' => $sortieRepository->findEventByStartEndPeriod($dateSortieFin),
+                    'formSearch' =>$formSearch->createView(),
+                    'dateNow' => $dateActuelleString
+                ]);
+            }
+            if($searchbar){
+                return $this->render('sortie/index.html.twig', [
+                    'sorties' => $sortieRepository->findByEventName($searchbar),
                     'formSearch' =>$formSearch->createView(),
                     'dateNow' => $dateActuelleString
                 ]);
