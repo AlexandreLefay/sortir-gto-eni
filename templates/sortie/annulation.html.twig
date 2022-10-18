@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annulation Sortie{% endblock %}
+
+{% block main %}
+    <div>Motif de l'annulation</div>
+
+    {{ form_start(formAnnulation) }}
+    {{ form_widget(formAnnulation) }}
+    {{ form_end(formAnnulation) }}
+
+    <div class="row sortie-detail">
+        <div class="col-md-6">
+            <div class="row">ID : {{ sortie.id }}</div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Nom de la sortie :</span></div>
+                <div class="col-md-6">{{ sortie.nom }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Date et heure de la sortie : </span></div>
+                <div class="col-md-6">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Lieu :</span></div>
+                <div class="col-md-6">{{ sortie.lieu.nom }} {{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><span class="sortie-detail-label">Site organisateur :</span></div>
+                <div class="col-md-6">{{ sortie.site.nom }}</div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
