@@ -10,9 +10,8 @@ class SearchData
     public $inscrit ;
     public $nonInscrit;
     public $passees;
-    public ?\DateTimeInterface $dateSortie = null;
-    public ?\DateTimeInterface $dateCloture = null;
-
+    public ?\DateTimeInterface $dateSortieDebut;
+    public ?\DateTimeInterface $dateSortieFin;
     /**
      * @return mixed
      */
@@ -113,33 +112,35 @@ class SearchData
     /**
      * @return \DateTimeInterface|null
      */
-    public function getDateSortie(): ?\DateTimeInterface
+    public function getDateSortieDebut(): ?\DateTimeInterface
     {
-        return $this->dateSortie;
+        return $this->dateSortieDebut;
     }
 
     /**
-     * @param \DateTimeInterface|null $dateSortie
+     * @param \DateTimeInterface|null $dateSortieDebut
      */
-    public function setDateSortie(?\DateTimeInterface $dateSortie): void
+    public function setDateSortieDebut(?\DateTimeInterface $dateSortieDebut): void
     {
-        $this->dateSortie = $dateSortie;
+        $this->dateSortieDebut = $dateSortieDebut;
     }
 
     /**
      * @return \DateTimeInterface|null
      */
-    public function getDateCloture(): ?\DateTimeInterface
+    public function getDateSortieFin(): ?\DateTimeInterface
     {
-        return $this->dateCloture;
+        return $this->dateSortieFin;
     }
 
     /**
-     * @param \DateTimeInterface|null $dateCloture
+     * @param \DateTimeInterface|null $dateSortieFin
      */
-    public function setDateCloture(?\DateTimeInterface $dateCloture): void
+    public function setDateSortieFin(?\DateTimeInterface $dateSortieFin): void
     {
-        $this->dateCloture = $dateCloture;
+        $this->dateSortieFin = $dateSortieFin;
     }
+
+
 
 }
