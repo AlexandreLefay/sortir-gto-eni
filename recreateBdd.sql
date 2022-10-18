@@ -14,39 +14,53 @@ drop table ville;
 
 
 -- CREATION DE TABLE
-
-
 create table etat
 (
-    id INTEGER not null
+    id      INTEGER     not null
         primary key autoincrement,
     libelle VARCHAR(30) not null
 );
 
 create table site
 (
-    id INTEGER not null
+    id  INTEGER     not null
         primary key autoincrement,
     nom VARCHAR(50) not null
 );
 
 create table user
 (
-    id INTEGER not null
+    id        INTEGER      not null
         primary key autoincrement,
-    site_id INTEGER default NULL
+    site_id   INTEGER      default NULL
         constraint FK_8D93D649F6BD1646
             references site,
-    email VARCHAR(100) not null,
-    pseudo VARCHAR(30) not null,
-    nom VARCHAR(40) not null,
-    prenom VARCHAR(30) not null,
-    telephone VARCHAR(10) not null,
-    actif BOOLEAN not null,
-    roles CLOB not null,
-    password VARCHAR(255) not null,
-    photo VARCHAR(255) default NULL
+    email     VARCHAR(100) not null,
+    pseudo    VARCHAR(30)  not null,
+    nom       VARCHAR(40)  not null,
+    prenom    VARCHAR(30)  not null,
+    telephone VARCHAR(10)  not null,
+    actif     BOOLEAN      not null,
+    roles     CLOB         not null,
+    password  VARCHAR(255) not null,
+    photo     VARCHAR(255) default NULL
 );
+
+create table reset_password_request
+(
+    id           INTEGER      not null
+        primary key autoincrement,
+    user_id      INTEGER      not null
+        constraint FK_7CE748AA76ED395
+            references user,
+    selector     VARCHAR(20)  not null,
+    hashed_token VARCHAR(100) not null,
+    requested_at DATETIME     not null,
+    expires_at   DATETIME     not null
+);
+
+create index IDX_7CE748AA76ED395
+    on reset_password_request (user_id);
 
 create index IDX_8D93D649F6BD1646
     on user (site_id);
@@ -59,22 +73,22 @@ create unique index UNIQ_8D93D649E7927C74
 
 create table ville
 (
-    id INTEGER not null
+    id          INTEGER      not null
         primary key autoincrement,
-    nom VARCHAR(100) not null,
-    code_postal VARCHAR(5) not null
+    nom         VARCHAR(100) not null,
+    code_postal VARCHAR(5)   not null
 );
 
 create table lieu
 (
-    id INTEGER not null
+    id        INTEGER     not null
         primary key autoincrement,
-    ville_id INTEGER not null
+    ville_id  INTEGER     not null
         constraint FK_2F577D59A73F0036
             references ville,
-    nom VARCHAR(50) not null,
-    rue VARCHAR(30) default NULL,
-    latitude DOUBLE PRECISION default NULL,
+    nom       VARCHAR(50) not null,
+    rue       VARCHAR(50)      default NULL,
+    latitude  DOUBLE PRECISION default NULL,
     longitude DOUBLE PRECISION default NULL
 );
 
@@ -83,27 +97,27 @@ create index IDX_2F577D59A73F0036
 
 create table sortie
 (
-    id INTEGER not null
+    id                  INTEGER     not null
         primary key autoincrement,
-    user_id INTEGER default NULL
+    user_id             INTEGER      default NULL
         constraint FK_3C3FD3F2A76ED395
             references user,
-    site_id INTEGER default NULL
+    site_id             INTEGER      default NULL
         constraint FK_3C3FD3F2F6BD1646
             references site,
-    etat_id INTEGER default NULL
+    etat_id             INTEGER      default NULL
         constraint FK_3C3FD3F2D5E86FF
             references etat,
-    lieu_id INTEGER not null
+    lieu_id             INTEGER     not null
         constraint FK_3C3FD3F26AB213CC
             references lieu,
-    nom VARCHAR(30) not null,
-    date_debut DATETIME not null,
-    duree INTEGER default NULL,
-    date_cloture DATETIME not null,
-    nb_inscriptions_max INTEGER not null,
-    descriptions_infos CLOB default NULL,
-    url_photo VARCHAR(255) default NULL
+    nom                 VARCHAR(30) not null,
+    date_debut          DATETIME    not null,
+    duree               INTEGER      default NULL,
+    date_cloture        DATETIME    not null,
+    nb_inscriptions_max INTEGER     not null,
+    descriptions_infos  CLOB         default NULL,
+    url_photo           VARCHAR(255) default NULL
 );
 
 create index IDX_3C3FD3F26AB213CC
@@ -120,7 +134,7 @@ create index IDX_3C3FD3F2F6BD1646
 
 create table user_sortie
 (
-    user_id INTEGER not null
+    user_id   INTEGER not null
         constraint FK_596DC8CFA76ED395
             references user
             on delete cascade,
@@ -152,6 +166,7 @@ VALUES
     (1,'uploads/pikachu.jpg','lila@flower.fr','lila','lila','lililala','0240987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'uploads/pikachu.jpg','lys@flower.fr','lys','lys','hue','0240987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'uploads/pikachu.jpg','pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','refectory@yopmail.com','refectory','Chang','mulan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'uploads/loup-634826e5c0fe4.jpg','tbs@gmail.com', 'tbs', 'Wick', 'John', '0123456987',true,'["ROLE_ADMIN"]','$2y$13$mH1cu9cw6wTh7sbIrqm4XOEDFFIDiN5hBB1yFkhCbgb9Wfg.CjMBa')
 ;
 
