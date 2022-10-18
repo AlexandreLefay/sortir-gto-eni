@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Symfony\Component\Validator\Constraints\Date;
 
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
@@ -24,20 +24,23 @@ class Sortie
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan('today UTC')]
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThan(0)]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan('today + 5 hours')]
     private ?\DateTimeInterface $dateCloture = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(1)]
     private ?int $nbInscriptionsMax = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $descriptionsInfos = null;
-
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $urlPhoto = null;
