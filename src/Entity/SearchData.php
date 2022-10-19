@@ -4,7 +4,7 @@ namespace App\Entity;
 
 class SearchData
 {
-    public $sites;
+    public $site;
     public $searchbar = '';
     public $organisateur;
     public $inscrit ;
@@ -15,17 +15,17 @@ class SearchData
     /**
      * @return mixed
      */
-    public function getSites()
+    public function getSite()
     {
-        return $this->sites;
+        return $this->site;
     }
 
     /**
-     * @param mixed $sites
+     * @param mixed $site
      */
-    public function setSites($sites): void
+    public function setSites($site): void
     {
-        $this->sites = $sites;
+        $this->site = $site;
     }
 
 

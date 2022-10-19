@@ -70,9 +70,15 @@ class SortieController extends AbstractController
             $dateSortieDebut = $search->getDateSortieDebut();
             $dateSortieFin = $search->getDateSortieFin();
             $searchbar = $search->getSearchbar();
-            $siteId = $search->getSites()->getId();
+            $siteId = $search->getSite()->getId();
+            if($mesSortiesCheckbox){
+                dd($sortieRepository->findSubscribeEvent($userConnected));
+            }
+            if($nonInscritCheckbox){
+                dd($sortieRepository->findNotSubscribeEvent($userConnected));
+            }
             return $this->render('sortie/index.html.twig', [
-                'sorties' => $sortieRepository->findSiteId($siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
+                'sorties' => $sortieRepository->queryfilter($userConnected,$orgaCheckbox,$nonInscritCheckbox,$searchbar,$sortiesFiniesCheckbox,$dateSortieDebut,$dateSortieFin,$siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
             ]);
         }
         return $this->render('sortie/index.html.twig', [

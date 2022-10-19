@@ -184,8 +184,43 @@ class SortieRepository extends ServiceEntityRepository
             ;
     }
 
-    public function queryfilter(){
-
+    public function queryfilter($userConnected,$orgaCheckbox,$nonInscritCheckbox,$searchbar,$sortiesFiniesCheckbox,$dateSortieDebut,$dateSortieFin,$siteId) : array {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder
+            ->join('s.user','u')
+            ->setParameter('userConnected', $userConnected);
+            if($orgaCheckbox){
+                $queryBuilder
+                    ->andWhere('u.id = :userConnected');            }
+            if($nonInscritCheckbox){
+                $queryBuilder
+                    ->andWhere('u.id != :userConnected');
+            }
+            if($searchbar){
+                $queryBuilder
+                    ->andWhere('s.nom LIKE :searchbar')
+                    ->setParameter('searchbar',"%{$searchbar}%");
+            }
+            if($sortiesFiniesCheckbox){
+                $queryBuilder->andWhere('s.etat =5');
+            }
+            if($dateSortieDebut){
+                $queryBuilder
+                    ->andWhere('s.dateDebut >= :dateSortieDebut')
+                    ->setParameter('dateSortieDebut',$dateSortieDebut);
+            }
+            if($dateSortieFin){
+                $queryBuilder
+                    ->andWhere('s.dateDebut <= :dateSortieFin')
+                    ->setParameter('dateSortieFin',$dateSortieFin);
+            }
+            if($siteId){
+                $queryBuilder
+                    ->andWhere('s.site = :siteId')
+                    ->setParameter('siteId',$siteId);
+            }
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
     }
 }
 
