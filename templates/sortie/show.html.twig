@@ -16,50 +16,63 @@
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Date limite d'inscription : </span></div>
-                    <div class="col-md-6">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</div>
+                <div class="col-md-6">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Duree: </span></div>
                 <div class="col-md-6">{{ sortie.duree }}</div>
             </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Description et infos :</span></div>
-                <div class="col-md-6">{{ sortie.descriptionsInfos }}</div>
-            </div>
+            {% if sortie.etat.libelle == 'Annulée' %}
+                <div class="row">
+                    <div class="col-md-6"><span class="sortie-detail-label" style="color: #B0413E">Raison de l'annulation :</span>
+                    </div>
+                    <div class="col-md-6">{{ sortie.descriptionsInfos }}</div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-md-6"><span class="sortie-detail-label">Description et infos :</span></div>
+                    <div class="col-md-6">{{ sortie.descriptionsInfos }}</div>
+                </div>
+            {% endif %}
         </div>
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Lieu :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.nom}}</div></div>
+                <div class="col-md-6">{{ sortie.lieu.nom }}</div>
+            </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Rue :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.rue}}</div>
+                <div class="col-md-6">{{ sortie.lieu.rue }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Ville :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.ville.nom}}</div>
+                <div class="col-md-6">{{ sortie.lieu.ville.nom }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Code postal :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.ville.codePostal}}</div>
+                <div class="col-md-6">{{ sortie.lieu.ville.codePostal }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Latitude :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.latitude}}</div>
+                <div class="col-md-6">{{ sortie.lieu.latitude }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Longitude :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.longitude}}</div></div>
+                <div class="col-md-6">{{ sortie.lieu.longitude }}</div>
+            </div>
         </div>
     </div>
 
-{#    <div class="row"> <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">back to list</a></button> </div>
+    {#    <div class="row"> <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">back to list</a></button> </div>
     <div class="row">
         <div class="col-md-6"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a></button></div>
         <div class="col-md-6">{{ include('sortie/_delete_form.html.twig') }}</div>
-    </div>#}
+    </div> #}
     <div class="scroll">
         <div class="row sortie-participants">
+            {% if sortie.etat.libelle == 'Annulée' %}
+                <h2 style="color: #B0413E">SORTIE ANNULEE </h2>
+            {% endif %}
             <h2>Liste des participants inscrits :</h2>
             {# for item in Entity.attribut #}
             <table class="table">
@@ -70,25 +83,36 @@
                 </tr>
                 {% for participant in sortie.users %}
                     <tr>
-                        <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ participant.pseudo }}</a> </td>
-                        <td>{{ participant.nom}}</td>
+                        <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ participant.pseudo }}</a>
+                        </td>
+                        <td>{{ participant.nom }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    <div id="map"></div>
-<div id="coords"></div>
+
+
+        {% if sortie.lieu.longitude == null or sortie.lieu.latitude == null %}
+            <div style="color:red">Impossible d'afficher la carte car les coordonnées ne sont pas renseignées</div>
+        {% else %}
+            <div id="map"></div>
+            <div id="coords"></div>
+        {% endif %}
+
     <style>
-        #map { height: 300px; width: 600px; }
+        #map {
+            height: 300px;
+            width: 600px;
+        }
     </style>
     <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
             integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
             crossorigin=""></script>
 
     <script>
-        let map = L.map('map').setView([{{ sortie.lieu.latitude}}, {{ sortie.lieu.longitude}}], 13);
+        let map = L.map('map').setView([{{ sortie.lieu.latitude }}, {{ sortie.lieu.longitude }}], 13);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -99,16 +123,17 @@
             iconUrl: '{{ asset('img/leaf-green.png') }}',
             shadowUrl: '{{ asset('img/leaf-shadow.png') }}',
 
-            iconSize:     [38, 95], // size of the icon
-            shadowSize:   [50, 64], // size of the shadow
-            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            iconSize: [38, 95], // size of the icon
+            shadowSize: [50, 64], // size of the shadow
+            iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
             shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
         });
-        L.marker([{{ sortie.lieu.latitude}}, {{ sortie.lieu.longitude}}], {icon: greenIcon}).addTo(map);
+        L.marker([{{ sortie.lieu.latitude }}, {{ sortie.lieu.longitude }}], {icon: greenIcon}).addTo(map);
 
         let popup = L.popup();
         let coords;
+
         function onMapClick(e) {
             popup
                 .setLatLng(e.latlng)
