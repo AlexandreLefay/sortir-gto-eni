@@ -16,7 +16,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Date limite d'inscription : </span></div>
-                <div class="col-md-6">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</div>
+                    <div class="col-md-6">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Duree: </span></div>
@@ -88,14 +88,14 @@
             crossorigin=""></script>
 
     <script>
-        var map = L.map('map').setView([{{ sortie.lieu.latitude}}, {{ sortie.lieu.longitude}}], 13);
+        let map = L.map('map').setView([{{ sortie.lieu.latitude}}, {{ sortie.lieu.longitude}}], 13);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var greenIcon = L.icon({
+        let greenIcon = L.icon({
             iconUrl: '{{ asset('img/leaf-green.png') }}',
             shadowUrl: '{{ asset('img/leaf-shadow.png') }}',
 
@@ -107,12 +107,12 @@
         });
         L.marker([{{ sortie.lieu.latitude}}, {{ sortie.lieu.longitude}}], {icon: greenIcon}).addTo(map);
 
-        var popup = L.popup();
+        let popup = L.popup();
         let coords;
         function onMapClick(e) {
             popup
                 .setLatLng(e.latlng)
-                .setContent("Coords GPS " + e.latlng.toString())
+                .setContent("La sortie se trouve ici ! :) " + e.latlng.toString())
                 .openOn(map);
             document.getElementById("coords").innerHTML = e.latlng;
         }

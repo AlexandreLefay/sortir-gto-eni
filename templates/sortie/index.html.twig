@@ -81,7 +81,7 @@
                     <td class="tab-sortie-nom">{{ sortie.nom }}</td>
                     <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                     {# <td>{{ sortie.duree }}</td> #}
-                    <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
+                    <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p id="demo"></p></td>
                     <td> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
                     {# <td>{{ sortie.descriptionsInfos }}</td> #}
                     {# <td>{{ sortie.urlPhoto }}</td> #}
@@ -116,6 +116,37 @@
                         {% endif %}
                     </td>
                 </tr>
+
+                <script>
+                    // Set the date we're counting down to
+                    let countDownDate = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('F j, Y, g:i a') : '' }}").getTime();
+
+                    // Update the count down every 1 second
+                    let x = setInterval(function() {
+
+                        // Get today's date and time
+                        let now = new Date().getTime();
+
+                        // Find the distance between now and the count down date
+                        let distance = countDownDate - now;
+
+                        // Time calculations for days, hours, minutes and seconds
+                        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                        // Output the result in an element with id="demo"
+                        document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+                            + minutes + "m " + seconds + "s "+" countDownDate "+countDownDate+" now "+now+" distance "+distance;
+
+                        // If the count down is over, write some text
+                        if (distance < 0) {
+                            clearInterval(x);
+                            document.getElementById("demo").innerHTML = "EXPIRED";
+                        }
+                    }, 1000);
+                </script>
             {% else %}
                 <tr>
                     <td colspan="9">no records found</td>
@@ -125,5 +156,7 @@
         </table>
     </div>
     <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
+
+
 
 {% endblock %}
