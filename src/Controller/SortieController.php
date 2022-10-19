@@ -19,7 +19,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 //use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+//use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -34,7 +34,8 @@ class SortieController extends AbstractController
     #[Route('/', name: 'app_sortie_index', methods: ['GET', 'POST'])]
     public function index(
         SortieRepository $sortieRepository,
-        Request          $request
+        Request          $request,
+        UserRepository   $userRepository
     ): Response
 
     {
@@ -50,6 +51,12 @@ class SortieController extends AbstractController
             $res->send();
         }
 
+        $user = $userRepository->findOneBy(
+            ['email'=>$this->getUser()->getUserIdentifier()]
+        );
+        if($user->getNom()==null ||$user->getPrenom()==null ||$user->getTelephone()==null){
+            return $this->redirectToRoute('app_profil_update');
+        }
 
 //        Pour les filtres c'est un peu compliqué
         $search = new SearchData();

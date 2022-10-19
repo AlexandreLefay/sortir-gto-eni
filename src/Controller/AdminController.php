@@ -4,18 +4,21 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\NewUserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/admin')]
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin',methods: ['GET', 'POST'])]
+    #[Route('/', name: 'app_admin',methods: ['GET', 'POST'])]
     public function index(
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManagerInterface,
+        UserRepository $userRepository
     ): Response
     {
         $user = new User();
@@ -31,12 +34,33 @@ class AdminController extends AbstractController
             $user->setPseudo(uniqid());
             $user->setActif(true);
             $user->setPassword(uniqid($prefix = "",$more_entropy=true));
-
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $entityManagerInterface->persist($user);
+            $entityManagerInterface->flush();
         }
-        return $this->render('admin/index.html.twig',[
-            "formUser" => $formUser->createView()
-        ]);
+        $users = $userRepository->findAll();
+        return $this->renderForm('admin/index.html.twig',compact('formUser','users'));
+    }
+
+    #[Route('/desactiveUser/{id}', name: 'app_admin_desactiveUser',methods: ['GET', 'POST'])]
+    public function desactiveUser(
+        User $user,
+        EntityManagerInterface $entityManagerInterface
+    ): Response
+    {
+        $user->setActif(!$user->getActif());
+        $entityManagerInterface->persist($user);
+        $entityManagerInterface->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+
+    #[Route('/deleteUser/{id}', name: 'app_admin_deleteUser',methods: ['GET', 'POST'])]
+    public function deleteUser(
+        User $user,
+        EntityManagerInterface $entityManagerInterface
+    ): Response
+    {
+        $entityManagerInterface->remove($user);
+        $entityManagerInterface->flush();
+        return $this->redirectToRoute('app_admin');
     }
 }

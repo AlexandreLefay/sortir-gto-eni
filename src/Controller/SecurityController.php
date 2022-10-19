@@ -12,8 +12,7 @@ class SecurityController extends AbstractController
 {
     #[Route(path: '/', name: 'app_login')]
     public function login(
-        AuthenticationUtils $authenticationUtils,
-        Request $request
+        AuthenticationUtils $authenticationUtils
     ): Response
     {
 

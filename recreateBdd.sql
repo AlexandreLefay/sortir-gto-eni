@@ -1,6 +1,7 @@
 drop table user_sortie;
 
 drop table sortie;
+drop table reset_password_request;
 
 drop table etat;
 
