@@ -160,15 +160,15 @@ INSERT INTO user (site_id,photo,email, pseudo, nom, prenom, telephone, actif, ro
 VALUES
 
 
-    (1,'uploads/pikachu.jpg','rose@flower.fr','rose','rosa','hong','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (2,'uploads/pikachu.jpg','rose@flower.fr','rose','rosa','hong','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
 
-    (1,'uploads/pikachu.jpg','pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'uploads/pikachu.jpg','passiflore@flower.fr','passiflore','passiflora','Passiflorette','0941987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (1,'uploads/pikachu.jpg','petunia@flower.fr','petunia','petuniana','petuniala','0741997782',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (2,'uploads/pikachu.jpg','lila@flower.fr','lila','lila','lililala','0240987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (2,'uploads/pikachu.jpg','lys@flower.fr','lys','lys','hue','0240987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (2,'uploads/pikachu.jpg','lavande@flower.fr','lavande','lavander','lavandala','0950987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
-    (2,'uploads/pikachu.jpg','lotus@flower.fr','lotus','lotusa','lotusala','0658987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (2,'uploads/pikachu.jpg','pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (2,'uploads/pikachu.jpg','passiflore@flower.fr','passiflore','passiflora','Passiflorette','0941987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (2,'uploads/pikachu.jpg','petunia@flower.fr','petunia','petuniana','petuniala','0741997782',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','lila@flower.fr','lila','lila','lililala','0240987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','lys@flower.fr','lys','lys','hue','0240987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','lavande@flower.fr','lavande','lavander','lavandala','0950987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','lotus@flower.fr','lotus','lotusa','lotusala','0658987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (3,'uploads/pikachu.jpg','marguerite@flower.fr','marguerite','margo','marguerita','0928987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (3,'uploads/pikachu.jpg','myrthe@flower.fr','myrthe','myrthe','myrtha','0928987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (3,'uploads/pikachu.jpg','muguet@flower.fr','muguet','mugueti','mugueta','0928965582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
@@ -187,27 +187,27 @@ VALUES
 
 INSERT INTO sortie (user_id, site_id, etat_id, lieu_id, nom, date_debut, duree, date_cloture, nb_inscriptions_max, descriptions_infos)
 VALUES
-    (1,1,2,1,'Soirée Jacky & Michelle','2022-10-18 17:13:00',10,'2021-10-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (1,1,5,1,'Attrapper les Pokemons','2021-10-03 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
-    (2,1,2,2,'Butter le crud','2022-11-27 18:13:00',1,'2022-11-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (2,1,5,2,'Admirer les lapins','2021-10-30 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (2,1,5,1,'Chasser les pythons','2021-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (2,1,1,1,'Contempler les papillons','2022-11-02 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (3,2,2,3,'Caresser les loutres','2022-11-28 17:13:00',1,'2022-10-10 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (3,2,1,4,'AMUSEMENT','2022-10-27 10:13:00',4,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
-    (1,1,5,2,'SORTIE PASSEE','2022-10-14 10:13:00',2,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
-    (1,1,2,2,'Voyager chez les liliputes','2022-10-14 10:13:00',2,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
+    (1,1,2,3,'Soirée Jacky & Michelle','2022-10-18 17:13:00',10,'2021-10-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (1,1,5,3,'Attrapper les Pokemons','2021-10-03 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
+    (2,1,2,3,'Butter le crud','2022-11-27 18:13:00',1,'2022-11-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,5,4,'Admirer les lapins','2021-10-30 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,5,4,'Chasser les pythons','2021-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,1,4,'Contempler les papillons','2022-11-02 17:13:00',1,'2022-10-28 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (3,2,2,1,'Caresser les loutres','2022-11-28 17:13:00',1,'2022-10-10 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (3,2,1,2,'AMUSEMENT','2022-10-27 10:13:00',4,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
+    (1,1,5,4,'SORTIE PASSEE','2022-10-14 10:13:00',2,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
+    (1,1,2,4,'Voyager chez les liliputes','2022-10-14 10:13:00',2,'2022-10-07 17:13:00',5,'ceci est la description de la sortie'),
     (2,2,5,2,'SOIREE DANSANTE','2021-9-27 20:13:00',4,'2022-10-27 17:13:00',5,'ceci est la description de la sortie'),
-    (5,2,2,1,'Dormir avec Ronflex','2021-10-27 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
-    (6,2,2,2,'Speed dating avec Lipoutou','2021-10-27 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
-    (6,2,2,2,'Retro gamming avec Evoli','2021-10-28 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
+    (5,2,2,2,'Dormir avec Ronflex','2021-10-27 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
+    (6,2,2,1,'Speed dating avec Lipoutou','2021-10-27 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
+    (6,2,2,1,'Retro gamming avec Evoli','2021-10-28 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
     (5,2,2,1,'Dîner avec Caninos','2021-10-25 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
     (12,3,2,5,'Soirée bisous avec Excellangue','2021-10-25 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
     (12,3,2,5,'Halloween avec Mimigui','2021-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (9,3,2,6,'Déjeuner avec Canarticho','2021-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (9,3,2,6,'Bal des pompiers avec salamèche','2021-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
-    (1,1,2,1,'Soirée retour dans le passé','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (2,1,2,2,'Soirée Past pasta','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+    (1,1,2,4,'Soirée retour dans le passé','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (2,1,2,3,'Soirée Past pasta','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
 
 ;
 
