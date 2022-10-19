@@ -89,36 +89,43 @@ class SortieRepository extends ServiceEntityRepository
                 ;
         }*/
 
-    public function findAllUsersEvent(): array    {
-        return $this->createQueryBuilder('s')
-            ->join('s.user','u')
-            ->innerjoin('s.users','inscrit')
-            ->getQuery()
-            ->getResult()
-            ;
+    public function findAllUsersEvent($userConnected): array
+    {
+        $query = $this->createQueryBuilder('s');
+        $query
+            ->innerjoin('s.users', 'u')
+
+            ->andWhere(':participant IN (u)')
+            ->setParameter('participant', $userConnected);
+//            ->setParameter('participants', 'u');
+        $result = $query->getQuery();
+//        dd($query);
+        return $result->getResult();
     }
 
     /* Filtres */
     /*organisateur OK */
-    public function findOrganizer($userConnected): array    {
-        return $this->createQueryBuilder('s')
-            ->join('s.user','u')
-            ->andWhere('u.id = :userConnected')
-            ->setParameter('userConnected', $userConnected)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    public function findSubscribeEvent($userConnected): array
+    public function findOrganizer($userConnected): array
     {
         return $this->createQueryBuilder('s')
             ->join('s.user', 'u')
             ->andWhere('u.id = :userConnected')
             ->setParameter('userConnected', $userConnected)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
+
+    public function findSubscribeEvent($userConnected): array
+    {
+        $query = $this->createQueryBuilder('s');
+        $query
+            ->innerjoin('s.users', 'u')
+            ->andWhere(':participant IN (u)')
+            ->setParameter('participant', $userConnected);
+        $result = $query->getQuery();
+        return $result->getResult();
+    }
+
     /*Non inscrit OK */
     public function findNotSubscribeEvent($userConnected): array
     {
@@ -127,98 +134,116 @@ class SortieRepository extends ServiceEntityRepository
             ->andWhere('u.id != :userConnected')
             ->setParameter('userConnected', $userConnected)
             ->getQuery()
-            ->getResult()
-            ;
-    }
-    /*Sortie passées OK */
-    public function findFinishedEvent(): array
-    {   return $this->createQueryBuilder('s')
-        ->andWhere('s.etat =5')
-        ->getQuery()
-        ->getResult()
-        ;
-    }
-    /*Date debut OK */
-    public function findEventByStartPeriod($dateSortieDebut) : array{
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.dateDebut >= :dateSortieDebut')
-            ->setParameter('dateSortieDebut',$dateSortieDebut)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    /*Date Fin OK */
-    public function findEventByStartEndPeriod($dateSortieFin) : array{
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.dateDebut <= :dateSortieFin')
-            ->setParameter('dateSortieFin',$dateSortieFin)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-    /*Searchbar OK */
-    public function findByEventName($searchbar) : array {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.nom LIKE :searchbar')
-            ->setParameter('searchbar',"%{$searchbar}%")
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-/*    public function findSite($site) : array{
-        return $this->createQueryBuilder('s')
-            ->join('s.site','si')
-            ->andWhere('si.nom = :site')
-            ->setParameter('site',$site)
-            ->getQuery()
-            ->getResult()
-            ;
-    }*/
-    /*Site ID OK */
-    public function findSiteId($siteId) : array{
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.site = :siteId')
-            ->setParameter('siteId',$siteId)
-            ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
-    public function queryfilter($userConnected,$orgaCheckbox,$nonInscritCheckbox,$searchbar,$sortiesFiniesCheckbox,$dateSortieDebut,$dateSortieFin,$siteId) : array {
+    /*Sortie passées OK */
+    public function findFinishedEvent(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.etat =5')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /*Date debut OK */
+    public function findEventByStartPeriod($dateSortieDebut): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.dateDebut >= :dateSortieDebut')
+            ->setParameter('dateSortieDebut', $dateSortieDebut)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /*Date Fin OK */
+    public function findEventByStartEndPeriod($dateSortieFin): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.dateDebut <= :dateSortieFin')
+            ->setParameter('dateSortieFin', $dateSortieFin)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /*Searchbar OK */
+    public function findByEventName($searchbar): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.nom LIKE :searchbar')
+            ->setParameter('searchbar', "%{$searchbar}%")
+            ->getQuery()
+            ->getResult();
+    }
+    /*    public function findSite($site) : array{
+            return $this->createQueryBuilder('s')
+                ->join('s.site','si')
+                ->andWhere('si.nom = :site')
+                ->setParameter('site',$site)
+                ->getQuery()
+                ->getResult()
+                ;
+        }*/
+    /*Site ID OK */
+    public function findSiteId($siteId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.site = :siteId')
+            ->setParameter('siteId', $siteId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function queryfilter($userConnected, $orgaCheckbox, $nonInscritCheckbox,$mesSortiesCheckbox, $searchbar, $sortiesFiniesCheckbox, $dateSortieDebut, $dateSortieFin, $siteId): array
+    {
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder
-            ->join('s.user','u')
-            ->setParameter('userConnected', $userConnected);
-            if($orgaCheckbox){
-                $queryBuilder
-                    ->andWhere('u.id = :userConnected');            }
-            if($nonInscritCheckbox){
-                $queryBuilder
-                    ->andWhere('u.id != :userConnected');
-            }
-            if($searchbar){
-                $queryBuilder
-                    ->andWhere('s.nom LIKE :searchbar')
-                    ->setParameter('searchbar',"%{$searchbar}%");
-            }
-            if($sortiesFiniesCheckbox){
-                $queryBuilder->andWhere('s.etat =5');
-            }
-            if($dateSortieDebut){
-                $queryBuilder
-                    ->andWhere('s.dateDebut >= :dateSortieDebut')
-                    ->setParameter('dateSortieDebut',$dateSortieDebut);
-            }
-            if($dateSortieFin){
-                $queryBuilder
-                    ->andWhere('s.dateDebut <= :dateSortieFin')
-                    ->setParameter('dateSortieFin',$dateSortieFin);
-            }
-            if($siteId){
-                $queryBuilder
-                    ->andWhere('s.site = :siteId')
-                    ->setParameter('siteId',$siteId);
-            }
+            ->join('s.user', 'user');
+
+        if ($orgaCheckbox) {
+            $queryBuilder
+                ->andWhere('user.id = :userConnected')
+                ->setParameter('userConnected', $userConnected);
+        }
+        if($mesSortiesCheckbox){
+            $queryBuilder
+                ->innerjoin('s.users', 'u')
+                ->andWhere(':participant IN (u)')
+                ->setParameter('participant', $userConnected);
+//           dd($queryBuilder);
+        }
+        if ($nonInscritCheckbox) {
+            $queryBuilder
+                ->andWhere('user.id != :userConnected')
+                ->setParameter('userConnected', $userConnected);
+        }
+        if ($searchbar!='') {
+            $queryBuilder
+                ->andWhere('s.nom LIKE :searchbar')
+                ->setParameter('searchbar', "%{$searchbar}%");
+        }
+        if ($sortiesFiniesCheckbox) {
+            dd("hey");
+            $queryBuilder->andWhere('s.etat =5');
+        }
+        if ($dateSortieDebut) {
+            dd("date");
+            $queryBuilder
+                ->andWhere('s.dateDebut >= :dateSortieDebut')
+                ->setParameter('dateSortieDebut', $dateSortieDebut);
+        }
+        if ($dateSortieFin) {
+            dd("date f");
+            $queryBuilder
+                ->andWhere('s.dateDebut <= :dateSortieFin')
+                ->setParameter('dateSortieFin', $dateSortieFin);
+        }
+        if ($siteId) {
+//            dd("site");
+            $queryBuilder
+                ->andWhere('s.site = :siteId')
+                ->setParameter('siteId', $siteId);
+        }
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }

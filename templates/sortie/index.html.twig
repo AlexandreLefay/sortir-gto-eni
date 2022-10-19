@@ -15,11 +15,46 @@
             </div>
         {% endif %}
     </div>
-    <h2>Form avec objet php et SearchFormType</h2>
-    <h2>Filtrer les sorties</h2>
-    {{ form_start(formSearch) }}
-    <input type="submit" value="Rechercher">
-    {{ form_end(formSearch) }}
+    <div class="row">
+        {{ form_start(formSearch) }}
+        <div class="row">
+            <div class="col-6">
+                <div class="row form-group">
+                    {{ form_row(formSearch.site) }}
+                </div>
+                <div class="row form-group">
+                    {{ form_row(formSearch.searchbar) }}
+                </div>
+                <div class="row form-group">
+                    <div class="col-6">Entre
+                        {{ form_row(formSearch.dateSortieDebut) }}</div>
+                    <div class="col-6">et
+                        {{ form_row(formSearch.dateSortieFin) }}</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+                    {{ form_row(formSearch.organisateur) }}
+
+                </div>
+                <div>
+                    {{ form_row(formSearch.inscrit) }}
+
+                </div>
+                <div>
+                    {{ form_row(formSearch.nonInscrit) }}
+
+                </div>
+                <div>
+                    {{ form_row(formSearch.passees) }}
+                </div>
+            </div>
+            <div class="col-2">
+                <input type="submit" value="Rechercher">
+            </div>
+        </div>
+        {{ form_end(formSearch) }}
+    </div>
 
     <div class="scroll">
         <table class="table">
