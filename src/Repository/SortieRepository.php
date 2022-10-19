@@ -210,36 +210,39 @@ class SortieRepository extends ServiceEntityRepository
                 ->innerjoin('s.users', 'u')
                 ->andWhere(':participant IN (u)')
                 ->setParameter('participant', $userConnected);
-//           dd($queryBuilder);
         }
-        if ($nonInscritCheckbox) {
+        if($nonInscritCheckbox){
             $queryBuilder
+                ->innerjoin('s.users', 'us')
+                ->andWhere(':participant NOT IN (us)')
+                ->setParameter('participant', $userConnected)
                 ->andWhere('user.id != :userConnected')
                 ->setParameter('userConnected', $userConnected);
         }
+//        if ($nonInscritCheckbox) {
+//            $queryBuilder
+//                ->andWhere('user.id != :userConnected')
+//                ->setParameter('userConnected', $userConnected);
+//        }
         if ($searchbar!='') {
             $queryBuilder
                 ->andWhere('s.nom LIKE :searchbar')
                 ->setParameter('searchbar', "%{$searchbar}%");
         }
         if ($sortiesFiniesCheckbox) {
-            dd("hey");
             $queryBuilder->andWhere('s.etat =5');
         }
         if ($dateSortieDebut) {
-            dd("date");
             $queryBuilder
                 ->andWhere('s.dateDebut >= :dateSortieDebut')
                 ->setParameter('dateSortieDebut', $dateSortieDebut);
         }
         if ($dateSortieFin) {
-            dd("date f");
             $queryBuilder
                 ->andWhere('s.dateDebut <= :dateSortieFin')
                 ->setParameter('dateSortieFin', $dateSortieFin);
         }
         if ($siteId) {
-//            dd("site");
             $queryBuilder
                 ->andWhere('s.site = :siteId')
                 ->setParameter('siteId', $siteId);
