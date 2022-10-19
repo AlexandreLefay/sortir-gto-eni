@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Entity\Lieu;
 use App\Entity\SearchData;
 use App\Entity\Sortie;
-use App\EtatUpdate\EventUpdate;
+use App\EtatUpdate\EtatUpdateFunction;
 use App\Form\LieuType;
 use App\Form\SearchFormType;
 use App\Form\SortieType;
@@ -19,6 +19,9 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 //use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -136,8 +139,8 @@ class SortieController extends AbstractController
         $formSortie->handleRequest($request);
 
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            //Il y a deux bouton différents, un pour enregistrer et l'autre pour publier
-            //en fonction du bouton l'état de la sortie ne sera pas le même
+            //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même.
             if ($formSortie->getClickedButton() === $formSortie->get('save')) {
                 $etat = $etatRepository->findOneBy([
                     "id" => 1
@@ -147,6 +150,7 @@ class SortieController extends AbstractController
                     "id" => 2
                 ]);
             }
+//            dd($formSortie->getData()->getDateDebut());
             $sortie->setUser($this->getUser());
             $sortie->setSite($this->getUser()->getSite());
             $sortie->setEtat($etat);
@@ -169,8 +173,8 @@ class SortieController extends AbstractController
 
 
         if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            //Il y a deux bouton différents, un pour enregistrer et l'autre pour publier
-            //en fonction du bouton l'état de la sortie ne sera pas le même
+            //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même.
             if ($formSortie->getClickedButton() === $formSortie->get('save')) {
                 $etat = $etatRepository->findOneBy([
                     "id" => 1
@@ -229,15 +233,40 @@ class SortieController extends AbstractController
 
 
     #[Route('/annuler/{id}', name: 'app_sortie_annuler', methods: ['POST', 'GET'])]
-    public function annuler(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
+    public function annuler(
+        Request $request,
+        Sortie $sortie,
+        EtatRepository $etatRepository,
+        SortieRepository $sortieRepository,
+        $data = array(
+            'text' => '',
+        )
+    ): Response
     {
-        $etat = $etatRepository->findOneBy([
-            "id" => 6
-        ]);
-        $sortie->setEtat($etat);
-        $sortieRepository->save($sortie, true);
+        $formAnnulation = $this->createFormBuilder($data)
+            ->add('text', TextType::class)
+            ->add('save', SubmitType::class)
+            ->getForm();
+        $formAnnulation->handleRequest($request);
 
-        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        if ($formAnnulation->getClickedButton() === $formAnnulation->get('save')) {
+            $etat = $etatRepository->findOneBy([
+                "id" => 6
+            ]);
+//            dd($formAnnulation->getData()["text"]);
+            $sortie->setEtat($etat);
+            $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
+            $sortieRepository->save($sortie, true);
+
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+
+
+        return $this->render('sortie/annulation.html.twig', [
+            "formAnnulation" => $formAnnulation->createView(),
+            "sortie" => $sortie
+        ]);
     }
 
     #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
@@ -261,7 +290,7 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository         $userRepository,
         EtatRepository         $etatRepository,
-        EventUpdate            $updateEvent
+        EtatUpdateFunction $updateEvent
     ): Response
     {
 
@@ -294,7 +323,7 @@ class SortieController extends AbstractController
         Sortie                 $sortie,
         EntityManagerInterface $entityManager,
         UserRepository         $userRepository,
-        EventUpdate            $updateEvent,
+        EtatUpdateFunction     $updateEvent,
         EtatRepository         $etatRepository,
     ): Response
     {

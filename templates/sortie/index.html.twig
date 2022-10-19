@@ -120,7 +120,7 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if app.user.id == sortie.user.id and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
+                        {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
                             <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
                         {% endif %}
 
