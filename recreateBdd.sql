@@ -159,7 +159,9 @@ create index IDX_596DC8CFCC72D953
 INSERT INTO user (site_id,photo,email, pseudo, nom, prenom, telephone, actif, roles, password)
 VALUES
 
+
     (1,'uploads/pikachu.jpg','rose@flower.fr','rose','rosa','hong','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+
     (1,'uploads/pikachu.jpg','pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'uploads/pikachu.jpg','passiflore@flower.fr','passiflore','passiflora','Passiflorette','0941987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'uploads/pikachu.jpg','petunia@flower.fr','petunia','petuniana','petuniala','0741997782',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
@@ -178,9 +180,9 @@ VALUES
 
 INSERT INTO site (nom)
 VALUES
-    ('LYON'),
-    ('PARIS'),
-    ('LILLE')
+    ('Nantes'),
+    ('Lyon'),
+    ('Paris')
 ;
 
 INSERT INTO sortie (user_id, site_id, etat_id, lieu_id, nom, date_debut, duree, date_cloture, nb_inscriptions_max, descriptions_infos)
@@ -206,6 +208,7 @@ VALUES
     (9,3,2,6,'Bal des pompiers avec salamèche','2021-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (1,1,2,1,'Soirée retour dans le passé','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,1,2,2,'Soirée Past pasta','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+
 ;
 
 INSERT INTO ville (nom, code_postal)
@@ -220,6 +223,7 @@ VALUES
 
 INSERT INTO lieu (ville_id, nom, rue)
 VALUES
+
     (6,'Liberty II','rue des anges'),
     (5,'Maison des cookies','rue titou'),
     (4,'Espace Symfony','bd des codeurs'),

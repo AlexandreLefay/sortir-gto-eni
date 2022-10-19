@@ -3,6 +3,8 @@
 namespace App\Form;
 
 
+use App\Entity\Site;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,13 +19,10 @@ class SearchFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('sites', ChoiceType::class, array(
-                'choices' => array(
-                    'Saint-Herblain' => 'Saint-Herblain',
-                    'Saint-Sebastien' => 'Saint-Sebastien',
-                    'Nantes' => 'Nantes',
-                )
-            ))
+            ->add('site', EntityType::class, [
+                'choice_label' => 'nom',
+                'class' => Site::class,
+            ])
             ->add('searchbar', TextType::class, [
                 'label' => false,
                 'required' => false,
