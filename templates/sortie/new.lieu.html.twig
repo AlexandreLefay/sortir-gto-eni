@@ -46,19 +46,22 @@
         var popup = L.popup();
         let coords;
         function onMapClick(e) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("Coords GPS " + e.latlng.toString())
-                .openOn(map);
-
-            // /\[.+?\]/g
-            // /(?<=\[).+?(?=\])/g
 
             var regExpLat = /(?<=\().+?(?=,)/g;
             var latitude = regExpLat.exec(e.latlng);
 
             var regExpLong = /(?<=,).+?(?=\))/g;
             var longitude = regExpLong.exec(e.latlng);
+
+            popup
+                .setLatLng(e.latlng)
+                .setContent("Coords GPS de la sortie :" + latitude+", "+longitude)
+                .openOn(map);
+
+            // /\[.+?\]/g
+            // /(?<=\[).+?(?=\])/g
+
+
 
             document.getElementById("lieu_latitude").value = latitude;
             document.getElementById("lieu_longitude").value = longitude;

@@ -2,6 +2,10 @@
 
 {% block title %}Sortie index{% endblock %}
 
+{% block stylesheets %}
+{#    <script src="{{ asset('js/countdown.js') }}" defer></script>#}
+{% endblock %}
+
 {% block main %}
     <div class="row">
         {% if app.user %}
@@ -81,7 +85,7 @@
                     <td class="tab-sortie-nom">{{ sortie.nom }}</td>
                     <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                     {# <td>{{ sortie.duree }}</td> #}
-                    <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
+                    <td id ="dateCloture" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
                     <td> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
                     {# <td>{{ sortie.descriptionsInfos }}</td> #}
                     {# <td>{{ sortie.urlPhoto }}</td> #}
@@ -116,6 +120,45 @@
                         {% endif %}
                     </td>
                 </tr>
+                <p id="demo"></p>
+                <script>
+                    for (let pas = 0; pas < {{ sorties|length }}; pas++) {
+                        // console.log('test')
+                        // Set the date we're counting down to
+                        // let test = document.getElementById("dateCloture");
+                        // console.log(test);
+                        // document.getElementById("demo").innerHTML = test.value;
+
+                        let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
+
+                        // Update the count down every 1 second
+                        let x = setInterval(function() {
+
+                            // Get today's date and time
+                            let now = new Date().getTime();
+
+                            // Find the distance between now and the count down date
+                            let distance = dateDeCloture - now;
+                            // console.log(distance / (1000 * 60 * 60 * 24));
+                            // Time calculations for days, hours, minutes and seconds
+                            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            if(days === 0 && hours < 1 ) {
+                                // Output the result in an element with id="demo"
+                                document.getElementById("{{ sortie.id }}").innerHTML = days + "d " + hours + "h "
+                                    + minutes + "m " + seconds + "s ";
+                            }
+                            // console.log(pas);
+                            // If the count down is over, write some text
+                            else  {
+                                clearInterval(x);
+                                document.getElementById({{ sortie.id }}).innerHTML = "";
+                            }
+                        }, 1000);
+                    }
+                </script>
             {% else %}
                 <tr>
                     <td colspan="9">no records found</td>
@@ -125,5 +168,7 @@
         </table>
     </div>
     <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
+
+
 
 {% endblock %}
