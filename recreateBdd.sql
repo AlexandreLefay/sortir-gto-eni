@@ -207,7 +207,9 @@ VALUES
     (9,2,2,6,'Déjeuner avec Canarticho','2022-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (9,2,2,6,'Bal des pompiers avec salamèche','2022-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (1,3,2,2,'Soirée retour dans le passé','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (2,3,2,1,'Soirée Past pasta','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
+    (2,3,2,1,'Soirée Past pasta','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (10,2,5,6,'Soirée Past Passée','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
+    (7,1,5,4,'Past party','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
 
 ;
 
@@ -252,6 +254,14 @@ VALUES
     (1,6),
     (1,7),
     (3,1),
-    (4,1)
+    (4,1),
+    (11,16),
+    (10,16),
+    (9,16),
+    (9,17),
+    (10,17),
+    (10,18),
+    (12,18),
+    (5,12)
 ;
 
