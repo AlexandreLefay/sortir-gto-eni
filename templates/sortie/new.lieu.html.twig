@@ -7,10 +7,65 @@
 
     {{ form_start(formLieu) }}
     {{ form_widget(formLieu) }}
+{#    {{ form_row(formLieu.nom) }}#}
+{#    {{ form_row(formLieu.rue) }}#}
+{#    {{ form_row(formLieu.latitude, {'value' : 'Default'}) }}#}
+{#    {{ form_row(formLieu.longitude, {'value' : 'Default'}) }}#}
+{#    {{ form_row(formLieu.ville) }}#}
+
+    <div id="map"></div>
     <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(formLieu) }}
+    <style>
+        #map { height: 300px; width: 600px; }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+            crossorigin=""></script>
 
+    <script>
+        var map = L.map('map').setView([48.8588897, 2.320041], 13);
 
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var greenIcon = L.icon({
+            iconUrl: '{{ asset('img/leaf-green.png') }}',
+            shadowUrl: '{{ asset('img/leaf-shadow.png') }}',
+
+            iconSize:     [38, 95], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+        // L.marker([0, 0], {icon: greenIcon}).addTo(map);
+
+        var popup = L.popup();
+        let coords;
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("Coords GPS " + e.latlng.toString())
+                .openOn(map);
+
+            // /\[.+?\]/g
+            // /(?<=\[).+?(?=\])/g
+
+            var regExpLat = /(?<=\().+?(?=,)/g;
+            var latitude = regExpLat.exec(e.latlng);
+
+            var regExpLong = /(?<=,).+?(?=\))/g;
+            var longitude = regExpLong.exec(e.latlng);
+
+            document.getElementById("lieu_latitude").value = latitude;
+            document.getElementById("lieu_longitude").value = longitude;
+        }
+
+        map.on('click', onMapClick);
+    </script>
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
 {% endblock %}
