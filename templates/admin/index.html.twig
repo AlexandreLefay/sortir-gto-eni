@@ -2,11 +2,29 @@
 
 {% block title %}Hello AdminController!{% endblock %}
 
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <script src="{{ asset('js/admin.js') }}" defer></script>
+{% endblock %}
+
 {% block main %}
-    {{ form_start(formUser) }}
 
-    <button class="button-52"> creer un utilisateur</button>
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn">Créer un utilisateur</button>
 
-    {{ form_end(formUser) }}
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
 
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            {{ form_start(formUser) }}
+
+            <button class="button-52 "> Valider</button>
+
+            {{ form_end(formUser) }}
+        </div>
+
+    </div>
 {% endblock %}
