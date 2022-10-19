@@ -211,11 +211,19 @@ class SortieRepository extends ServiceEntityRepository
                 ->andWhere(':participant IN (u)')
                 ->setParameter('participant', $userConnected);
         }
-        if ($nonInscritCheckbox) {
+        if($nonInscritCheckbox){
             $queryBuilder
+                ->innerjoin('s.users', 'us')
+                ->andWhere(':participant NOT IN (us)')
+                ->setParameter('participant', $userConnected)
                 ->andWhere('user.id != :userConnected')
                 ->setParameter('userConnected', $userConnected);
         }
+//        if ($nonInscritCheckbox) {
+//            $queryBuilder
+//                ->andWhere('user.id != :userConnected')
+//                ->setParameter('userConnected', $userConnected);
+//        }
         if ($searchbar!='') {
             $queryBuilder
                 ->andWhere('s.nom LIKE :searchbar')
