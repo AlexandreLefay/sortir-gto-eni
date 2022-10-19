@@ -71,10 +71,12 @@ class SortieController extends AbstractController
             $dateSortieFin = $search->getDateSortieFin();
             $searchbar = $search->getSearchbar();
             $siteId = $search->getSites()->getId();
-
+            return $this->render('sortie/index.html.twig', [
+                'sorties' => $sortieRepository->findSiteId($siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
+            ]);
         }
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->findSiteId($siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
+            'sorties' => $sortieRepository->findAll(), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
         ]);
     }
 
