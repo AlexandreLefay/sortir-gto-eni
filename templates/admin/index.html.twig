@@ -64,7 +64,6 @@
                 <th>Adresse</th>
                 <th>Ville</th>
                 <th>Actions</th>
-
             </tr>
             </thead>
             <tbody>
@@ -73,7 +72,7 @@
                     <td class="tab-sortie-nom">{{ lieu.nom }}</td>
                     <td class="tab-sortie-nom">{{ lieu.rue}}</td>
                     <td class="tab-sortie-nom">{{ lieu.ville.nom}}</td>
-{#                    <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>#}
+                    <td><a href="{{ path('app_admin_deleteLieu', {'id': lieu.id}) }}">Supprimer</a>  <a href="#">Supprimer</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -159,7 +158,7 @@
             {% for site in sites %}
                 <tr>
                     <td class="tab-sortie-nom">{{ site.nom }}</td>
-{#                    <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>#}
+                    <td><a href="#">Désactiver</a>  <a href="{{ path('app_admin_deleteSite', {'id': site.id}) }}">Supprimer</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -196,7 +195,7 @@
                     <td class="tab-sortie-nom">{{ ville.nom }}</td>
                     <td class="tab-sortie-nom">{{ ville.codePostal}}</td>
 
-{#                    <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>#}
+                    <td><a href="#">Désactiver</a>  <a href="{{ path('app_admin_deleteVille', {'id': ville.id}) }}">Supprimer</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -213,7 +212,6 @@
             {{ form_start(formVille) }}
             <button class="button-52 "> Valider</button>
             {{ form_end(formVille) }}
-
         </div>
     </div>
 

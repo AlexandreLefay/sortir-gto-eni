@@ -112,4 +112,35 @@ class AdminController extends AbstractController
         $entityManagerInterface->flush();
         return $this->redirectToRoute('app_admin');
     }
+    #[Route('/deleteLieu/{id}', name: 'app_admin_deleteLieu',methods: ['GET', 'POST'])]
+    public function deleteLieu(
+        Lieu $lieu,
+        EntityManagerInterface $entityManagerInterface
+    ): Response
+    {
+        $entityManagerInterface->remove($lieu);
+        $entityManagerInterface->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+    #[Route('/deleteSite/{id}', name: 'app_admin_deleteSite',methods: ['GET', 'POST'])]
+    public function deleteSite(
+        Site $site,
+        EntityManagerInterface $entityManagerInterface
+    ): Response
+    {
+        $entityManagerInterface->remove($site);
+        $entityManagerInterface->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+    #[Route('/deleteVille/{id}', name: 'app_admin_deleteVille',methods: ['GET', 'POST'])]
+    public function deleteVille(
+        Ville $ville,
+        EntityManagerInterface $entityManagerInterface
+    ): Response
+    {
+        $entityManagerInterface->remove($ville);
+        $entityManagerInterface->flush();
+        return $this->redirectToRoute('app_admin');
+    }
+
 }
