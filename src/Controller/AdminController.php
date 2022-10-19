@@ -2,9 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
+use App\Entity\Site;
 use App\Entity\User;
+use App\Entity\Ville;
+use App\Form\LieuType;
 use App\Form\NewUserType;
+use App\Form\SiteFormType;
+use App\Form\VilleFormType;
+use App\Repository\LieuRepository;
+use App\Repository\SiteRepository;
 use App\Repository\UserRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +27,18 @@ class AdminController extends AbstractController
     public function index(
         Request $request,
         EntityManagerInterface $entityManagerInterface,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        LieuRepository $lieuRepository,
+        SiteRepository $siteRepository,
+        VilleRepository $villeRepository
     ): Response
     {
         $user = new User();
+        $lieu = new Lieu();
+        $site = new Site();
+        $ville = new Ville();
         $user->setRoles(["ROLE_USER"]);
+
         $formUser = $this->createForm(NewUserType::class,$user,[
             'method'=>'POST'
         ]);
@@ -32,13 +48,46 @@ class AdminController extends AbstractController
                 $user->setRoles(["ROLE_ADMIN"]);
             };
             $user->setPseudo(uniqid());
+            $user->setPhoto('uploads/defaut_image.jpeg');
             $user->setActif(true);
             $user->setPassword(uniqid($prefix = "",$more_entropy=true));
             $entityManagerInterface->persist($user);
             $entityManagerInterface->flush();
         }
+
+        $formLieu = $this->createForm(LieuType::class,$lieu,[
+            'method'=>'POST'
+        ]);
+        $formLieu->handleRequest($request);
+        if($formLieu->isSubmitted() && $formLieu->isValid()){
+            $entityManagerInterface->persist($lieu);
+            $entityManagerInterface->flush();
+        }
+
+        $formSite = $this->createForm(SiteFormType::class,$site,[
+            'method'=>'POST'
+        ]);
+        $formSite->handleRequest($request);
+        if($formSite->isSubmitted() && $formSite->isValid()){
+            $entityManagerInterface->persist($site);
+            $entityManagerInterface->flush();
+        }
+        $formVille = $this->createForm(VilleFormType::class,$ville,[
+            'method'=>'POST'
+        ]);
+        $formVille->handleRequest($request);
+        if($formVille->isSubmitted() && $formVille->isValid()){
+            $entityManagerInterface->persist($ville);
+            $entityManagerInterface->flush();
+        }
+
         $users = $userRepository->findAll();
-        return $this->renderForm('admin/index.html.twig',compact('formUser','users'));
+        $lieux = $lieuRepository->findAll();
+        $sites = $siteRepository->findAll();
+        $villes = $villeRepository->findAll();
+        return $this->renderForm('admin/index.html.twig',compact(
+            'formUser','users','lieux','sites','formSite','formLieu','formVille','villes'
+        ));
     }
 
     #[Route('/desactiveUser/{id}', name: 'app_admin_desactiveUser',methods: ['GET', 'POST'])]
