@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block main %}
-
+{# affichage des utilisateurs #}
         <div class="scroll">
             <table class="table">
                 <thead>
@@ -19,8 +19,8 @@
                     <th>Pseudo</th>
                     <th>Email</th>
                     <th>Téléphone</th>
-                    <th>actif</th>
-                    <th>actions</th>
+                    <th>Actif</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,13 +38,15 @@
                 </tbody>
             </table>
         </div>
+
+{#    création d'un utilisateur via un Modal#}
     <!-- Trigger/Open The Modal -->
     <button id="myBtn">Créer un utilisateur</button>
     <!-- The Modal -->
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="closeUser">&times;</span>
             {{ form_start(formUser) }}
 
             <button class="button-52 "> Valider</button>
@@ -52,4 +54,168 @@
             {{ form_end(formUser) }}
         </div>
     </div>
+
+{#    affichage des lieux #}
+    <div class="scroll">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nom </th>
+                <th>Adresse</th>
+                <th>Ville</th>
+                <th>Actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for lieu in lieux %}
+                <tr>
+                    <td class="tab-sortie-nom">{{ lieu.nom }}</td>
+                    <td class="tab-sortie-nom">{{ lieu.rue}}</td>
+                    <td class="tab-sortie-nom">{{ lieu.ville.nom}}</td>
+{#                    <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>#}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{#        création d'un lieu via un Modal#}
+    <!-- Trigger/Open The Modal -->
+    <button id="lieuMyBtn">Créer un lieu</button>
+    <!-- The Modal -->
+    <div id="lieuModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="closeLieu">&times;</span>
+
+            {{ form_start(formLieu) }}
+            {{ form_widget(formLieu) }}
+            <div id="map"></div>
+            <button class="button-52 "> Valider</button>
+            {{ form_end(formLieu) }}
+            <style>
+                #map { height: 300px; width: 600px; }
+            </style>
+            <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+                    integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+                    crossorigin=""></script>
+
+            <script>
+                var map = L.map('map').setView([48.8588897, 2.320041], 13);
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                var greenIcon = L.icon({
+                    iconUrl: '{{ asset('img/leaf-green.png') }}',
+                    shadowUrl: '{{ asset('img/leaf-shadow.png') }}',
+
+                    iconSize:     [38, 95], // size of the icon
+                    shadowSize:   [50, 64], // size of the shadow
+                    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62],  // the same for the shadow
+                    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                });
+                // L.marker([0, 0], {icon: greenIcon}).addTo(map);
+
+                var popup = L.popup();
+                let coords;
+                function onMapClick(e) {
+                    popup
+                        .setLatLng(e.latlng)
+                        .setContent("Coords GPS " + e.latlng.toString())
+                        .openOn(map);
+
+                    // /\[.+?\]/g
+                    // /(?<=\[).+?(?=\])/g
+
+                    var regExpLat = /(?<=\().+?(?=,)/g;
+                    var latitude = regExpLat.exec(e.latlng);
+
+                    var regExpLong = /(?<=,).+?(?=\))/g;
+                    var longitude = regExpLong.exec(e.latlng);
+
+                    document.getElementById("lieu_latitude").value = latitude;
+                    document.getElementById("lieu_longitude").value = longitude;
+                }
+
+                map.on('click', onMapClick);
+            </script>
+        </div>
+    </div>
+
+   {#    affichage des sites #}
+    <div class="scroll">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nom </th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for site in sites %}
+                <tr>
+                    <td class="tab-sortie-nom">{{ site.nom }}</td>
+{#                    <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>#}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {#    création d'un site via un Modal#}
+    <!-- Trigger/Open The Modal -->
+    <button id="siteMyBtn">Créer un site</button>
+    <!-- The Modal -->
+    <div id="siteModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="closeSite">&times;</span>
+            {{ form_start(formSite) }}
+            <button class="button-52 "> Valider</button>
+            {{ form_end(formSite) }}
+        </div>
+    </div>
+
+    {#    affichage des villes #}
+    <div class="scroll">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nom </th>
+                <th>Code postal</th>
+                <th>Actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for ville in villes %}
+                <tr>
+                    <td class="tab-sortie-nom">{{ ville.nom }}</td>
+                    <td class="tab-sortie-nom">{{ ville.codePostal}}</td>
+
+{#                    <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>#}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{#        création d'une ville via un Modal#}
+    <!-- Trigger/Open The Modal -->
+    <button id="villeMyBtn">Créer une ville</button>
+    <!-- The Modal -->
+    <div id="villeModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="closeVille">&times;</span>
+            {{ form_start(formVille) }}
+            <button class="button-52 "> Valider</button>
+            {{ form_end(formVille) }}
+
+        </div>
+    </div>
+
+
 {% endblock %}
