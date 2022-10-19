@@ -60,74 +60,21 @@ class SortieController extends AbstractController
 
         $dateActuelle = new \DateTime("now");
         $dateActuelleString = $dateActuelle->format('Y-m-d H:i:s');
+        $userConnected = $this->getUser()->getId();
         $formSearch->handleRequest($request);
         if ($formSearch->isSubmitted() && $formSearch->isValid()) {
             $orgaCheckbox = $search->getOrganisateur();
             $mesSortiesCheckbox = $search->getInscrit();
             $nonInscritCheckbox = $search->getNonInscrit();
             $sortiesFiniesCheckbox = $search->getPassees();
-
             $dateSortieDebut = $search->getDateSortieDebut();
             $dateSortieFin = $search->getDateSortieFin();
             $searchbar = $search->getSearchbar();
-            $site = $search->getSites();
-            if($orgaCheckbox){
+            $siteId = $search->getSites()->getId();
 
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $sortieRepository->findBy(
-                        ['user' => $this->getUser()->getId()]),
-                    'formSearch' => $formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
-            if ($mesSortiesCheckbox) {
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $this->getUser()->getInscrit(),
-                    'formSearch' => $formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
-            if ($nonInscritCheckbox) {
-                $userConnected = $this->getUser()->getId();
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $sortieRepository->findNotSubscribeEvent($userConnected),
-                    'formSearch' => $formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
-            if ($sortiesFiniesCheckbox) {
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $sortieRepository->findFinishedEvent(),
-                    'formSearch' => $formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
-            if($dateSortieDebut){
-
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $sortieRepository->findEventByStartPeriod($dateSortieDebut),
-                    'formSearch' =>$formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
-            if($dateSortieFin){
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $sortieRepository->findEventByStartEndPeriod($dateSortieFin),
-                    'formSearch' =>$formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
-            if($searchbar){
-                return $this->render('sortie/index.html.twig', [
-                    'sorties' => $sortieRepository->findByEventName($searchbar),
-                    'formSearch' =>$formSearch->createView(),
-                    'dateNow' => $dateActuelleString
-                ]);
-            }
         }
-//        dd($sortieRepository->findAll());
         return $this->render('sortie/index.html.twig', [
-            'sorties' => $sortieRepository->findAll(), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
+            'sorties' => $sortieRepository->findSiteId($siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
         ]);
     }
 

@@ -77,6 +77,49 @@ class SortieRepository extends ServiceEntityRepository
             return $query->getResult();
         }*/
 
+    //table sortie sans jointure, on n'a pas info des l'organisateur
+    //table sortie avec jointure, on a l'info de l'organisateur, mais la liste des participants
+    /*    public function findAllUsersEvent(): array
+        {
+            return $this->createQueryBuilder('s')
+                ->innerJoin('s.user','u','WITH','u.users = :users')
+                ->setParameter('users',$users)
+                ->getQuery()
+                ->getResult()
+                ;
+        }*/
+
+    public function findAllUsersEvent(): array    {
+        return $this->createQueryBuilder('s')
+            ->join('s.user','u')
+            ->innerjoin('s.users','inscrit')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /* Filtres */
+    /*organisateur OK */
+    public function findOrganizer($userConnected): array    {
+        return $this->createQueryBuilder('s')
+            ->join('s.user','u')
+            ->andWhere('u.id = :userConnected')
+            ->setParameter('userConnected', $userConnected)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findSubscribeEvent($userConnected): array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.user', 'u')
+            ->andWhere('u.id = :userConnected')
+            ->setParameter('userConnected', $userConnected)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    /*Non inscrit OK */
     public function findNotSubscribeEvent($userConnected): array
     {
         return $this->createQueryBuilder('s')
@@ -87,13 +130,15 @@ class SortieRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    /*Sortie passées OK */
     public function findFinishedEvent(): array
-    {       return $this->createQueryBuilder('s')
+    {   return $this->createQueryBuilder('s')
         ->andWhere('s.etat =5')
         ->getQuery()
         ->getResult()
         ;
     }
+    /*Date debut OK */
     public function findEventByStartPeriod($dateSortieDebut) : array{
         return $this->createQueryBuilder('s')
             ->andWhere('s.dateDebut >= :dateSortieDebut')
@@ -102,6 +147,7 @@ class SortieRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    /*Date Fin OK */
     public function findEventByStartEndPeriod($dateSortieFin) : array{
         return $this->createQueryBuilder('s')
             ->andWhere('s.dateDebut <= :dateSortieFin')
@@ -110,7 +156,7 @@ class SortieRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
+    /*Searchbar OK */
     public function findByEventName($searchbar) : array {
         return $this->createQueryBuilder('s')
             ->andWhere('s.nom LIKE :searchbar')
@@ -118,6 +164,28 @@ class SortieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+/*    public function findSite($site) : array{
+        return $this->createQueryBuilder('s')
+            ->join('s.site','si')
+            ->andWhere('si.nom = :site')
+            ->setParameter('site',$site)
+            ->getQuery()
+            ->getResult()
+            ;
+    }*/
+    /*Site ID OK */
+    public function findSiteId($siteId) : array{
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.site = :siteId')
+            ->setParameter('siteId',$siteId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function queryfilter(){
+
     }
 }
 
