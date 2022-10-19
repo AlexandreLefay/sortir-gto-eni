@@ -10,12 +10,38 @@
 
 {% block main %}
 
+        <div class="scroll">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Nom </th>
+                    <th>Prénom</th>
+                    <th>Pseudo</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>actif</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td class="tab-sortie-nom">{{ user.nom }}</td>
+                        <td class="tab-sortie-nom">{{ user.prenom}}</td>
+                        <td class="tab-sortie-nom">{{ user.pseudo}}</td>
+                        <td class="tab-sortie-nom">{{ user.email}}</td>
+                        <td class="tab-sortie-nom">{{ user.telephone}}</td>
+                        <td class="tab-sortie-nom">{{ user.actif==1? "oui":"non"}}</td>
+                        <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     <!-- Trigger/Open The Modal -->
     <button id="myBtn">Créer un utilisateur</button>
-
     <!-- The Modal -->
     <div id="myModal" class="modal">
-
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -25,6 +51,5 @@
 
             {{ form_end(formUser) }}
         </div>
-
     </div>
 {% endblock %}

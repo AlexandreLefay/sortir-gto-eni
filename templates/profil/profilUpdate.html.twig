@@ -2,7 +2,18 @@
 
 {% block title %}Mon profil !{% endblock %}
 
+
 {% block main %}
+
+
+    {%  for label, messages in app.flashes%}
+        {% for message in messages %}
+            <script>
+                alert( '{{ message }}')
+            </script>
+        {% endfor %}
+    {% endfor %}
+
     {{ form_start(formUser) }}
 
     <button class="button-52"> Mettre un jour le profil</button>

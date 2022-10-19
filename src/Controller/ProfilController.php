@@ -9,6 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Notifier\Notification\Notification;
+
+use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -19,9 +22,16 @@ class ProfilController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        NotifierInterface $notifier
     ): Response
     {
+        $user = $userRepository->findOneBy(
+            ['email'=>$this->getUser()->getUserIdentifier()]
+        );
+        if($user->getNom()==null ||$user->getPrenom()==null ||$user->getTelephone()==null){
+            $notifier->send(new Notification('La mise à jour de vos données est obligatoire pour utiliser le site', ['browser']));
+        }
         $userNew = $userRepository->findOneBy(
             ['email'=>$this->getUser()->getUserIdentifier()]
         );
@@ -49,9 +59,13 @@ class ProfilController extends AbstractController
 
     #[Route('/profil_view/{id}', name: 'app_profil_view')]
     public function index(
-        User $user
+        User $user,
+        UserRepository $userRepository
     ): Response
     {
+        if($user->getNom()==null ||$user->getPrenom()==null ||$user->getTelephone()==null){
+            return $this->redirectToRoute('app_profil_update');
+        }
         return $this->render('profil/profilView.html.twig',compact('user'));
     }
 }
