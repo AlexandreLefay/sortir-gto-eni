@@ -15,64 +15,47 @@
             </div>
         {% endif %}
     </div>
-    <h2>Form avec objet php et SearchFormType</h2>
-    <h2>Filtrer les sorties</h2>
-    {{ form_start(formSearch) }}
-    <input type="submit" value="Rechercher">
-    {{ form_end(formSearch) }}
-
     <div class="row">
-        <h2>Form classique</h2>
-        <form action="{{ path('app_sortie_index')}}" method="post" id="filtresSortie">
-            <fieldset>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="row form-group">
-                            <label class="col-xs-2" for="select-site">Sites</label>
-                            <select class="form-control col-xs-2" id="select-site">
-                                <option value="1">SAINT-HERBLAIN</option>
-                                <option value="2">SAINT-SEBASTIEN</option>
-                                <option value="3">NANTES</option>
-                            </select>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-xs-2" for="searchbarName">Le nom de la sortie contient :</label>
-                            <input class="form-control col-xs-2" id="searchbarName" type="text" placeholder="Search..">
-                        </div>
-                        <div class="row form-group">
-                            <p>
-                                Entre
-                                <input type="date" id="date-debut-sorti" name="date-debut-sortie">
-                                et
-                                <input type="date" id="date-fin-sortie" name="date-fin-sortie">
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div>
-                            <input type="checkbox" id="s-orga" name="sortie-organisateur">
-                            <label for="s-orga">Sortie dont je suis l'organisateur/trice</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="s-inscrit" name="sortie-inscrit">
-                            <label for="s-inscrit">Sorties auxquelles je suis inscrit</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="s-pas-inscrit" name="sortie-pas-inscrit">
-                            <label for="s-pas-inscrit">Sorties auxquelles je ne suis pas inscrit</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" id="s-fini" name="sortie-terminees">
-                            <label for="s-fini">Sortie passées</label>
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <button class="button-53" type="submit">Rechercher</button>
-                    </div>
+        {{ form_start(formSearch) }}
+        <div class="row">
+            <div class="col-6">
+                <div class="row form-group">
+                    {{ form_row(formSearch.site) }}
                 </div>
-            </fieldset>
-        </form>
+                <div class="row form-group">
+                    {{ form_row(formSearch.searchbar) }}
+                </div>
+                <div class="row form-group">
+                    <div class="col-6">Entre
+                        {{ form_row(formSearch.dateSortieDebut) }}</div>
+                    <div class="col-6">et
+                        {{ form_row(formSearch.dateSortieFin) }}</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+                    {{ form_row(formSearch.organisateur) }}
+
+                </div>
+                <div>
+                    {{ form_row(formSearch.inscrit) }}
+
+                </div>
+                <div>
+                    {{ form_row(formSearch.nonInscrit) }}
+
+                </div>
+                <div>
+                    {{ form_row(formSearch.passees) }}
+                </div>
+            </div>
+            <div class="col-2">
+                <input type="submit" value="Rechercher">
+            </div>
+        </div>
+        {{ form_end(formSearch) }}
     </div>
+
     <div class="scroll">
         <table class="table">
             <thead>
