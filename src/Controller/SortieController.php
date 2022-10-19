@@ -60,6 +60,7 @@ class SortieController extends AbstractController
 
 //        Pour les filtres c'est un peu compliqué
         $search = new SearchData();
+        $search->setSites($this->getUser()->getSite());
         $formSearch = $this->createForm(SearchFormType::class, $search, [
             'action' => $this->generateUrl('app_sortie_index'),
             'method' => 'POST',
@@ -82,7 +83,6 @@ class SortieController extends AbstractController
                 'sorties' => $sortieRepository->queryfilter($userConnected,$orgaCheckbox,$nonInscritCheckbox,$mesSortiesCheckbox,$searchbar,$sortiesFiniesCheckbox,$dateSortieDebut,$dateSortieFin,$siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
             ]);
         }
-//       dd($sortieRepository->findSiteId($siteId));
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sortieRepository->findSiteId($siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
         ]);

@@ -210,7 +210,6 @@ class SortieRepository extends ServiceEntityRepository
                 ->innerjoin('s.users', 'u')
                 ->andWhere(':participant IN (u)')
                 ->setParameter('participant', $userConnected);
-//           dd($queryBuilder);
         }
         if ($nonInscritCheckbox) {
             $queryBuilder
@@ -223,23 +222,19 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('searchbar', "%{$searchbar}%");
         }
         if ($sortiesFiniesCheckbox) {
-            dd("hey");
             $queryBuilder->andWhere('s.etat =5');
         }
         if ($dateSortieDebut) {
-            dd("date");
             $queryBuilder
                 ->andWhere('s.dateDebut >= :dateSortieDebut')
                 ->setParameter('dateSortieDebut', $dateSortieDebut);
         }
         if ($dateSortieFin) {
-            dd("date f");
             $queryBuilder
                 ->andWhere('s.dateDebut <= :dateSortieFin')
                 ->setParameter('dateSortieFin', $dateSortieFin);
         }
         if ($siteId) {
-//            dd("site");
             $queryBuilder
                 ->andWhere('s.site = :siteId')
                 ->setParameter('siteId', $siteId);
