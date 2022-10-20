@@ -159,15 +159,7 @@
         <div id="coords"></div>
     {% endif %}
     <p id="demo"></p>
-    <style>
-        #map {
-            height: 300px;
-            width: 600px;
-        }
-    </style>
-    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-            crossorigin=""></script>
+
     <div class="row">
         <div class="col-md-4">
             <button class="button-52" id="bnt-backtolist" role="button"><a
@@ -177,4 +169,7 @@
         {#            <div class="col-md-4">{{ include('sortie/_delete_form.html.twig') }}</div> #}
     </div>
 </main>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+            crossorigin=""></script>
 {% endblock %}
