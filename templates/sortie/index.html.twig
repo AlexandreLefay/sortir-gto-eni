@@ -2,10 +2,6 @@
 
 {% block title %}Sortie index{% endblock %}
 
-{% block stylesheets %}
-    <script src="{{ asset('js/api-geo.js') }}" defer></script>
-{% endblock %}
-
 {% block main %}
     <div class="row">
         {% if app.user %}
@@ -18,6 +14,11 @@
                 </div>
             </div>
         {% endif %}
+        {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+        {% endfor %}
     </div>
     <div class="row">
         {{ form_start(formSearch) }}
