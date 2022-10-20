@@ -198,7 +198,7 @@ class AdminController extends AbstractController
         $formUser = $this->createForm(UserTypeAdminType::class, $user);
         $formUser->handleRequest($request);
         if ($formUser->isSubmitted() && $formUser->isValid()) {
-            if($user->getPicture()){
+            if ($user->getPicture()) {
                 $user->setPhoto('uploads/defaut_image.jpeg');
             }
             $userRepository->save($user, true);

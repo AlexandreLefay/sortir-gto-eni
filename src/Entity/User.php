@@ -11,9 +11,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[ORM\UniqueConstraint(null,null, fields: ['pseudo'], options: [ 'message'=>'Ce nom existe déjà '])]
-
+#[UniqueEntity(fields: ['email'], message: 'Il y a déjà un compte avec cette email')]
+#[ORM\UniqueConstraint(null, null, fields: ['pseudo'], options: ['message' => 'Ce nom existe déjà '])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     private $administrateur;
@@ -48,7 +47,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
 
-
     /**
      * @var string The hashed password
      */
@@ -68,7 +66,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
-
 
 
     public function __construct()
@@ -98,7 +95,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
 
 
-
     public function getAdministrateur()
     {
         return $this->administrateur;
@@ -115,8 +111,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return string|null
      */
-
-
 
 
     public function getPasswordConfirm(): ?string
@@ -147,7 +141,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->pseudo = $pseudo;
     }
-
 
 
     public function getId(): ?int
@@ -222,7 +215,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**

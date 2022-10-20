@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints\Date;
 
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
-
 class Sortie
 {
     #[ORM\Id]
