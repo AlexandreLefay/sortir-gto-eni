@@ -1,13 +1,18 @@
 body{
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
 }
-
+main{
+    min-height:100%;
+    position:relative;
+    padding-bottom:100px;   /* Hauteur du pied de page */
+}
 footer{
-    position: sticky;
-    top: 80%;
-    margin-top:30px;
     background: #155263;
     color:white;
+    bottom:0;  /* on le colle en bas */
+    width:100%;
+    height: 1.5em
 }
 
 h1{
@@ -15,16 +20,47 @@ h1{
     color: #155263;
 }
 
+a:hover {
+    color: #155263;
+    font-weight: bolder;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
 .bg-light {
-    background-color: transparent !important;
+    /*background-color: transparent !important;*/
+    background-color: #155263 !important;
+    box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
+
 }
 
 .nav-link{
-    color: #155263;
+    /*color: #155263;*/
+    color: white;
 }
 .nav-link:focus, .nav-link:hover {
     color: #ff9a3c;
 }
+/****Formulaire connexion *****/
+#connexion-background{
+    background-color: black;
+    min-height: 100vh;
+}
+#connexion-form{
+    color: white;
+    padding: 20px;
+    margin-top:50px;
+    margin-left: 100px;
+}
+#img-logo-connexion{
+    width: 30%;
+    margin: auto;
+    margin-left: auto;
+}
+
 /**********CSS texte sur le formulaire de connexion***************/
 .animate-charcter
 {
@@ -46,7 +82,11 @@ h1{
     -webkit-text-fill-color: transparent;
     animation: textclip 2s linear infinite;
     display: inline-block;
-    font-size: 20px;
+    font-size: 35px;
+    font-weight: bolder;
+    margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @keyframes textclip {
@@ -55,15 +95,7 @@ h1{
     }
 }
 /*************************/
-a:hover {
-    color: black;
-    font-weight: bolder;
-}
 
-a {
-    color: black;
-    text-decoration: none;
-}
 #filtresSortie{
     padding-left: 50px;
     padding-right: 200px;
@@ -88,64 +120,16 @@ a {
     vertical-align: middle;
     float: none;
 }
-
-/* CSS button */
-.button-53 {
-    background-color: #155263;
-    border: 0 solid #E5E7EB;
-    box-sizing: border-box;
-    color: #000000;
-    display: flex;
-    font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-    font-size: 1rem;
-    font-weight: 700;
-    justify-content: center;
-    line-height: 1.75rem;
-    padding: .75rem 1.65rem;
-    position: relative;
-    text-align: center;
-    text-decoration: none #000000 solid;
-    text-decoration-thickness: auto;
-    width: 100%;
-    max-width: 460px;
-    position: relative;
-    cursor: pointer;
-    transform: rotate(-2deg);
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
+.button-filter{
+    margin-top:50px;
+    padding: 13px 20px 13px;
+    border: 1px solid #ffc107;
+    background-color: #ffc107;
+    box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
 }
 
-.button-53:focus {
-    outline: 0;
-}
-
-.button-53:after {
-    content: '';
-    position: absolute;
-    border: 1px solid #000000;
-    bottom: 4px;
-    left: 4px;
-    width: calc(100% - 1px);
-    height: calc(100% - 1px);
-}
-
-.button-53:hover:after {
-    bottom: 2px;
-    left: 2px;
-}
-
-@media (min-width: 768px) {
-    .button-53 {
-        padding: .75rem 3rem;
-        font-size: 1.25rem;
-    }
-}
  /* CSS pour button */
  .button-52 {
-    font-size: 16px;
-    font-weight: 200;
-    letter-spacing: 1px;
     padding: 13px 20px 13px;
     outline: 0;
     border: 1px solid black;
@@ -159,7 +143,7 @@ a {
 
 .button-52:after {
     content: "";
-    background-color: #ffe54c;
+    background-color: #ffc107;
     width: 100%;
     z-index: -1;
     position: absolute;
@@ -293,3 +277,60 @@ div.scroll {
     padding:10px;
 }
 /*******/
+@media all and (max-device-width: 480px)
+{
+    footer{
+        display: none;
+    }
+    #textfooter{
+        display: none;
+    }
+    #connexion-form{
+        margin-left:50px;
+    }
+    /* Vos règles CSS pour les mobiles ici */
+    #img-connexion{
+        display: none;
+    }
+}
+
+/***Index table sortie Responsive***/
+@media (max-width: 700px){
+    .table{
+        width:auto;
+        width: inherit;
+        margin-left: inherit;
+        margin-right: inherit;
+        box-shadow: inherit;
+    }
+    .table thead {
+        display: none;
+    }
+
+    .table tr{
+        display: block;
+        margin-bottom: 40px;
+        background-color: #ffc107;
+    }
+
+    .table td {
+        display: block;
+        text-align: left;
+        border: none;
+    }
+
+    .table td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        border: none;
+    }
+    .tab-sortie-date {
+        width: 300px;
+    }
+    div.scroll{
+        width: inherit;
+        height: inherit;
+    }
+
+}
