@@ -67,11 +67,7 @@
         </div>
     </div>
 
-    {#    <div class="row"> <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">back to list</a></button> </div>
-    <div class="row">
-        <div class="col-md-6"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a></button></div>
-        <div class="col-md-6">{{ include('sortie/_delete_form.html.twig') }}</div>
-    </div> #}
+
     <div class="scroll">
         <div class="row sortie-participants">
             {% if sortie.etat.libelle == 'Annulée' %}
@@ -114,5 +110,9 @@
     <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
             integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
             crossorigin=""></script>
-
+        <div class="row">
+            <div class="col-md-4"> <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">retour</a></button> </div>
+{#            <div class="col-md-4"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">éditer</a></button></div>#}
+{#            <div class="col-md-4">{{ include('sortie/_delete_form.html.twig') }}</div>#}
+        </div>
 {% endblock %}
