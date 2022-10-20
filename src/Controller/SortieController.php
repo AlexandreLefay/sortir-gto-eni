@@ -125,25 +125,33 @@ class SortieController extends AbstractController
     #[Route('/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
-        $formSortie = $this->createForm(SortieType::class, $sortie);
-        $formSortie->handleRequest($request);
+
+        $sortieUserId = $sortie->getUser()->getId();
+        $appUserId = $this->getUser()->getId();
+        if( $sortieUserId == $appUserId) {
+//            dd($sortieUserId.' $appUserId :'.$appUserId);
+            $formSortie = $this->createForm(SortieType::class, $sortie);
+            $formSortie->handleRequest($request);
 
 
-        if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-            //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
-            //en fonction du bouton l'état de la sortie ne sera pas le même.
-            if ($formSortie->getClickedButton() === $formSortie->get('save')) {
-                $etat = $etatRepository->findOneBy([
-                    "id" => 1
-                ]);
-            } else {
-                $etat = $etatRepository->findOneBy([
-                    "id" => 2
-                ]);
+            if ($formSortie->isSubmitted() && $formSortie->isValid()) {
+                //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
+                //en fonction du bouton l'état de la sortie ne sera pas le même.
+                if ($formSortie->getClickedButton() === $formSortie->get('save')) {
+                    $etat = $etatRepository->findOneBy([
+                        "id" => 1
+                    ]);
+                } else {
+                    $etat = $etatRepository->findOneBy([
+                        "id" => 2
+                    ]);
+                }
+                $sortie->setEtat($etat);
+                $sortieRepository->save($sortie, true);
+
+                return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
             }
-            $sortie->setEtat($etat);
-            $sortieRepository->save($sortie, true);
-
+        } else {
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('sortie/edit.html.twig', [
@@ -200,24 +208,29 @@ class SortieController extends AbstractController
         )
     ): Response
     {
-        $formAnnulation = $this->createFormBuilder($data)
-            ->add('text', TextType::class)
-            ->add('save', SubmitType::class)
-            ->getForm();
-        $formAnnulation->handleRequest($request);
+        $sortieUserId = $sortie->getUser()->getId();
+        $appUserId = $this->getUser()->getId();
+        if( $sortieUserId == $appUserId) {
+            $formAnnulation = $this->createFormBuilder($data)
+                ->add('text', TextType::class)
+                ->add('save', SubmitType::class)
+                ->getForm();
+            $formAnnulation->handleRequest($request);
 
-        if ($formAnnulation->getClickedButton() === $formAnnulation->get('save')) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 6
-            ]);
+            if ($formAnnulation->getClickedButton() === $formAnnulation->get('save')) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 6
+                ]);
 //            dd($formAnnulation->getData()["text"]);
-            $sortie->setEtat($etat);
-            $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
-            $sortieRepository->save($sortie, true);
+                $sortie->setEtat($etat);
+                $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
+                $sortieRepository->save($sortie, true);
 
+                return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+            }
+        } else {
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-
 
 
         return $this->render('sortie/annulation.html.twig', [

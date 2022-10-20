@@ -3,7 +3,7 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block stylesheets %}
-{#    <script src="{{ asset('js/countdown.js') }}" defer></script>#}
+    <script src="{{ asset('js/api-geo.js') }}" defer></script>
 {% endblock %}
 
 {% block main %}
@@ -161,5 +161,65 @@
         <div clas="row">
             <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
         </div>
+
+                        {% endif %}
+
+                        {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
+                            <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
+                        {% endif %}
+
+                        {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
+                            <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                        {% endif %}
+
+                        {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
+                            <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+{#                JS gestion du countdown#}
+                <script>
+                    for (let pas = 0; pas < 2; pas++) {
+
+                        // Date fin du coutdown
+                        let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
+
+                        // Interval de 1 seconde pour le cd
+                        let x = setInterval(function() {
+
+                            // Date d'aujourd'hui
+                            let now = new Date().getTime();
+
+                            // distance de compteur
+                            let distance = dateDeCloture - now;
+
+                            // Calcul du cd
+                            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                            if(days === 0 && hours < 1 ) {
+                                // Affichage du cd
+                                document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
+                                document.getElementById("{{ sortie.id }}").style.color = 'green';
+                            }
+                                // Si le cd est = 0
+                            else  {
+                                {#clearInterval(x);#}
+                                document.getElementById({{ sortie.id }}).innerHTML = "Inscriptions terminées";
+                                document.getElementById({{ sortie.id }}).style.color = "red";
+                            }
+                        }, 1000);
+                    }
+                </script>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
     </div>
 {% endblock %}

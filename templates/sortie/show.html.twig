@@ -2,6 +2,10 @@
 
 {% block title %}Sortie{% endblock %}
 
+{% block stylesheets %}
+    <script src="{{ asset('js/map-show.js') }}" defer></script>
+{% endblock %}
+
 {% block main %}
     <div class="row sortie-detail">
         <div class="col-md-6">
@@ -54,11 +58,11 @@
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Latitude :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.latitude }}</div>
+                <div class="col-md-6" id="latitudeId">{{ sortie.lieu.latitude }}</div>
             </div>
             <div class="row">
                 <div class="col-md-6"><span class="sortie-detail-label">Longitude :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.longitude }}</div>
+                <div class="col-md-6" id="longitudeId">{{ sortie.lieu.longitude }}</div>
             </div>
         </div>
     </div>
@@ -100,7 +104,7 @@
             <div id="map"></div>
             <div id="coords"></div>
         {% endif %}
-
+        <p id="demo"></p>
     <style>
         #map {
             height: 300px;
@@ -110,39 +114,5 @@
     <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
             integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
             crossorigin=""></script>
-
-    <script>
-        let map = L.map('map').setView([{{ sortie.lieu.latitude }}, {{ sortie.lieu.longitude }}], 13);
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-
-        let greenIcon = L.icon({
-            iconUrl: '{{ asset('img/leaf-green.png') }}',
-            shadowUrl: '{{ asset('img/leaf-shadow.png') }}',
-
-            iconSize: [38, 95], // size of the icon
-            shadowSize: [50, 64], // size of the shadow
-            iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-            shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-        });
-        L.marker([{{ sortie.lieu.latitude }}, {{ sortie.lieu.longitude }}], {icon: greenIcon}).addTo(map);
-
-        let popup = L.popup();
-        let coords;
-
-        function onMapClick(e) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("La sortie se trouve ici ! :) " + e.latlng.toString())
-                .openOn(map);
-            document.getElementById("coords").innerHTML = e.latlng;
-        }
-
-        map.on('click', onMapClick);
-    </script>
 
 {% endblock %}
