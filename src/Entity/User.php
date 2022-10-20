@@ -41,6 +41,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $actif = null;
 
+    private ?bool $picture = null;
+
+
     #[ORM\Column]
     private array $roles = [];
 
@@ -75,8 +78,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return bool|null
+     */
+    public function getPicture(): ?bool
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param bool|null $picture
+     */
+    public function setPicture(?bool $picture): void
+    {
+        $this->picture = $picture;
+    }
+
+    /**
      * @return mixed
      */
+
+
+
     public function getAdministrateur()
     {
         return $this->administrateur;
