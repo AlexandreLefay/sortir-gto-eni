@@ -150,7 +150,8 @@ class SortieController extends AbstractController
             }
         $sortieUserId = $sortie->getUser()->getId();
         $appUserId = $this->getUser()->getId();
-        if ($sortieUserId == $appUserId) {
+        $roleUser = $this->getUser()->getRoles()[0];
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
             return $this->renderForm('sortie/edit.html.twig', [
                 'sortie' => $sortie,
                 'formSortie' => $formSortie,
@@ -222,7 +223,6 @@ class SortieController extends AbstractController
                 $etat = $etatRepository->findOneBy([
                     "id" => 6
                 ]);
-//            dd($formAnnulation->getData()["text"]);
                 $sortie->setEtat($etat);
                 $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
                 $sortieRepository->save($sortie, true);
@@ -231,7 +231,9 @@ class SortieController extends AbstractController
             }
         $sortieUserId = $sortie->getUser()->getId();
         $appUserId = $this->getUser()->getId();
-        if ($sortieUserId == $appUserId) {
+        $roleUser = $this->getUser()->getRoles()[0];
+
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
             return $this->render('sortie/annulation.html.twig', [
                 "formAnnulation" => $formAnnulation->createView(),
                 "sortie" => $sortie
