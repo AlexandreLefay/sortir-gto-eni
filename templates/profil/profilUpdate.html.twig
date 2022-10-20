@@ -4,19 +4,48 @@
 
 
 {% block main %}
-
-
-    {%  for label, messages in app.flashes%}
-        {% for message in messages %}
-            <script>
-                alert( '{{ message }}')
-            </script>
-        {% endfor %}
-    {% endfor %}
-
-    {{ form_start(formUser) }}
-
-    <button class="button-52"> Mettre un jour le profil</button>
-    {{ form_end(formUser) }}
-
+    <main>
+        <div class="row container-fluid">
+            <div class="row frame-form">
+            {%  for label, messages in app.flashes%}
+                {% for message in messages %}
+                    <script>
+                        alert( '{{ message }}')
+                    </script>
+                {% endfor %}
+            {% endfor %}
+            {{ form_start(formUser) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(formUser.email) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(formUser.pseudo) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(formUser.nom) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(formUser.prenom) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(formUser.telephone) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(formUser.site) }}
+                    </div>
+                </div>
+                <div class="row"> {{ form_row(formUser.password) }}</div>
+                <div class="row"> {{ form_row(formUser.image) }}</div>
+                <div class="row">
+                    <div class="col-md-6"><button class="button-52"> Mettre un jour le profil</button></div>
+                </div>
+            {{ form_end(formUser) }}
+            </div>
+     </div>
+    </main>
 {% endblock %}

@@ -1,6 +1,42 @@
+<main>
+    <div class="row container-fluid">
 {{ form_start(formSortie) }}
-    {{ form_widget(formSortie) }}
+{#    {{ form_widget(formSortie) }}#}
 {#{{ form_row(formSortie, { 'label': 'Duree (' }) }}#}
+<div class="row">
+    {{ form_row(formSortie.nom)}}
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(formSortie.dateDebut)}}
+    </div>
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(formSortie.dateCloture)}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(formSortie.duree)}}
+    </div>
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(formSortie.nbInscriptionsMax)}}
+    </div>
+</div>
+<div class="row">
+    {{ form_row(formSortie.descriptionsInfos)}}
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(formSortie.save)}}
+    </div>
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(formSortie.publish)}}
+    </div>
+</div>
+<div class="row">
+    {{ form_row(formSortie.lieu)}}
+</div>
 {{ form_end(formSortie) }}
-
+</div>
+</main>
 

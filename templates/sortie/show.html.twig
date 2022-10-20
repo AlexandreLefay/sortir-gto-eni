@@ -7,112 +7,121 @@
 {% endblock %}
 
 {% block main %}
-    <div class="row sortie-detail">
-        <div class="col-md-6">
-            <div class="row">ID : {{ sortie.id }}</div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Nom de la sortie :</span></div>
-                <div class="col-md-6">{{ sortie.nom }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Date et heure de la sortie : </span></div>
-                <div class="col-md-6">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Date limite d'inscription : </span></div>
-                <div class="col-md-6">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Duree: </span></div>
-                <div class="col-md-6">{{ sortie.duree }}</div>
-            </div>
-            {% if sortie.etat.libelle == 'Annulée' %}
-                <div class="row">
-                    <div class="col-md-6"><span class="sortie-detail-label" style="color: #B0413E">Raison de l'annulation :</span>
+   <main>
+       <div class="row container-fluid">
+           <div class="row">
+               {% if app.user.site.id == 1 %}
+               <img src="{{ asset('img/banner-nantes.jpg') }}" alt="nantes">
+               {% endif %}
+               {% if app.user.site.id == 3 %}
+                   <img src="{{ asset('img/banner-paris.jpg') }}" alt="nantes">
+               {% endif %}
+               {% if app.user.site.id == 2 %}
+                   <img src="{{ asset('img/banner-lyon.jpg') }}" alt="nantes">
+               {% endif %}
+           </div>
+            <div class="row sortie-detail">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3 col-xs-12"><span class="sortie-detail-label">Nom de la sortie :</span></div>
+                        <div class="col-md-6 col-xs-12">{{ sortie.nom }}</div>
                     </div>
-                    <div class="col-md-6">{{ sortie.descriptionsInfos }}</div>
+                    <div class="row">
+                        <div class="col-md-8 col-xs-12"><span class="sortie-detail-label">Date et heure de la sortie : </span>{{ sortie.dateDebut ? sortie.dateDebut|date('d-m-Y H:i') : '' }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-xs-12"><span class="sortie-detail-label">Date limite d'inscription : </span>{{ sortie.dateCloture ? sortie.dateCloture|date('d-m-Y H:i') : '' }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-xs-12"><span class="sortie-detail-label">Duree: </span> {{ sortie.duree }}<span> min</span></div>
+                    </div>
+                    {% if sortie.etat.libelle == 'Annulée' %}
+                        <div class="row">
+                            <div class="col-md-6 col-xs-12"><span class="sortie-detail-label" style="color: #B0413E">Raison de l'annulation :</span>
+                            </div>
+                            <div class="col-md-6 col-xs-12">{{ sortie.descriptionsInfos }}</div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="col-md-4 col-xs-12"><span class="sortie-detail-label">Description et infos :</span></div>
+                            <div class="col-md-8 col-xs-12">{{ sortie.descriptionsInfos }}</div>
+                        </div>
+                    {% endif %}
                 </div>
-            {% else %}
-                <div class="row">
-                    <div class="col-md-6"><span class="sortie-detail-label">Description et infos :</span></div>
-                    <div class="col-md-6">{{ sortie.descriptionsInfos }}</div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12"><span class="sortie-detail-label">Lieu :</span> {{ sortie.lieu.nom }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12"><span class="sortie-detail-label">Rue :</span> {{ sortie.lieu.rue }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12"><span class="sortie-detail-label">Ville :</span> {{ sortie.lieu.ville.nom }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12"><span class="sortie-detail-label">Code postal :</span> {{ sortie.lieu.ville.codePostal }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12"><span class="sortie-detail-label">Latitude :</span> <span id="latitudeId">{{ sortie.lieu.latitude }}</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12"><span class="sortie-detail-label">Longitude :</span><span class="col-md-6 col-xs-12" id="longitudeId">{{ sortie.lieu.longitude }}</span></div>
+                    </div>
                 </div>
-            {% endif %}
-        </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Lieu :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.nom }}</div>
             </div>
             <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Rue :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.rue }}</div>
+                <div class="col-md-6 col-xs-12">
+                    <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">back to list</a></button>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
+                        <div class="row">
+                            <h2>Mes pouvoirs en tant qu'organisateur</h2>
+                            <div class="col-md-6 col-xs-12"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a></button></div>
+                            <div class="col-md-6 col-xs-12">{{ include('sortie/_delete_form.html.twig') }}</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="scroll">
+                <div class="row sortie-participants">
+                    {% if sortie.etat.libelle == 'Annulée' %}
+                        <div class="row">
+                            <h2 style="color: #B0413E">SORTIE ANNULEE </h2>
+                        </div>
+                    {% endif %}
+                    <div class="row">
+                        <h2>Participants:</h2>
+                    </div>
+                    <table class="table table-hover table-responsive">
+                        <tbody>
+                        <tr id="sortie-detail-part-entete">
+                            <th>Pseudo</th>
+                            <th>Nom</th>
+                        </tr>
+                        {% for participant in sortie.users %}
+                            <tr>
+                                <td data-label="Pseudo :"><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ participant.pseudo }}</a></td>
+                                <td data-label="Nom :">{{ participant.nom }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Ville :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.ville.nom }}</div>
+                {% if sortie.lieu.longitude == null or sortie.lieu.latitude == null %}
+                    <div style="color:red">Impossible d'afficher la carte car les coordonnées ne sont pas renseignées</div>
+                {% else %}
+                    <div id="map"></div>
+                    <div id="coords"></div>
+                {% endif %}
+                <p id="demo"></p>
+                <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+                        integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+                        crossorigin="">
+                </script>
             </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Code postal :</span></div>
-                <div class="col-md-6">{{ sortie.lieu.ville.codePostal }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Latitude :</span></div>
-                <div class="col-md-6" id="latitudeId">{{ sortie.lieu.latitude }}</div>
-            </div>
-            <div class="row">
-                <div class="col-md-6"><span class="sortie-detail-label">Longitude :</span></div>
-                <div class="col-md-6" id="longitudeId">{{ sortie.lieu.longitude }}</div>
-            </div>
-        </div>
-    </div>
-
-    {#    <div class="row"> <button class="button-52"  id="bnt-backtolist" role="button">  <a href="{{ path('app_sortie_index') }}">back to list</a></button> </div>
-    <div class="row">
-        <div class="col-md-6"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a></button></div>
-        <div class="col-md-6">{{ include('sortie/_delete_form.html.twig') }}</div>
-    </div> #}
-    <div class="scroll">
-        <div class="row sortie-participants">
-            {% if sortie.etat.libelle == 'Annulée' %}
-                <h2 style="color: #B0413E">SORTIE ANNULEE </h2>
-            {% endif %}
-            <h2>Liste des participants inscrits :</h2>
-            {# for item in Entity.attribut #}
-            <table class="table">
-                <tbody>
-                <tr>
-                    <th>Pseudo</th>
-                    <th>Nom</th>
-                </tr>
-                {% for participant in sortie.users %}
-                    <tr>
-                        <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ participant.pseudo }}</a>
-                        </td>
-                        <td>{{ participant.nom }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-        {% if sortie.lieu.longitude == null or sortie.lieu.latitude == null %}
-            <div style="color:red">Impossible d'afficher la carte car les coordonnées ne sont pas renseignées</div>
-        {% else %}
-            <div id="map"></div>
-            <div id="coords"></div>
-        {% endif %}
-        <p id="demo"></p>
-    <style>
-        #map {
-            height: 300px;
-            width: 600px;
-        }
-    </style>
-    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-            crossorigin=""></script>
-
+       </div>
+   </main>
 {% endblock %}
