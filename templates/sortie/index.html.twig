@@ -3,128 +3,111 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block main %}
-    <div class="row">
-        {% if app.user %}
-            <div class="col-md-3 offset-md-9">
-                <div>
-                    Date du jour : {{ 'now'|date('d - m -Y') }}
-                </div>
-                <div>
-                    Participant : {{ app.user.pseudo }}
-                </div>
-            </div>
-        {% endif %}
-        {% for message in app.flashes('notice') %}
-        <div class="flash-notice">
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    <div class="row">
-        {{ form_start(formSearch) }}
+    <main>
+    <div class="row container-fluid">
         <div class="row">
-            <div class="col-6">
-                <div class="row form-group">
-                    {{ form_row(formSearch.site) }}
+            {% if app.user %}
+                <div class="col-md-3 offset-md-9">
+                    <div>
+                        Date du jour : {{ 'now'|date('d - m -Y') }}
+                    </div>
+                    <div>
+                        Participant : {{ app.user.pseudo }}
+                    </div>
                 </div>
-                <div class="row form-group">
-                    {{ form_row(formSearch.searchbar) }}
-                </div>
-                <div class="row form-group">
-                    <div class="col-6">Entre
-                        {{ form_row(formSearch.dateSortieDebut) }}</div>
-                    <div class="col-6">et
-                        {{ form_row(formSearch.dateSortieFin) }}</div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div>
-                    {{ form_row(formSearch.organisateur) }}
-
-                </div>
-                <div>
-                    {{ form_row(formSearch.inscrit) }}
-
-                </div>
-                <div>
-                    {{ form_row(formSearch.nonInscrit) }}
-
-                </div>
-                <div>
-                    {{ form_row(formSearch.passees) }}
-                </div>
-            </div>
-            <div class="col-2">
-                <input class="button-53" type="submit" value="Rechercher">
-            </div>
+            {% endif %}
+            {% for message in app.flashes('notice') %}<div class="flash-notice"> {{ message }}</div>{% endfor %}
         </div>
-        {{ form_end(formSearch) }}
-    </div>
-
-    <div class="scroll">
-        <table class="table">
-            <thead>
-            <tr>
-                {# <th>Id</th> #}
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                {# <th>Duree</th> #}
-                <th>Clôture</th>
-                <th>inscrits/place</th>
-                {# <th>DescriptionsInfos</th> #}
-                {# <th>UrlPhoto</th> #}
-                <th>Etat</th>
-                <th>inscrit</th>
-                <th>Organisateur</th>
-                <th>actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for sortie in sorties %}
-                <tr>
-
-                    <td class="tab-sortie-nom">{{ sortie.nom }}</td>
-                    <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-
-                    {% if sortie.etat.libelle =="Ouverte" %}
-                        <td id="{{ sortie.id }}" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
-                    {% else %}
-                        <td class="tab-sortie-date" id="dateCloture">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
-                    {% endif %}
-
-                    <td> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
-
-                    <td>{{ sortie.etat.libelle }}</td>
-                    {% if app.user in sortie.users %}
-                        <td>X</td>
-                    {% else %}
-                            <td> </td>
-                    {% endif %}
-                    <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
-                    <td>
-                        <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher{#<img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher">#}</a>
-
-                        {% if sortie.user.id != app.user.id%}
+        <div class="row">
+            {{ form_start(formSearch) }}
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="row form-group">
+                        {{ form_row(formSearch.site) }}
+                    </div>
+                    <div class="row form-group">
+                        {{ form_row(formSearch.searchbar) }}
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6 col-sm-12">Entre
+                            {{ form_row(formSearch.dateSortieDebut) }}</div>
+                        <div class="col-md-6 col-sm-12">et
+                            {{ form_row(formSearch.dateSortieFin) }}</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div>
+                        {{ form_row(formSearch.organisateur) }}
+                    </div>
+                    <div>
+                        {{ form_row(formSearch.inscrit) }}
+                    </div>
+                    <div>
+                        {{ form_row(formSearch.nonInscrit) }}
+                    </div>
+                    <div>
+                        {{ form_row(formSearch.passees) }}
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <input class="button-filter" type="submit" value="Rechercher">
+                </div>
+            </div>
+            {{ form_end(formSearch) }}
+        </div>
+        <div class="row">
+            <div class="scroll">
+                <table class="table table-hover table-responsive">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom de la sortie</th>
+                        <th scope="col">Date de la sortie</th>
+                        <th scope="col">Clôture</th>
+                        <th scope="col">inscrits/place</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">inscrit</th>
+                        <th scope="col">Organisateur</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sortie in sorties %}
+                        <tr>
+                            <td class="tab-sortie-nom" data-label="Sortie :">{{ sortie.nom }}</td>
+                            <td class="tab-sortie-date" data-label="Datedébut :">{{ sortie.dateDebut ? sortie.dateDebut|date('d-m-Y H:i') : '' }}</td>
+                            <td id ="dateCloture" class="tab-sortie-date" data-label="Date cloture :">{{ sortie.dateCloture ? sortie.dateCloture|date('d-m-Y H:i') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
+                            <td data-label="Nb Inscription :"> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
+                            <td data-label="Etat :">{{ sortie.etat.libelle }}</td>
                             {% if app.user in sortie.users %}
-                                <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se désister{#<img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister">#}</a>
-                            {% elseif sortie.users|length < sortie.nbInscriptionsMax and  sortie.etat.libelle == "Ouverte" %}
-                                <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{#<img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire">#}</a>
+                                <td data-label="Inscription :">X</td>
+                            {% else %}
+                                <td> </td>
                             {% endif %}
-                        {% endif %}
+                            <td data-label="Pseudo :"><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
+                            <td data-label="Action :">
+                                <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher{#<img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher">#}</a>
 
-                        {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
-                            <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
-                        {% endif %}
+                                {% if sortie.user.id != app.user.id%}
+                                    {% if app.user in sortie.users %}
+                                        <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se désister{#<img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister">#}</a>
+                                    {% elseif sortie.users|length < sortie.nbInscriptionsMax and  sortie.etat.libelle == "Ouverte" %}
+                                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{#<img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire">#}</a>
+                                    {% endif %}
+                                {% endif %}
 
-                        {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
-                            <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
-                        {% endif %}
+                                {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
+                                    <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
+                                {% endif %}
 
-                        {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
-                            <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
-                        {% endif %}
-                    </td>
-                </tr>
+                                {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
+                                    <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                                {% endif %}
+
+                                {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
+                                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
 {#                JS gestion du countdown#}
                 <script>
                     for (let pas = 0; pas < 2; pas++) {
@@ -168,9 +151,13 @@
             {% endfor %}
             </tbody>
         </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
+            </div>
+        </div>
     </div>
-    <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
-
-
-
+ </main>
 {% endblock %}

@@ -22,25 +22,23 @@
     </head>
 
     {% block body %}
-    <body class="container-fluid">
-
+    <body>
         {% if app.user %}
             <nav class="navbar navbar-expand-lg navbar-light bg-light " >
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="{{ path('app_sortie_index') }}"><img src="{{ asset('img/logoGTOsortir-smal.png') }}" alt="logo"></a>
+                    <a class="navbar-brand" href="{{ path('app_sortie_index') }}"><img src="{{ asset('img/logo-new-otter-ld.png') }}" alt="logo"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
+                        <div class="navbar-nav navbar-right">
                         {#  <a class="nav-link" href="{{ path('app_sortie_edit') }}">Sortie</a>#}
                             <a class="nav-link" href="{{ path('app_sortie_index') }}">Accueil</a>
-                            <a class="nav-link" href="{{ path('app_profil_view',{'id':app.user.id}) }}"><img class="icon" src="{{ asset('img/profile_contact_account_man_icon_229517.svg') }}" alt="profil">Mon profil</a>
-                            <a class="nav-link" href="{{ path('app_logout') }}"><img class="icon" src="{{ asset('img/4115235-exit-logout-sign-out_114030.svg') }}" alt="deconnexion">Deconnexion</a>
+                            <a class="nav-link" href="{{ path('app_profil_view',{'id':app.user.id}) }}">Mon profil</a>
+                            <a class="nav-link" href="{{ path('app_logout') }}">Deconnexion</a>
                             {% if is_granted("ROLE_ADMIN") %}
                                 <a class="nav-link" href="{{ path('app_admin') }}">Administration</a>
                             {% endif %}
-
                         </div>
                     </div>
                 </div>
@@ -50,7 +48,7 @@
 
         {% endblock %}
 
-        <footer>&#128007 Projet ENI 2022 - Les lapins sont supérieurs aux loutres ! - Propulsé par Titi la loutre, BichAchu, et Loulou le loup</footer>
+        <footer>&#128007 Projet ENI 2022 - Les lapins sont supérieurs aux loutres ! <span id="textfooter">- Propulsé par Titi la loutre, BichAchu, et Loulou le loup</span></footer>
     </body>
     {% endblock %}
 </html>
