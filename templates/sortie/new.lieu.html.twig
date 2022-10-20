@@ -11,17 +11,20 @@
 
     {{ form_start(formLieu) }}
     {{ form_widget(formLieu) }}
-{#    {{ form_row(formLieu.nom) }}#}
-{#    {{ form_row(formLieu.rue) }}#}
-{#    {{ form_row(formLieu.latitude, {'value' : 'Default'}) }}#}
-{#    {{ form_row(formLieu.longitude, {'value' : 'Default'}) }}#}
-{#    {{ form_row(formLieu.ville) }}#}
+    {#    {{ form_row(formLieu.nom) }} #}
+    {#    {{ form_row(formLieu.rue) }} #}
+    {#    {{ form_row(formLieu.latitude, {'value' : 'Default'}) }} #}
+    {#    {{ form_row(formLieu.longitude, {'value' : 'Default'}) }} #}
+    {#    {{ form_row(formLieu.ville) }} #}
 
     <div id="map"></div>
     <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(formLieu) }}
     <style>
-        #map { height: 300px; width: 600px; }
+        #map {
+            height: 300px;
+            width: 600px;
+        }
     </style>
     <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
             integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="

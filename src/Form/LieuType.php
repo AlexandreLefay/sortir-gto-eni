@@ -22,7 +22,6 @@ class LieuType extends AbstractType
                 'choice_label' => 'nom',
                 'class' => Ville::class,
             ]);
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -17,18 +17,16 @@ class NewUserType extends AbstractType
     {
         $builder
             ->add('email')
-
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nom',
-                'label'=>'Selection du site',
-                'required'=>true
+                'label' => 'Selection du site',
+                'required' => true
             ])
             ->add('administrateur', CheckboxType::class, array(
                 'label' => 'l\'utilisateur sera administrateur',
                 'required' => false,
-            ))
-        ;
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -7,11 +7,12 @@ class SearchData
     public $site;
     public $searchbar = '';
     public $organisateur;
-    public $inscrit ;
+    public $inscrit;
     public $nonInscrit;
     public $passees;
     public ?\DateTimeInterface $dateSortieDebut;
     public ?\DateTimeInterface $dateSortieFin;
+
     /**
      * @return mixed
      */
@@ -140,7 +141,6 @@ class SearchData
     {
         $this->dateSortieFin = $dateSortieFin;
     }
-
 
 
 }

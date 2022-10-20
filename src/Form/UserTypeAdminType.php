@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Form;
+
 use App\Entity\Site;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -33,10 +34,9 @@ class UserTypeAdminType extends AbstractType
                 'required' => true
             ])
             ->add('picture', CheckboxType::class, [
-                'label'    => 'remettre une photo par défaut',
+                'label' => 'remettre une photo par défaut',
                 'required' => false,
-            ]);
-        ;
+            ]);;
 
     }
 

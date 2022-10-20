@@ -23,12 +23,12 @@ class SortieType extends AbstractType
             ->add('nom')
             ->add('dateDebut', DateTimeType::class, [
                 'widget' => 'single_text',
-                'required'=> false,
+                'required' => false,
             ])
-            ->add('duree',null, ['label' => 'Durée en H'])
+            ->add('duree', null, ['label' => 'Durée en H'])
             ->add('dateCloture', DateTimeType::class, [
                 'widget' => 'single_text',
-                'required'=> false,
+                'required' => false,
             ])
             ->add('nbInscriptionsMax')
             ->add('descriptionsInfos')
