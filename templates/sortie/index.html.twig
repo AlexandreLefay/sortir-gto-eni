@@ -77,9 +77,11 @@
                                 <td class="tab-sortie-nom" data-label="Sortie :">{{ sortie.nom }}</td>
                                 <td class="tab-sortie-date"
                                     data-label="Datedébut :">{{ sortie.dateDebut ? sortie.dateDebut|date('d-m-Y H:i') : '' }}</td>
-                                <td id="dateCloture" class="tab-sortie-date"
-                                    data-label="Date cloture :">{{ sortie.dateCloture ? sortie.dateCloture|date('d-m-Y H:i') : '' }}
-                                    <p style="color: green" id="{{ sortie.id }}"></p></td>
+                               {% if sortie.etat.libelle == "Ouverte" or  sortie.etat.libelle  == "Clôturée" %}
+                                    <td id ="{{ sortie.id }}" class="tab-sortie-date" data-label="Date cloture :"></td>
+                                {% else %}
+                                    <td id ="dateCloture" class="tab-sortie-date" data-label="Date cloture :">{{ sortie.dateCloture ? sortie.dateCloture|date('d-m-Y H:i') : '' }}</td>
+                                {% endif %}
                                 <td data-label="Nb Inscription :"> {{ sortie.users |length }}
                                     / {{ sortie.nbInscriptionsMax }}</td>
                                 <td data-label="Etat :">{{ sortie.etat.libelle }}</td>
@@ -111,14 +113,14 @@
                                         <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{# <img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier"> #}</a>
                                     {% endif %}
 
-                                    {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
-                                        <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{# <img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier"> #}</a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {#                JS gestion du countdown #}
-                            <script>
-                                for (let pas = 0; pas < 2; pas++) {
+                                {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')%}
+                                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+{#                JS gestion du countdown#}
+                <script>
+                    for (let pas = 0; pas < 2; pas++) {
 
                                     // Date fin du coutdown
                                     let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
@@ -128,38 +130,39 @@
 
                                         // Date d'aujourd'hui
                                         let now = new Date().getTime();
+                                        
+                            // distance de compteur
+                            let distance = dateDeCloture - now;
+                            if (now < dateDeCloture ) {
+                                // Calcul du cd
+                                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                                        // distance de compteur
-                                        let distance = dateDeCloture - now;
 
-                                        // Calcul du cd
-                                        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                // Affichage du cd
+                                document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
+                                document.getElementById("{{ sortie.id }}").style.color = 'green';
+                            } else {
+                                // Si le cd est = 0
 
-                                        if (days === 0 && hours < 1) {
-                                            // Affichage du cd
-                                            document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
-                                            document.getElementById("{{ sortie.id }}").style.color = 'green';
-                                        }
-                                        // Si le cd est = 0
-                                        else {
-                                            {# clearInterval(x); #}
-                                            document.getElementById({{ sortie.id }}).innerHTML = "Inscriptions terminées";
-                                            document.getElementById({{ sortie.id }}).style.color = "red";
-                                        }
-                                    }, 1000);
-                                }
-                            </script>
-                            {% else %}
-                            <tr>
-                                <td colspan="9">no records found</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                clearInterval(x);
+                                document.getElementById({{ sortie.id }}).innerHTML = "Inscriptions terminées";
+                                document.getElementById({{ sortie.id }}).style.color = "red";
+                            }
+                        }, 1000);
+                    }
+                </script>
+{#                        {{ sortie.etat.libelle }} == 'Ouverte'    #}
+{#                        if(days === 0 && hours < 1 )#}
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
             </div>
             <div class="row">
                 <div class="col-md-6">

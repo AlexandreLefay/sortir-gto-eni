@@ -154,7 +154,8 @@ class SortieController extends AbstractController
         }
         $sortieUserId = $sortie->getUser()->getId();
         $appUserId = $this->getUser()->getId();
-        if ($sortieUserId == $appUserId) {
+        $roleUser = $this->getUser()->getRoles()[0];
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
             return $this->renderForm('sortie/edit.html.twig', [
                 'sortie' => $sortie,
                 'formSortie' => $formSortie,
@@ -222,20 +223,22 @@ class SortieController extends AbstractController
             ->getForm();
         $formAnnulation->handleRequest($request);
 
-        if ($formAnnulation->getClickedButton() === $formAnnulation->get('save')) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 6
-            ]);
-//            dd($formAnnulation->getData()["text"]);
-            $sortie->setEtat($etat);
-            $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
-            $sortieRepository->save($sortie, true);
+
+            if ($formAnnulation->getClickedButton() === $formAnnulation->get('save')) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 6
+                ]);
+                $sortie->setEtat($etat);
+                $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
+                $sortieRepository->save($sortie, true);
 
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
         $sortieUserId = $sortie->getUser()->getId();
         $appUserId = $this->getUser()->getId();
-        if ($sortieUserId == $appUserId) {
+        $roleUser = $this->getUser()->getRoles()[0];
+
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
             return $this->render('sortie/annulation.html.twig', [
                 "formAnnulation" => $formAnnulation->createView(),
                 "sortie" => $sortie
