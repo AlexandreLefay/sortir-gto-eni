@@ -336,13 +336,13 @@ class SortieController extends AbstractController
                 ]);
                 $updateEvent->updateEtatFlush($etat, $sortie);
             }
-            return $this->render('sortie/show.html.twig', [
-                'sortie' => $sortie,
+           return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
             ]);
         } else {
             $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
+
     }
 }
 

@@ -5,6 +5,8 @@ body{
 main{
     min-height:100%;
     position:relative;
+    padding-right: 50px;
+    padding-left: 50px;
     padding-bottom:100px;   /* Hauteur du pied de page */
 }
 footer{
@@ -12,7 +14,8 @@ footer{
     color:white;
     bottom:0;  /* on le colle en bas */
     width:100%;
-    height: 1.5em
+    height: 1.5em;
+    position: fixed;
 }
 
 h1{
@@ -161,6 +164,7 @@ a {
 @media (min-width: 768px) {
     .button-52 {
         padding: 13px 50px 13px;
+        margin-bottom: 50px;
     }
 }
 
@@ -171,10 +175,7 @@ a {
 /*Tableau des sorties * */
 .table{
     border-color: #ffc107;
-    width: 90%;
     box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .table>thead {
@@ -192,7 +193,6 @@ a {
 }
 .sortie-participants{
     width: 35%;
-    margin-top: 50px;
     margin-bottom: 50px;
     margin-left: auto;
     margin-right: auto;
@@ -204,7 +204,6 @@ a {
 }
 
 #bnt-backtolist{
-    width: 15%;
     margin-bottom:50px;
 }
 .sortie-detail{
@@ -224,6 +223,12 @@ a {
 .sortie-participants th{
     background-color: #ffc107;
 }
+
+#map {
+    height: 300px;
+    width: 600px;
+}
+
 /*page profil view */
 
 .profil_view_element_title
@@ -273,11 +278,15 @@ div.scroll {
     border-color: #ffc107;
     width: 90%;
     box-shadow: 0px -5px 10px 0px rgb(0 0 0 / 50%);
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
     padding:10px;
+}
+.bk-form{
+    background-image: url("../img/loulougun.jpg");
+    background-size: contain;
+    opacity: 0.1;
 }
 /*******/
 @media all and (max-device-width: 480px)
@@ -289,7 +298,7 @@ div.scroll {
         display: none;
     }
     #connexion-form{
-        margin-left:50px;
+        margin-left:5px;
     }
     /* Vos règles CSS pour les mobiles ici */
     #img-connexion{
@@ -297,14 +306,19 @@ div.scroll {
     }
 }
 
+
 /***Index table sortie Responsive***/
 @media (max-width: 700px){
+    h2 {
+        font-size: small;
+    }
     .table{
         width:auto;
         width: inherit;
         margin-left: inherit;
         margin-right: inherit;
         box-shadow: inherit;
+        font-size: smaller;
     }
     .table thead {
         display: none;
@@ -313,7 +327,9 @@ div.scroll {
     .table tr{
         display: block;
         margin-bottom: 40px;
-        background-color: #ffc107;
+        margin-top: 40px;
+        /*background-color: #ffc107;*/
+        background: linear-gradient(to top, #dfe9f3 0%, white 100%);
     }
 
     .table td {
@@ -336,4 +352,23 @@ div.scroll {
         height: inherit;
     }
 
+    /************** boutons *********************/
+    #bnt-backtolist {
+        width: fit-content;
+    }
+
+    /**************Detail sortie***********************/
+    .sortie-participants {
+        width: fit-content;
+    }
+    #sortie-detail-part-entete{
+        display:none;
+    }
+    #map {
+         width: 200px;
+    }
+    /****Profil******/
+    .img-profil{
+        width:80%;
+    }
 }
