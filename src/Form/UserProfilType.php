@@ -48,23 +48,23 @@ class UserProfilType extends AbstractType
                 'label'=>'Selection du site',
                 'required'=>true
             ])
-//            ->add('image', FileType::class,[
-//                'label' => false,
-//                'multiple' => false,
-//                'mapped' => false,
-//                'required' => false,
-//                'constraints' => [
-//                    new File([
-//                        'maxSize' => '2024k',
-//                        'mimeTypes' => [
-//                            'image/jpeg',
-//                            'image/jpg',
-//                            'image/png',
-//                        ],
-//                        'mimeTypesMessage' => 'Merci d\'indiquer un fichier Jpeg, jpg ou png',
-//                    ])
-//                ]
-//            ])
+            ->add('image', FileType::class,[
+                'label' => false,
+                'multiple' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Merci d\'indiquer un fichier Jpeg, jpg ou png',
+                    ])
+                ]
+            ])
         ;
     }
 

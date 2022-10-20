@@ -189,7 +189,7 @@ INSERT INTO sortie (user_id, site_id, etat_id, lieu_id, nom, date_debut, duree, 
 VALUES
 
     (1,3,2,1,'Soirée Jacky & Michelle','2022-10-18 17:13:00',10,'2021-10-28 17:13:00',2,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (1,3,5,1,'Attrapper les Pokemons','2021-10-03 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
+    (1,3,5,1,'Attraper les Pokemons','2022-10-30 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
     (2,3,2,2,'Butter le crud','2022-11-27 18:13:00',1,'2022-11-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,3,5,2,'Admirer les lapins','2021-10-30 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,3,5,1,'Chasser les pythons','2021-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
@@ -206,7 +206,7 @@ VALUES
     (12,2,2,5,'Soirée bisous avec Excellangue','2022-10-25 20:13:00',4,'2022-11-27 17:13:00',3,'ceci est la description de la sortie'),
     (12,2,2,5,'Halloween avec Mimigui','2022-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (9,2,2,6,'Déjeuner avec Canarticho','2022-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
-    (9,2,2,6,'Bal des pompiers avec salamèche','2022-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
+    (9,2,2,6,'Bal des pompiers avec Salamèche','2022-10-25 20:13:00',4,'2022-10-31 17:13:00',3,'ceci est la description de la sortie'),
     (1,3,2,2,'Soirée retour dans le passé','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,3,2,1,'Soirée Past pasta','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (10,2,5,6,'Soirée Past Passée','2022-09-18 17:13:00',10,'2021-09-28 17:13:00',1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
