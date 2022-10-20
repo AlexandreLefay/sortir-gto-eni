@@ -7,168 +7,159 @@
 {% endblock %}
 
 {% block main %}
-    <div class="row">
-        {% if app.user %}
-            <div class="col-md-3 offset-md-9">
-                <div>
-                    Date du jour : {{ 'now'|date('d - m -Y') }}
-                </div>
-                <div>
-                    Participant : {{ app.user.pseudo }}
-                </div>
-            </div>
-        {% endif %}
-    </div>
-    <div class="row">
-        {{ form_start(formSearch) }}
+    <div class="row container-fluid">
         <div class="row">
-            <div class="col-6">
-                <div class="row form-group">
-                    {{ form_row(formSearch.site) }}
+            {% if app.user %}
+                <div class="col-md-3 offset-md-9">
+                    <div>
+                        Date du jour : {{ 'now'|date('d - m -Y') }}
+                    </div>
+                    <div>
+                        Participant : {{ app.user.pseudo }}
+                    </div>
                 </div>
-                <div class="row form-group">
-                    {{ form_row(formSearch.searchbar) }}
+            {% endif %}
+        </div>
+        <div class="row">
+            {{ form_start(formSearch) }}
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="row form-group">
+                        {{ form_row(formSearch.site) }}
+                    </div>
+                    <div class="row form-group">
+                        {{ form_row(formSearch.searchbar) }}
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6 col-sm-12">Entre
+                            {{ form_row(formSearch.dateSortieDebut) }}</div>
+                        <div class="col-md-6 col-sm-12">et
+                            {{ form_row(formSearch.dateSortieFin) }}</div>
+                    </div>
                 </div>
-                <div class="row form-group">
-                    <div class="col-6">Entre
-                        {{ form_row(formSearch.dateSortieDebut) }}</div>
-                    <div class="col-6">et
-                        {{ form_row(formSearch.dateSortieFin) }}</div>
+                <div class="col-md-3 col-sm-12">
+                    <div>
+                        {{ form_row(formSearch.organisateur) }}
+                    </div>
+                    <div>
+                        {{ form_row(formSearch.inscrit) }}
+                    </div>
+                    <div>
+                        {{ form_row(formSearch.nonInscrit) }}
+                    </div>
+                    <div>
+                        {{ form_row(formSearch.passees) }}
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <input class="button-filter" type="submit" value="Rechercher">
                 </div>
             </div>
-            <div class="col-4">
-                <div>
-                    {{ form_row(formSearch.organisateur) }}
+            {{ form_end(formSearch) }}
+        </div>
+        <div clas="row">
+            <div class="scroll">
+                <table class="table table-hover table-responsive">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nom de la sortie</th>
+                        <th scope="col">Date de la sortie</th>
+                        <th scope="col">Clôture</th>
+                        <th scope="col">inscrits/place</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">inscrit</th>
+                        <th scope="col">Organisateur</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sortie in sorties %}
+                        <tr>
+                            <td class="tab-sortie-nom" data-label="Sortie :">{{ sortie.nom }}</td>
+                            <td class="tab-sortie-date" data-label="Datedébut :">{{ sortie.dateDebut ? sortie.dateDebut|date('d-m-Y H:i') : '' }}</td>
+                            <td id ="dateCloture" class="tab-sortie-date" data-label="Date cloture :">{{ sortie.dateCloture ? sortie.dateCloture|date('d-m-Y H:i') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
+                            <td data-label="Nb Inscription :"> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
+                            <td data-label="Etat :">{{ sortie.etat.libelle }}</td>
+                            {% if app.user in sortie.users %}
+                                <td data-label="Inscription :">X</td>
+                            {% else %}
+                                <td> </td>
+                            {% endif %}
+                            <td data-label="Pseudo :"><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
+                            <td data-label="Action :">
+                                <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher{#<img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher">#}</a>
 
-                </div>
-                <div>
-                    {{ form_row(formSearch.inscrit) }}
+                                {% if sortie.user.id != app.user.id%}
+                                    {% if app.user in sortie.users %}
+                                        <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se désister{#<img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister">#}</a>
+                                    {% elseif sortie.users|length < sortie.nbInscriptionsMax and  sortie.etat.libelle == "Ouverte" %}
+                                        <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{#<img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire">#}</a>
+                                    {% endif %}
+                                {% endif %}
 
-                </div>
-                <div>
-                    {{ form_row(formSearch.nonInscrit) }}
+                                {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
+                                    <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
+                                {% endif %}
 
-                </div>
-                <div>
-                    {{ form_row(formSearch.passees) }}
-                </div>
-            </div>
-            <div class="col-2">
-                <input class="button-53" type="submit" value="Rechercher">
+                                {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
+                                    <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                                {% endif %}
+
+                                {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
+                                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <p id="demo"></p>
+                        <script>
+                            for (let pas = 0; pas < {{ sorties|length }}; pas++) {
+                                // console.log('test')
+                                // Set the date we're counting down to
+                                // let test = document.getElementById("dateCloture");
+                                // console.log(test);
+                                // document.getElementById("demo").innerHTML = test.value;
+
+                                let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
+
+                                // Update the count down every 1 second
+                                let x = setInterval(function() {
+
+                                    // Get today's date and time
+                                    let now = new Date().getTime();
+
+                                    // Find the distance between now and the count down date
+                                    let distance = dateDeCloture - now;
+                                    // console.log(distance / (1000 * 60 * 60 * 24));
+                                    // Time calculations for days, hours, minutes and seconds
+                                    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                    if(days === 0 && hours < 1 ) {
+                                        // Output the result in an element with id="demo"
+                                        document.getElementById("{{ sortie.id }}").innerHTML = days + "d " + hours + "h "
+                                            + minutes + "m " + seconds + "s ";
+                                    }
+                                        // console.log(pas);
+                                    // If the count down is over, write some text
+                                    else  {
+                                        clearInterval(x);
+                                        document.getElementById({{ sortie.id }}).innerHTML = "";
+                                    }
+                                }, 1000);
+                            }
+                        </script>
+                        {% else %}
+                        <tr>
+                            <td colspan="9">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-        {{ form_end(formSearch) }}
+        <div clas="row">
+            <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
+        </div>
     </div>
-
-    <div class="scroll">
-        <table class="table">
-            <thead>
-            <tr>
-                {# <th>Id</th> #}
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                {# <th>Duree</th> #}
-                <th>Clôture</th>
-                <th>inscrits/place</th>
-                {# <th>DescriptionsInfos</th> #}
-                {# <th>UrlPhoto</th> #}
-                <th>Etat</th>
-                <th>inscrit</th>
-                <th>Organisateur</th>
-                <th>actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for sortie in sorties %}
-                <tr>
-                    {# <td>{{ sortie.id }}</td> #}
-                    <td class="tab-sortie-nom">{{ sortie.nom }}</td>
-                    <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-                    {# <td>{{ sortie.duree }}</td> #}
-                    <td id ="dateCloture" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
-                    <td> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
-                    {# <td>{{ sortie.descriptionsInfos }}</td> #}
-                    {# <td>{{ sortie.urlPhoto }}</td> #}
-                    <td>{{ sortie.etat.libelle }}</td>
-                    {% if app.user in sortie.users %}
-                    <td>X</td>
-                        {% else %}
-                            <td> </td>
-                    {% endif %}
-                    <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
-                    <td>
-                        <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">Afficher{#<img class="icon" src="{{ asset('img/afficher.svg') }}" alt="Afficher">#}</a>
-
-                        {% if sortie.user.id != app.user.id%}
-                            {% if app.user in sortie.users %}
-                                <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se désister{#<img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister">#}</a>
-                            {% elseif sortie.users|length < sortie.nbInscriptionsMax and  sortie.etat.libelle == "Ouverte" %}
-                                <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{#<img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire">#}</a>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
-                            <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
-                        {% endif %}
-
-                        {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
-                            <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
-                        {% endif %}
-
-                        {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
-                            <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
-                        {% endif %}
-                    </td>
-                </tr>
-                <p id="demo"></p>
-                <script>
-                    for (let pas = 0; pas < {{ sorties|length }}; pas++) {
-                        // console.log('test')
-                        // Set the date we're counting down to
-                        // let test = document.getElementById("dateCloture");
-                        // console.log(test);
-                        // document.getElementById("demo").innerHTML = test.value;
-
-                        let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
-
-                        // Update the count down every 1 second
-                        let x = setInterval(function() {
-
-                            // Get today's date and time
-                            let now = new Date().getTime();
-
-                            // Find the distance between now and the count down date
-                            let distance = dateDeCloture - now;
-                            // console.log(distance / (1000 * 60 * 60 * 24));
-                            // Time calculations for days, hours, minutes and seconds
-                            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                            if(days === 0 && hours < 1 ) {
-                                // Output the result in an element with id="demo"
-                                document.getElementById("{{ sortie.id }}").innerHTML = days + "d " + hours + "h "
-                                    + minutes + "m " + seconds + "s ";
-                            }
-                            // console.log(pas);
-                            // If the count down is over, write some text
-                            else  {
-                                clearInterval(x);
-                                document.getElementById({{ sortie.id }}).innerHTML = "";
-                            }
-                        }, 1000);
-                    }
-                </script>
-            {% else %}
-                <tr>
-                    <td colspan="9">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
-
-
-
 {% endblock %}

@@ -35,10 +35,12 @@ class SearchFormType extends AbstractType
         ->add('dateSortieDebut', DateTimeType::class, [
             'widget' => 'single_text',
              'required'=> false,
+            'label' => false,
         ])
            ->add('dateSortieFin', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'=> false,
+                'label' => false,
 
             ])
 
