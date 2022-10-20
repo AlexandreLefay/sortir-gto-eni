@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -24,7 +25,7 @@ class SortieType extends AbstractType
                 'widget' => 'single_text',
                 'required'=> false,
             ])
-            ->add('duree')
+            ->add('duree',null, ['label' => 'Durée en H'])
             ->add('dateCloture', DateTimeType::class, [
                 'widget' => 'single_text',
                 'required'=> false,

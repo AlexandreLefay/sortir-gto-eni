@@ -3,7 +3,7 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block stylesheets %}
-{#    <script src="{{ asset('js/countdown.js') }}" defer></script>#}
+    <script src="{{ asset('js/countdown.js') }}" defer></script>
 {% endblock %}
 
 {% block main %}
@@ -81,22 +81,22 @@
             <tbody>
             {% for sortie in sorties %}
                 <tr>
-                    {# <td>{{ sortie.id }}</td> #}
+
                     <td class="tab-sortie-nom">{{ sortie.nom }}</td>
                     <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
-                    {# <td>{{ sortie.duree }}</td> #}
+
                     {% if sortie.etat.libelle =="Ouverte" %}
-                    <td id ="{{ sortie.id }}" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
+                        <td id="{{ sortie.id }}" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
                     {% else %}
-                    <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
+                        <td class="tab-sortie-date" id="dateCloture">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
                     {% endif %}
+
                     <td> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
-                    {# <td>{{ sortie.descriptionsInfos }}</td> #}
-                    {# <td>{{ sortie.urlPhoto }}</td> #}
+
                     <td>{{ sortie.etat.libelle }}</td>
                     {% if app.user in sortie.users %}
-                    <td>X</td>
-                        {% else %}
+                        <td>X</td>
+                    {% else %}
                             <td> </td>
                     {% endif %}
                     <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ sortie.user.pseudo }}</a></td>
@@ -124,14 +124,10 @@
                         {% endif %}
                     </td>
                 </tr>
-                <p id="demo"></p>
+{#                JS gestion du countdown#}
                 <script>
-                    for (let pas = 0; pas < {{ sorties|length }}; pas++) {
+                    for (let pas = 0; pas < 2; pas++) {
 
-                        let dateCloture = document.getElementById("dateCloture");
-
-                        // document.getElementById("demo").innerHTML = dateCloture;
-                        // document.getElementById("demo").innerHTML = test.value;
                         // Date fin du coutdown
                         let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
 
@@ -153,11 +149,13 @@
                             if(days === 0 && hours < 1 ) {
                                 // Affichage du cd
                                 document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
+                                document.getElementById("{{ sortie.id }}").style.color = 'green';
                             }
                                 // Si le cd est = 0
                             else  {
                                 {#clearInterval(x);#}
-                                {#document.getElementById({{ sortie.id }}).innerHTML = "";#}
+                                document.getElementById({{ sortie.id }}).innerHTML = "Inscriptions terminées";
+                                document.getElementById({{ sortie.id }}).style.color = "red";
                             }
                         }, 1000);
                     }

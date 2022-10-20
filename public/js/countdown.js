@@ -1,30 +1,36 @@
-// Set the date we're counting down to
-let dateCloture = document.getElementsByClassName("dateCloture");
-document.getElementById("demo").innerHTML = dateCloture;
-    let countDownDate = new Date(dateCloture).getTime();
-
-// Update the count down every 1 second
-let x = setInterval(function() {
-
-    // Get today's date and time
-    let now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    let distance = countDownDate - now;
-
-    // Time calculations for days, hours, minutes and seconds
-    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Output the result in an element with id="demo"
-    // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-    //     + minutes + "m " + seconds + "s ";
-
-    // If the count down is over, write some text
-    if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("demo").innerHTML = "EXPIRED";
-    }
-}, 1000);
+// for (let pas = 0; pas < 2; pas++) {
+//
+//     let dateCloture = document.getElementById("dateCloture").innerText;
+//     // document.getElementById("demo").innerHTML = dateCloture;
+//     document.getElementById("demo").innerHTML = dateCloture;
+//
+//     // Date fin du coutdown
+//     // let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
+//
+//     // Interval de 1 seconde pour le cd
+//     let x = setInterval(function() {
+//
+//         // Date d'aujourd'hui
+//         let now = new Date().getTime();
+//
+//         // distance de compteur
+//         let distance = dateCloture - now;
+//
+//         // Calcul du cd
+//         let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+//         let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+//
+//         if(days === 0 && hours < 1 ) {
+//             // Affichage du cd
+//             document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
+//             document.getElementById("{{ sortie.id }}").style.color = 'green';
+//         }
+//         // Si le cd est = 0
+//         else  {
+//             // {#clearInterval(x);#}
+//             // {#document.getElementById({{ sortie.id }}).innerHTML = "";#}
+//         }
+//     }, 1000);
+// }
