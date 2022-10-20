@@ -25,13 +25,13 @@ class UserProfilType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('telephone')
-            ->add('password',RepeatedType::class, [
+            ->add('password', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'type' => PasswordType::class,
-                'required'=>false,
+                'required' => true,
                 'mapped' => false,
-                'first_options'  => ['label' => 'Password'],
+                'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'constraints' => [
                     new Length([
@@ -44,11 +44,11 @@ class UserProfilType extends AbstractType
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
-                    'choice_label' => 'nom',
-                'label'=>'Selection du site',
-                'required'=>true
+                'choice_label' => 'nom',
+                'label' => 'Selection du site',
+                'required' => true
             ])
-            ->add('image', FileType::class,[
+            ->add('image', FileType::class, [
                 'label' => false,
                 'multiple' => false,
                 'mapped' => false,
@@ -64,8 +64,7 @@ class UserProfilType extends AbstractType
                         'mimeTypesMessage' => 'Merci d\'indiquer un fichier Jpeg, jpg ou png',
                     ])
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

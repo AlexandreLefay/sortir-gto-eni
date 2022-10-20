@@ -122,6 +122,59 @@
                         crossorigin="">
                 </script>
             </div>
-       </div>
-   </main>
+        </div>
+    </div>
+
+
+    <div class="scroll">
+        <div class="row sortie-participants">
+            {% if sortie.etat.libelle == 'Annulée' %}
+                <h2 style="color: #B0413E">SORTIE ANNULEE </h2>
+            {% endif %}
+            <h2>Liste des participants inscrits :</h2>
+            {# for item in Entity.attribut #}
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Nom</th>
+                </tr>
+                {% for participant in sortie.users %}
+                    <tr>
+                        <td><a href="{{ path('app_profil_view',{'id':sortie.user.id}) }}">{{ participant.pseudo }}</a>
+                        </td>
+                        <td>{{ participant.nom }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    {% if sortie.lieu.longitude == null or sortie.lieu.latitude == null %}
+        <div style="color:red">Impossible d'afficher la carte car les coordonnées ne sont pas renseignées</div>
+    {% else %}
+        <div id="map"></div>
+        <div id="coords"></div>
+    {% endif %}
+    <p id="demo"></p>
+    <style>
+        #map {
+            height: 300px;
+            width: 600px;
+        }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+            integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+            crossorigin=""></script>
+    <div class="row">
+        <div class="col-md-4">
+            <button class="button-52" id="bnt-backtolist" role="button"><a
+                        href="{{ path('app_sortie_index') }}">retour</a></button>
+        </div>
+        {#            <div class="col-md-4"><button class="button-52" role="button"> <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">éditer</a></button></div> #}
+        {#            <div class="col-md-4">{{ include('sortie/_delete_form.html.twig') }}</div> #}
+    </div>
+</main>
 {% endblock %}

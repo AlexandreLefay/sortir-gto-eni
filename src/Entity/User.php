@@ -11,9 +11,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[ORM\UniqueConstraint(null,null, fields: ['pseudo'], options: [ 'message'=>'Ce nom existe déjà '])]
-
+#[UniqueEntity(fields: ['email'], message: 'Il y a déjà un compte avec cette email')]
+#[ORM\UniqueConstraint(null, null, fields: ['pseudo'], options: ['message' => 'Ce nom existe déjà '])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     private $administrateur;
@@ -41,9 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $actif = null;
 
+    private ?bool $picture = null;
+
+
     #[ORM\Column]
     private array $roles = [];
-
 
 
     /**
@@ -67,7 +68,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $photo = null;
 
 
-
     public function __construct()
     {
         $this->inscrit = new ArrayCollection();
@@ -75,8 +75,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return bool|null
+     */
+    public function getPicture(): ?bool
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param bool|null $picture
+     */
+    public function setPicture(?bool $picture): void
+    {
+        $this->picture = $picture;
+    }
+
+    /**
      * @return mixed
      */
+
+
     public function getAdministrateur()
     {
         return $this->administrateur;
@@ -93,8 +111,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return string|null
      */
-
-
 
 
     public function getPasswordConfirm(): ?string
@@ -125,7 +141,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->pseudo = $pseudo;
     }
-
 
 
     public function getId(): ?int
@@ -200,7 +215,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**

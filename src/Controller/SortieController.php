@@ -15,10 +15,13 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
+
 //use Container8wOy52z\get_ServiceLocator_ZFcJjKUService;
 use Doctrine\ORM\EntityManagerInterface;
+
 //use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 //use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,6 +29,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 //use Symfony\Flex\Event\UpdateEvent;
 
 #[Route('/sortie')]
@@ -52,9 +56,9 @@ class SortieController extends AbstractController
         }
 
         $user = $userRepository->findOneBy(
-            ['email'=>$this->getUser()->getUserIdentifier()]
+            ['email' => $this->getUser()->getUserIdentifier()]
         );
-        if($user->getNom()==null ||$user->getPrenom()==null ||$user->getTelephone()==null){
+        if ($user->getNom() == null || $user->getPrenom() == null || $user->getTelephone() == null) {
             return $this->redirectToRoute('app_profil_update');
         }
 
@@ -80,7 +84,7 @@ class SortieController extends AbstractController
             $searchbar = $search->getSearchbar();
             $siteId = $search->getSite()->getId();
             return $this->render('sortie/index.html.twig', [
-                'sorties' => $sortieRepository->queryfilter($userConnected,$orgaCheckbox,$nonInscritCheckbox,$mesSortiesCheckbox,$searchbar,$sortiesFiniesCheckbox,$dateSortieDebut,$dateSortieFin,$siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
+                'sorties' => $sortieRepository->queryfilter($userConnected, $orgaCheckbox, $nonInscritCheckbox, $mesSortiesCheckbox, $searchbar, $sortiesFiniesCheckbox, $dateSortieDebut, $dateSortieFin, $siteId), 'formSearch' => $formSearch->createView(), 'dateNow' => $dateActuelleString
             ]);
         }
         return $this->render('sortie/index.html.twig', [
@@ -126,38 +130,41 @@ class SortieController extends AbstractController
     public function edit(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
 
-        $sortieUserId = $sortie->getUser()->getId();
-        $appUserId = $this->getUser()->getId();
-        if( $sortieUserId == $appUserId) {
 //            dd($sortieUserId.' $appUserId :'.$appUserId);
-            $formSortie = $this->createForm(SortieType::class, $sortie);
-            $formSortie->handleRequest($request);
+        $formSortie = $this->createForm(SortieType::class, $sortie);
+        $formSortie->handleRequest($request);
 
 
-            if ($formSortie->isSubmitted() && $formSortie->isValid()) {
-                //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
-                //en fonction du bouton l'état de la sortie ne sera pas le même.
-                if ($formSortie->getClickedButton() === $formSortie->get('save')) {
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 1
-                    ]);
-                } else {
-                    $etat = $etatRepository->findOneBy([
-                        "id" => 2
-                    ]);
-                }
-                $sortie->setEtat($etat);
-                $sortieRepository->save($sortie, true);
-
-                return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        if ($formSortie->isSubmitted() && $formSortie->isValid()) {
+            //Il y a deux boutons différents, un pour enregistrer et l'autre pour publier
+            //en fonction du bouton l'état de la sortie ne sera pas le même.
+            if ($formSortie->getClickedButton() === $formSortie->get('save')) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 1
+                ]);
+            } else {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 2
+                ]);
             }
-        } else {
+            $sortie->setEtat($etat);
+            $sortieRepository->save($sortie, true);
+
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('sortie/edit.html.twig', [
-            'sortie' => $sortie,
-            'formSortie' => $formSortie,
-        ]);
+        $sortieUserId = $sortie->getUser()->getId();
+        $appUserId = $this->getUser()->getId();
+        $roleUser = $this->getUser()->getRoles()[0];
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
+            return $this->renderForm('sortie/edit.html.twig', [
+                'sortie' => $sortie,
+                'formSortie' => $formSortie,
+            ]);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+
     }
 
     #[Route('/lieu', name: 'app_sortie_lieu', methods: ['GET', 'POST'])]
@@ -192,65 +199,73 @@ class SortieController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
-
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
 
     #[Route('/annuler/{id}', name: 'app_sortie_annuler', methods: ['POST', 'GET'])]
     public function annuler(
-        Request $request,
-        Sortie $sortie,
-        EtatRepository $etatRepository,
+        Request          $request,
+        Sortie           $sortie,
+        EtatRepository   $etatRepository,
         SortieRepository $sortieRepository,
-        $data = array(
-            'text' => '',
-        )
+                         $data = array(
+                             'text' => '',
+                         )
     ): Response
     {
-        $sortieUserId = $sortie->getUser()->getId();
-        $appUserId = $this->getUser()->getId();
-        if( $sortieUserId == $appUserId) {
-            $formAnnulation = $this->createFormBuilder($data)
-                ->add('text', TextType::class)
-                ->add('save', SubmitType::class)
-                ->getForm();
-            $formAnnulation->handleRequest($request);
+
+        $formAnnulation = $this->createFormBuilder($data)
+            ->add('text', TextType::class)
+            ->add('save', SubmitType::class)
+            ->getForm();
+        $formAnnulation->handleRequest($request);
+
 
             if ($formAnnulation->getClickedButton() === $formAnnulation->get('save')) {
                 $etat = $etatRepository->findOneBy([
                     "id" => 6
                 ]);
-//            dd($formAnnulation->getData()["text"]);
                 $sortie->setEtat($etat);
                 $sortie->setDescriptionsInfos($formAnnulation->getData()["text"]);
                 $sortieRepository->save($sortie, true);
 
-                return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
-            }
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+        $sortieUserId = $sortie->getUser()->getId();
+        $appUserId = $this->getUser()->getId();
+        $roleUser = $this->getUser()->getRoles()[0];
+
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
+            return $this->render('sortie/annulation.html.twig', [
+                "formAnnulation" => $formAnnulation->createView(),
+                "sortie" => $sortie
+            ]);
         } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-
-        return $this->render('sortie/annulation.html.twig', [
-            "formAnnulation" => $formAnnulation->createView(),
-            "sortie" => $sortie
-        ]);
     }
 
     #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
     public function publier(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
-        ;
+        $appUserId = $this->getUser()->getId();
+        $roleUser = $this->getUser()->getRoles()[0];
+        $sortieUserId = $sortie->getUser()->getId();
 
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
         $etat = $etatRepository->findOneBy([
             "id" => 2
         ]);
         $sortie->setEtat($etat);
         $sortieRepository->save($sortie, true);
-
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -260,7 +275,7 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository         $userRepository,
         EtatRepository         $etatRepository,
-        EtatUpdateFunction $updateEvent
+        EtatUpdateFunction     $updateEvent
     ): Response
     {
 
@@ -274,18 +289,22 @@ class SortieController extends AbstractController
         $Users = $sortie->getUsers();
         $nbrUsersInscrit = count($Users);
         $nbrInscritMax = $sortie->getNbInscriptionsMax();
+        $etatSortie = $sortie->getEtat()->getLibelle();
 
-        if ($nbrUsersInscrit == $nbrInscritMax) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 3
+        if ($etatSortie == "Ouverte" || $etatSortie == "Clôturée") {
+            if ($nbrUsersInscrit == $nbrInscritMax) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 3
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
+            return $this->render('sortie/show.html.twig', [
+                'sortie' => $sortie,
             ]);
-            $updateEvent->updateEtatFlush($etat, $sortie);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('sortie/show.html.twig', [
-            'sortie' => $sortie,
-        ]);
-
     }
 
     #[Route('/desinscription/{id}', name: 'app_sortie_desinscription', methods: ['GET'])]
@@ -308,16 +327,23 @@ class SortieController extends AbstractController
         $Users = $sortie->getUsers();
         $nbrUsersInscrit = count($Users);
         $nbrInscritMax = $sortie->getNbInscriptionsMax();
-
-        if ($nbrUsersInscrit < $nbrInscritMax) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 2
+        $etatSortie = $sortie->getEtat()->getLibelle();
+//        dd($etatSortie);
+        if($etatSortie == "Ouverte" || $etatSortie == "Clôturée") {
+            if ($nbrUsersInscrit < $nbrInscritMax) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 2
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
+           return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
             ]);
-            $updateEvent->updateEtatFlush($etat, $sortie);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
-    }
 
+    }
 }
 
 

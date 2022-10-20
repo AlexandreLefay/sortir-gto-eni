@@ -2,10 +2,10 @@
 
 {% block title %}Hello AdminController!{% endblock %}
 
-
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <script src="{{ asset('js/admin.js') }}" defer></script>
+    <script src="{{ asset('js/map.js') }}" defer></script>
 {% endblock %}
 
 {% block main %}
@@ -20,6 +20,7 @@
                     <th>Email</th>
                     <th>Téléphone</th>
                     <th>Actif</th>
+                    <th></th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -32,7 +33,17 @@
                         <td class="tab-sortie-nom">{{ user.email}}</td>
                         <td class="tab-sortie-nom">{{ user.telephone}}</td>
                         <td class="tab-sortie-nom">{{ user.actif==1? "oui":"non"}}</td>
-                        <td><a href="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">Désactiver</a>  <a href="{{ path('app_admin_deleteUser', {'id': user.id}) }}">Supprimer</a></td>
+                        <td>
+                            <form method="get" action="{{ path('app_admin_desactiveUser', {'id': user.id}) }}">
+                                <button> Désactiver</button>
+                            </form>
+                            <form method="get" action="{{ path('app_admin_deleteUser', {'id': user.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer l\'utilisateur {{ user.nom }}?');">
+                                <button> supprimer</button>
+                            </form>
+                            <form method="post" action="{{ path('app_admin_updateUser', {'id': user.id}) }}" >
+                                <button> modifier </button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -48,9 +59,7 @@
         <div class="modal-content">
             <span class="closeUser">&times;</span>
             {{ form_start(formUser) }}
-
             <button class="button-52 "> Valider</button>
-
             {{ form_end(formUser) }}
         </div>
     </div>
@@ -72,7 +81,14 @@
                     <td class="tab-sortie-nom">{{ lieu.nom }}</td>
                     <td class="tab-sortie-nom">{{ lieu.rue}}</td>
                     <td class="tab-sortie-nom">{{ lieu.ville.nom}}</td>
-                    <td><a href="{{ path('app_admin_deleteLieu', {'id': lieu.id}) }}">Supprimer</a>  <a href="#">Supprimer</a></td>
+                    <td>
+                        <form method="get" action="{{ path('app_admin_deleteLieu', {'id': lieu.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer le lieu {{ lieu.nom }}?');">
+                            <button> supprimer</button>
+                        </form>
+                        <form method="post" action="{{ path('app_admin_updateLieu', {'id': lieu.id}) }}" >
+                            <button> modifier </button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -99,49 +115,49 @@
                     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
                     crossorigin=""></script>
 
-            <script>
-                var map = L.map('map').setView([48.8588897, 2.320041], 13);
+{#            <script>#}
+{#                var map = L.map('map').setView([48.8588897, 2.320041], 13);#}
 
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(map);
+{#                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {#}
+{#                    maxZoom: 19,#}
+{#                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'#}
+{#                }).addTo(map);#}
 
-                var greenIcon = L.icon({
-                    iconUrl: '{{ asset('img/leaf-green.png') }}',
-                    shadowUrl: '{{ asset('img/leaf-shadow.png') }}',
+{#                var greenIcon = L.icon({#}
+{#                    iconUrl: '{{ asset('img/leaf-green.png') }}',#}
+{#                    shadowUrl: '{{ asset('img/leaf-shadow.png') }}',#}
 
-                    iconSize:     [38, 95], // size of the icon
-                    shadowSize:   [50, 64], // size of the shadow
-                    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-                    shadowAnchor: [4, 62],  // the same for the shadow
-                    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                });
-                // L.marker([0, 0], {icon: greenIcon}).addTo(map);
+{#                    iconSize:     [38, 95], // size of the icon#}
+{#                    shadowSize:   [50, 64], // size of the shadow#}
+{#                    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location#}
+{#                    shadowAnchor: [4, 62],  // the same for the shadow#}
+{#                    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor#}
+{#                });#}
+{#                // L.marker([0, 0], {icon: greenIcon}).addTo(map);#}
 
-                var popup = L.popup();
-                let coords;
-                function onMapClick(e) {
-                    popup
-                        .setLatLng(e.latlng)
-                        .setContent("Coords GPS " + e.latlng.toString())
-                        .openOn(map);
+{#                var popup = L.popup();#}
+{#                let coords;#}
+{#                function onMapClick(e) {#}
+{#                    popup#}
+{#                        .setLatLng(e.latlng)#}
+{#                        .setContent("Coords GPS " + e.latlng.toString())#}
+{#                        .openOn(map);#}
 
-                    // /\[.+?\]/g
-                    // /(?<=\[).+?(?=\])/g
+{#                    // /\[.+?\]/g#}
+{#                    // /(?<=\[).+?(?=\])/g#}
 
-                    var regExpLat = /(?<=\().+?(?=,)/g;
-                    var latitude = regExpLat.exec(e.latlng);
+{#                    var regExpLat = /(?<=\().+?(?=,)/g;#}
+{#                    var latitude = regExpLat.exec(e.latlng);#}
 
-                    var regExpLong = /(?<=,).+?(?=\))/g;
-                    var longitude = regExpLong.exec(e.latlng);
+{#                    var regExpLong = /(?<=,).+?(?=\))/g;#}
+{#                    var longitude = regExpLong.exec(e.latlng);#}
 
-                    document.getElementById("lieu_latitude").value = latitude;
-                    document.getElementById("lieu_longitude").value = longitude;
-                }
+{#                    document.getElementById("lieu_latitude").value = latitude;#}
+{#                    document.getElementById("lieu_longitude").value = longitude;#}
+{#                }#}
 
-                map.on('click', onMapClick);
-            </script>
+{#                map.on('click', onMapClick);#}
+{#            </script>#}
         </div>
     </div>
 
@@ -158,7 +174,14 @@
             {% for site in sites %}
                 <tr>
                     <td class="tab-sortie-nom">{{ site.nom }}</td>
-                    <td><a href="#">Désactiver</a>  <a href="{{ path('app_admin_deleteSite', {'id': site.id}) }}">Supprimer</a></td>
+                    <td>
+                        <form method="get" action="{{ path('app_admin_deleteSite', {'id': site.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer le site {{ site.nom }}?');">
+                            <button> supprimer</button>
+                        </form>
+                        <form method="post" action="{{ path('app_admin_updateSite', {'id': site.id}) }}" >
+                            <button> modifier </button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -194,8 +217,14 @@
                 <tr>
                     <td class="tab-sortie-nom">{{ ville.nom }}</td>
                     <td class="tab-sortie-nom">{{ ville.codePostal}}</td>
-
-                    <td><a href="#">Désactiver</a>  <a href="{{ path('app_admin_deleteVille', {'id': ville.id}) }}">Supprimer</a></td>
+                    <td>
+                        <form method="get" action="{{ path('app_admin_deleteVille', {'id': ville.id}) }}" onsubmit="return confirm('Etes vous sur de vouloir supprimer le lieu {{ ville.nom }}?');">
+                            <button> supprimer</button>
+                        </form>
+                        <form method="post" action="{{ path('app_admin_updateVille', {'id': ville.id}) }}" >
+                            <button> modifier </button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -181,7 +181,10 @@ a {
 .table>thead {
     background-color: #ffc107;
     color: white;
+    position: sticky;
+    top: 0;
 }
+
 .tab-sortie-date{
     width:200px;
 }

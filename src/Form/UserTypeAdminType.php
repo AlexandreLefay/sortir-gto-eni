@@ -11,22 +11,33 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NewUserType extends AbstractType
+class UserTypeAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email')
+            ->add('pseudo')
+            ->add('nom')
+            ->add('prenom')
+            ->add('telephone')
+            ->add('actif', ChoiceType::class, [
+                'choices' => [
+                    'active' => true,
+                    'inactive' => false
+                ]
+            ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nom',
                 'label' => 'Selection du site',
                 'required' => true
             ])
-            ->add('administrateur', CheckboxType::class, array(
-                'label' => 'l\'utilisateur sera administrateur',
+            ->add('picture', CheckboxType::class, [
+                'label' => 'remettre une photo par défaut',
                 'required' => false,
-            ));
+            ]);;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -31,36 +31,33 @@ class SearchFormType extends AbstractType
                     'placeholder' => 'Rechercher'
                 ]
             ])
-
-        ->add('dateSortieDebut', DateTimeType::class, [
-            'widget' => 'single_text',
-             'required'=> false,
-            'label' => false,
-        ])
-           ->add('dateSortieFin', DateTimeType::class, [
+            ->add('dateSortieDebut', DateTimeType::class, [
                 'widget' => 'single_text',
-                'required'=> false,
+                'required' => false,
+                'label' => false,
+            ])
+            ->add('dateSortieFin', DateTimeType::class, [
+                'widget' => 'single_text',
+                'required' => false,
                 'label' => false,
 
             ])
-
             ->add('organisateur', CheckboxType::class, array(
                 'label' => 'Sortie dont je suis l\'organisateur.trice',
                 'required' => false,
             ))
             ->add('inscrit', CheckboxType::class, [
-                'label'    => 'Sorties auxquelles je suis inscrit',
+                'label' => 'Sorties auxquelles je suis inscrit',
                 'required' => false,
             ])
             ->add('nonInscrit', CheckboxType::class, [
-                'label'    => 'Sorties auxquelles je ne suis pas inscrit',
+                'label' => 'Sorties auxquelles je ne suis pas inscrit',
                 'required' => false,
             ])
             ->add('passees', CheckboxType::class, [
-                'label'    => 'Sortie passées',
+                'label' => 'Sortie passées',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
