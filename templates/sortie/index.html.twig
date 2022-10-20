@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block main %}
+    <main>
     <div class="row container-fluid">
         <div class="row">
             {% if app.user %}
@@ -19,6 +20,7 @@
                     </div>
                 </div>
             {% endif %}
+            {% for message in app.flashes('notice') %}<div class="flash-notice"> {{ message }}</div>{% endfor %}
         </div>
         <div class="row">
             {{ form_start(formSearch) }}
@@ -57,7 +59,7 @@
             </div>
             {{ form_end(formSearch) }}
         </div>
-        <div clas="row">
+        <div class="row">
             <div class="scroll">
                 <table class="table table-hover table-responsive">
                     <thead>
@@ -110,73 +112,6 @@
                                 {% endif %}
                             </td>
                         </tr>
-                        <p id="demo"></p>
-                        <script>
-                            for (let pas = 0; pas < {{ sorties|length }}; pas++) {
-                                // console.log('test')
-                                // Set the date we're counting down to
-                                // let test = document.getElementById("dateCloture");
-                                // console.log(test);
-                                // document.getElementById("demo").innerHTML = test.value;
-
-                                let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
-
-                                // Update the count down every 1 second
-                                let x = setInterval(function() {
-
-                                    // Get today's date and time
-                                    let now = new Date().getTime();
-
-                                    // Find the distance between now and the count down date
-                                    let distance = dateDeCloture - now;
-                                    // console.log(distance / (1000 * 60 * 60 * 24));
-                                    // Time calculations for days, hours, minutes and seconds
-                                    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                                    if(days === 0 && hours < 1 ) {
-                                        // Output the result in an element with id="demo"
-                                        document.getElementById("{{ sortie.id }}").innerHTML = days + "d " + hours + "h "
-                                            + minutes + "m " + seconds + "s ";
-                                    }
-                                        // console.log(pas);
-                                    // If the count down is over, write some text
-                                    else  {
-                                        clearInterval(x);
-                                        document.getElementById({{ sortie.id }}).innerHTML = "";
-                                    }
-                                }, 1000);
-                            }
-                        </script>
-                        {% else %}
-                        <tr>
-                            <td colspan="9">no records found</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div clas="row">
-            <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
-        </div>
-
-                        {% endif %}
-
-                        {% if (app.user.id == sortie.user.id or is_granted('ROLE_ADMIN')) and (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Clôturée" or sortie.etat.libelle == "Ouverte") %}
-                            <a href="{{ path('app_sortie_annuler', {'id': sortie.id}) }}" >Annuler{#<img class="icon" src="{{ asset('img/annuler.svg') }}" alt="Annuler">#}</a>
-                        {% endif %}
-
-                        {% if sortie.etat.libelle == "Créée" and app.user.id == sortie.user.id %}
-                            <a href="{{ path('app_sortie_publier', {'id': sortie.id}) }}">Publier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
-                        {% endif %}
-
-                        {% if (sortie.etat.libelle == "Créée" or sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée") and app.user.id == sortie.user.id %}
-                            <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">Modifier{#<img class="icon" src="{{ asset('img/publish.svg') }}" alt="Publier">#}</a>
-                        {% endif %}
-                    </td>
-                </tr>
 {#                JS gestion du countdown#}
                 <script>
                     for (let pas = 0; pas < 2; pas++) {
@@ -220,6 +155,13 @@
             {% endfor %}
             </tbody>
         </table>
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="button-52" role="button"><a href="{{ path('app_sortie_new') }}">Create new</a></button>
+            </div>
+        </div>
     </div>
+ </main>
 {% endblock %}
