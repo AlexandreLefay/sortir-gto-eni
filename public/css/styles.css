@@ -49,7 +49,7 @@ a {
 }
 /****Formulaire connexion *****/
 #connexion-background{
-    background-color: black;
+    background: linear-gradient(112.1deg, rgb(32, 38, 57) 11.4%, rgb(63, 76, 119) 70.2%);
     min-height: 100vh;
 }
 #connexion-form{
@@ -263,6 +263,13 @@ div.scroll {
     margin-left:auto;
     margin-right:auto;
     width: 1500px;
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align:justify;
+}
+div.scroll-participants {
+    width: 500px;
     height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
