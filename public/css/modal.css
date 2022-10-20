@@ -22,7 +22,7 @@
 }
 
 /* The Close Button */
-.closeUser, .closeLieu, .closeSite, .closeVille
+.closeUser, .closeLieu, .closeSite, .closeVille, .closePhoto
 {
     color: #aaa;
     float: right;
@@ -37,7 +37,9 @@
 .closeSite:hover,
 .closeSite:focus,
 .closeVille:hover,
-.closeVille:focus
+.closeVille:focus,
+.closePhoto:hover,
+.closePhoto:focus
 
 {
     color: black;

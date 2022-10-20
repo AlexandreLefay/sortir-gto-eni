@@ -9,6 +9,7 @@ use App\Entity\Ville;
 use App\Form\LieuType;
 use App\Form\NewUserType;
 use App\Form\SiteFormType;
+use App\Form\UserTypeAdminType;
 use App\Form\VilleFormType;
 use App\Repository\LieuRepository;
 use App\Repository\SiteRepository;
@@ -23,14 +24,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
-    #[Route('/', name: 'app_admin',methods: ['GET', 'POST'])]
+    #[Route('/', name: 'app_admin', methods: ['GET', 'POST'])]
     public function index(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManagerInterface,
-        UserRepository $userRepository,
-        LieuRepository $lieuRepository,
-        SiteRepository $siteRepository,
-        VilleRepository $villeRepository
+        UserRepository         $userRepository,
+        LieuRepository         $lieuRepository,
+        SiteRepository         $siteRepository,
+        VilleRepository        $villeRepository
     ): Response
     {
         $user = new User();
@@ -39,44 +40,37 @@ class AdminController extends AbstractController
         $ville = new Ville();
         $user->setRoles(["ROLE_USER"]);
 
-        $formUser = $this->createForm(NewUserType::class,$user,[
-            'method'=>'POST'
-        ]);
+        $formUser = $this->createForm(NewUserType::class, $user, ['method' => 'POST']);
         $formUser->handleRequest($request);
-        if($formUser->isSubmitted() && $formUser->isValid()){
-            if($user->getAdministrateur()){
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            if ($user->getAdministrateur()) {
                 $user->setRoles(["ROLE_ADMIN"]);
             };
             $user->setPseudo(uniqid());
             $user->setPhoto('uploads/defaut_image.jpeg');
             $user->setActif(true);
-            $user->setPassword(uniqid($prefix = "",$more_entropy=true));
+            $user->setPassword(uniqid($prefix = "", $more_entropy = true));
             $entityManagerInterface->persist($user);
             $entityManagerInterface->flush();
         }
 
-        $formLieu = $this->createForm(LieuType::class,$lieu,[
-            'method'=>'POST'
-        ]);
+        $formLieu = $this->createForm(LieuType::class, $lieu, ['method' => 'POST']);
         $formLieu->handleRequest($request);
-        if($formLieu->isSubmitted() && $formLieu->isValid()){
+        if ($formLieu->isSubmitted() && $formLieu->isValid()) {
             $entityManagerInterface->persist($lieu);
             $entityManagerInterface->flush();
         }
 
-        $formSite = $this->createForm(SiteFormType::class,$site,[
-            'method'=>'POST'
-        ]);
+        $formSite = $this->createForm(SiteFormType::class, $site, ['method' => 'POST']);
         $formSite->handleRequest($request);
-        if($formSite->isSubmitted() && $formSite->isValid()){
+        if ($formSite->isSubmitted() && $formSite->isValid()) {
             $entityManagerInterface->persist($site);
             $entityManagerInterface->flush();
         }
-        $formVille = $this->createForm(VilleFormType::class,$ville,[
-            'method'=>'POST'
-        ]);
+
+        $formVille = $this->createForm(VilleFormType::class, $ville, ['method' => 'POST']);
         $formVille->handleRequest($request);
-        if($formVille->isSubmitted() && $formVille->isValid()){
+        if ($formVille->isSubmitted() && $formVille->isValid()) {
             $entityManagerInterface->persist($ville);
             $entityManagerInterface->flush();
         }
@@ -85,14 +79,14 @@ class AdminController extends AbstractController
         $lieux = $lieuRepository->findAll();
         $sites = $siteRepository->findAll();
         $villes = $villeRepository->findAll();
-        return $this->renderForm('admin/index.html.twig',compact(
-            'formUser','users','lieux','sites','formSite','formLieu','formVille','villes'
+        return $this->renderForm('admin/index.html.twig', compact(
+            'formUser', 'users', 'lieux', 'sites', 'formSite', 'formLieu', 'formVille', 'villes'
         ));
     }
 
-    #[Route('/desactiveUser/{id}', name: 'app_admin_desactiveUser',methods: ['GET', 'POST'])]
+    #[Route('/desactiveUser/{id}', name: 'app_admin_desactiveUser', methods: ['GET', 'POST'])]
     public function desactiveUser(
-        User $user,
+        User                   $user,
         EntityManagerInterface $entityManagerInterface
     ): Response
     {
@@ -102,9 +96,9 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin');
     }
 
-    #[Route('/deleteUser/{id}', name: 'app_admin_deleteUser',methods: ['GET', 'POST'])]
+    #[Route('/deleteUser/{id}', name: 'app_admin_deleteUser', methods: ['GET', 'POST'])]
     public function deleteUser(
-        User $user,
+        User                   $user,
         EntityManagerInterface $entityManagerInterface
     ): Response
     {
@@ -112,9 +106,10 @@ class AdminController extends AbstractController
         $entityManagerInterface->flush();
         return $this->redirectToRoute('app_admin');
     }
-    #[Route('/deleteLieu/{id}', name: 'app_admin_deleteLieu',methods: ['GET', 'POST'])]
+
+    #[Route('/deleteLieu/{id}', name: 'app_admin_deleteLieu', methods: ['GET', 'POST'])]
     public function deleteLieu(
-        Lieu $lieu,
+        Lieu                   $lieu,
         EntityManagerInterface $entityManagerInterface
     ): Response
     {
@@ -122,9 +117,10 @@ class AdminController extends AbstractController
         $entityManagerInterface->flush();
         return $this->redirectToRoute('app_admin');
     }
-    #[Route('/deleteSite/{id}', name: 'app_admin_deleteSite',methods: ['GET', 'POST'])]
+
+    #[Route('/deleteSite/{id}', name: 'app_admin_deleteSite', methods: ['GET', 'POST'])]
     public function deleteSite(
-        Site $site,
+        Site                   $site,
         EntityManagerInterface $entityManagerInterface
     ): Response
     {
@@ -132,9 +128,10 @@ class AdminController extends AbstractController
         $entityManagerInterface->flush();
         return $this->redirectToRoute('app_admin');
     }
-    #[Route('/deleteVille/{id}', name: 'app_admin_deleteVille',methods: ['GET', 'POST'])]
+
+    #[Route('/deleteVille/{id}', name: 'app_admin_deleteVille', methods: ['GET', 'POST'])]
     public function deleteVille(
-        Ville $ville,
+        Ville                  $ville,
         EntityManagerInterface $entityManagerInterface
     ): Response
     {
@@ -142,5 +139,73 @@ class AdminController extends AbstractController
         $entityManagerInterface->flush();
         return $this->redirectToRoute('app_admin');
     }
+
+    #[Route('/updateLieu/{id}', name: 'app_admin_updateLieu', methods: ['POST'])]
+    public function updateLieu(
+        Lieu           $lieu,
+        Request        $request,
+        LieuRepository $lieuRepository
+    ): Response
+    {
+        $formLieu = $this->createForm(LieuType::class, $lieu);
+        $formLieu->handleRequest($request);
+        if ($formLieu->isSubmitted() && $formLieu->isValid()) {
+            $lieuRepository->save($lieu, true);
+            return $this->redirectToRoute('app_admin');
+        }
+        return $this->renderForm('admin/updateVilleLieuSite.html.twig', compact('formLieu'));
+    }
+
+    #[Route('/updateSite/{id}', name: 'app_admin_updateSite', methods: ['GET', 'POST'])]
+    public function updateSite(
+        Site           $site,
+        Request        $request,
+        SiteRepository $siteRepository
+    ): Response
+    {
+        $formSite = $this->createForm(SiteFormType::class, $site);
+        $formSite->handleRequest($request);
+        if ($formSite->isSubmitted() && $formSite->isValid()) {
+            $siteRepository->save($site, true);
+            return $this->redirectToRoute('app_admin');
+        }
+        return $this->renderForm('admin/updateVilleLieuSite.html.twig', compact('formSite'));
+    }
+
+    #[Route('/updateVille/{id}', name: 'app_admin_updateVille', methods: ['GET', 'POST'])]
+    public function updateVille(
+        Ville           $ville,
+        Request         $request,
+        VilleRepository $villeRepository
+    ): Response
+    {
+        $formVille = $this->createForm(VilleFormType::class, $ville);
+        $formVille->handleRequest($request);
+        if ($formVille->isSubmitted() && $formVille->isValid()) {
+            $villeRepository->save($ville, true);
+            return $this->redirectToRoute('app_admin');
+        }
+        return $this->renderForm('admin/updateVilleLieuSite.html.twig', compact('formVille'));
+    }
+
+    #[Route('/updateUser/{id}', name: 'app_admin_updateUser', methods: ['GET', 'POST'])]
+    public function updateUser(
+        User           $user,
+        Request        $request,
+        UserRepository $userRepository
+    ): Response
+    {
+        $formUser = $this->createForm(UserTypeAdminType::class, $user);
+        $formUser->handleRequest($request);
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+            if($user->getPicture()){
+                $user->setPhoto('uploads/defaut_image.jpeg');
+            }
+            $userRepository->save($user, true);
+            return $this->redirectToRoute('app_admin');
+        }
+        return $this->renderForm('admin/updateVilleLieuSite.html.twig', compact('formUser'));
+    }
+
 
 }

@@ -29,7 +29,7 @@ class UserProfilType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'type' => PasswordType::class,
-                'required'=>false,
+                'required'=>true,
                 'mapped' => false,
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
@@ -48,23 +48,23 @@ class UserProfilType extends AbstractType
                 'label'=>'Selection du site',
                 'required'=>true
             ])
-            ->add('image', FileType::class,[
-                'label' => false,
-                'multiple' => false,
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2024k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/jpg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'Merci d\'indiquer un fichier Jpeg, jpg ou png',
-                    ])
-                ]
-            ])
+//            ->add('image', FileType::class,[
+//                'label' => false,
+//                'multiple' => false,
+//                'mapped' => false,
+//                'required' => false,
+//                'constraints' => [
+//                    new File([
+//                        'maxSize' => '2024k',
+//                        'mimeTypes' => [
+//                            'image/jpeg',
+//                            'image/jpg',
+//                            'image/png',
+//                        ],
+//                        'mimeTypesMessage' => 'Merci d\'indiquer un fichier Jpeg, jpg ou png',
+//                    ])
+//                ]
+//            ])
         ;
     }
 
