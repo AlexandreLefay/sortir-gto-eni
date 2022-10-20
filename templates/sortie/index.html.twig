@@ -85,7 +85,11 @@
                     <td class="tab-sortie-nom">{{ sortie.nom }}</td>
                     <td class="tab-sortie-date">{{ sortie.dateDebut ? sortie.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                     {# <td>{{ sortie.duree }}</td> #}
-                    <td id ="dateCloture" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
+                    {% if sortie.etat.libelle =="Ouverte" %}
+                    <td id ="{{ sortie.id }}" class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }} <p style="color: green" id="{{ sortie.id }}"></p></td>
+                    {% else %}
+                    <td class="tab-sortie-date">{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}</td>
+                    {% endif %}
                     <td> {{ sortie.users |length }}  / {{ sortie.nbInscriptionsMax }}</td>
                     {# <td>{{ sortie.descriptionsInfos }}</td> #}
                     {# <td>{{ sortie.urlPhoto }}</td> #}
@@ -123,38 +127,37 @@
                 <p id="demo"></p>
                 <script>
                     for (let pas = 0; pas < {{ sorties|length }}; pas++) {
-                        // console.log('test')
-                        // Set the date we're counting down to
-                        // let test = document.getElementById("dateCloture");
-                        // console.log(test);
-                        // document.getElementById("demo").innerHTML = test.value;
 
+                        let dateCloture = document.getElementById("dateCloture");
+
+                        // document.getElementById("demo").innerHTML = dateCloture;
+                        // document.getElementById("demo").innerHTML = test.value;
+                        // Date fin du coutdown
                         let dateDeCloture = new Date("{{ sortie.dateCloture ? sortie.dateCloture|date('Y-m-d H:i:s') : '' }}").getTime();
 
-                        // Update the count down every 1 second
+                        // Interval de 1 seconde pour le cd
                         let x = setInterval(function() {
 
-                            // Get today's date and time
+                            // Date d'aujourd'hui
                             let now = new Date().getTime();
 
-                            // Find the distance between now and the count down date
+                            // distance de compteur
                             let distance = dateDeCloture - now;
-                            // console.log(distance / (1000 * 60 * 60 * 24));
-                            // Time calculations for days, hours, minutes and seconds
+
+                            // Calcul du cd
                             let days = Math.floor(distance / (1000 * 60 * 60 * 24));
                             let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
                             if(days === 0 && hours < 1 ) {
-                                // Output the result in an element with id="demo"
-                                document.getElementById("{{ sortie.id }}").innerHTML = days + "d " + hours + "h "
-                                    + minutes + "m " + seconds + "s ";
+                                // Affichage du cd
+                                document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
                             }
-                            // console.log(pas);
-                            // If the count down is over, write some text
+                                // Si le cd est = 0
                             else  {
-                                clearInterval(x);
-                                document.getElementById({{ sortie.id }}).innerHTML = "";
+                                {#clearInterval(x);#}
+                                {#document.getElementById({{ sortie.id }}).innerHTML = "";#}
                             }
                         }, 1000);
                     }
