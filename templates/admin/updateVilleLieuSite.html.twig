@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello AdminController!{% endblock %}
-
+{% block stylesheets %}
+    <script src="{{ asset('js/map.js') }}" defer></script>
+{% endblock %}
 {% block main %}
     {% if formLieu is defined %}
         {{ form_start(formLieu) }}
