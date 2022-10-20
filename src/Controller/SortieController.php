@@ -126,9 +126,6 @@ class SortieController extends AbstractController
     public function edit(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
 
-        $sortieUserId = $sortie->getUser()->getId();
-        $appUserId = $this->getUser()->getId();
-        if( $sortieUserId == $appUserId) {
 //            dd($sortieUserId.' $appUserId :'.$appUserId);
             $formSortie = $this->createForm(SortieType::class, $sortie);
             $formSortie->handleRequest($request);
@@ -151,13 +148,19 @@ class SortieController extends AbstractController
 
                 return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
             }
+        $sortieUserId = $sortie->getUser()->getId();
+        $appUserId = $this->getUser()->getId();
+        if ($sortieUserId == $appUserId) {
+            return $this->renderForm('sortie/edit.html.twig', [
+                'sortie' => $sortie,
+                'formSortie' => $formSortie,
+            ]);
         } else {
+            $this->addFlash('notice', 'TU CROIS QUE JE SUIS DEBILE OU QUOI EDIT');
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->renderForm('sortie/edit.html.twig', [
-            'sortie' => $sortie,
-            'formSortie' => $formSortie,
-        ]);
+
+
     }
 
     #[Route('/lieu', name: 'app_sortie_lieu', methods: ['GET', 'POST'])]
@@ -208,9 +211,7 @@ class SortieController extends AbstractController
         )
     ): Response
     {
-        $sortieUserId = $sortie->getUser()->getId();
-        $appUserId = $this->getUser()->getId();
-        if( $sortieUserId == $appUserId) {
+
             $formAnnulation = $this->createFormBuilder($data)
                 ->add('text', TextType::class)
                 ->add('save', SubmitType::class)
@@ -228,15 +229,18 @@ class SortieController extends AbstractController
 
                 return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
             }
+        $sortieUserId = $sortie->getUser()->getId();
+        $appUserId = $this->getUser()->getId();
+        if ($sortieUserId == $appUserId) {
+            return $this->render('sortie/annulation.html.twig', [
+                "formAnnulation" => $formAnnulation->createView(),
+                "sortie" => $sortie
+            ]);
         } else {
+            $this->addFlash('notice', 'TU CROIS QUE JE SUIS DEBILE OU QUOI ANNULE');
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
 
-
-        return $this->render('sortie/annulation.html.twig', [
-            "formAnnulation" => $formAnnulation->createView(),
-            "sortie" => $sortie
-        ]);
     }
 
     #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
