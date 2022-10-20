@@ -161,10 +161,9 @@ class SortieController extends AbstractController
                 'formSortie' => $formSortie,
             ]);
         } else {
-            $this->addFlash('notice', 'TU CROIS QUE JE SUIS DEBILE OU QUOI EDIT');
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-
 
     }
 
@@ -200,7 +199,6 @@ class SortieController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
-
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
@@ -244,7 +242,7 @@ class SortieController extends AbstractController
                 "sortie" => $sortie
             ]);
         } else {
-            $this->addFlash('notice', 'TU CROIS QUE JE SUIS DEBILE OU QUOI ANNULE');
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -253,15 +251,21 @@ class SortieController extends AbstractController
     #[Route('/publier/{id}', name: 'app_sortie_publier', methods: ['POST', 'GET'])]
     public function publier(Request $request, Sortie $sortie, EtatRepository $etatRepository, SortieRepository $sortieRepository): Response
     {
-        ;
+        $appUserId = $this->getUser()->getId();
+        $roleUser = $this->getUser()->getRoles()[0];
+        $sortieUserId = $sortie->getUser()->getId();
 
+        if ($sortieUserId == $appUserId || $roleUser == "ROLE_ADMIN") {
         $etat = $etatRepository->findOneBy([
             "id" => 2
         ]);
         $sortie->setEtat($etat);
         $sortieRepository->save($sortie, true);
-
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
 
@@ -285,18 +289,22 @@ class SortieController extends AbstractController
         $Users = $sortie->getUsers();
         $nbrUsersInscrit = count($Users);
         $nbrInscritMax = $sortie->getNbInscriptionsMax();
+        $etatSortie = $sortie->getEtat()->getLibelle();
 
-        if ($nbrUsersInscrit == $nbrInscritMax) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 3
+        if ($etatSortie == "Ouverte" || $etatSortie == "Clôturée") {
+            if ($nbrUsersInscrit == $nbrInscritMax) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 3
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
+            return $this->render('sortie/show.html.twig', [
+                'sortie' => $sortie,
             ]);
-            $updateEvent->updateEtatFlush($etat, $sortie);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('sortie/show.html.twig', [
-            'sortie' => $sortie,
-        ]);
-
     }
 
     #[Route('/desinscription/{id}', name: 'app_sortie_desinscription', methods: ['GET'])]
@@ -319,18 +327,23 @@ class SortieController extends AbstractController
         $Users = $sortie->getUsers();
         $nbrUsersInscrit = count($Users);
         $nbrInscritMax = $sortie->getNbInscriptionsMax();
-
-        if ($nbrUsersInscrit < $nbrInscritMax) {
-            $etat = $etatRepository->findOneBy([
-                "id" => 2
+        $etatSortie = $sortie->getEtat()->getLibelle();
+//        dd($etatSortie);
+        if($etatSortie == "Ouverte" || $etatSortie == "Clôturée") {
+            if ($nbrUsersInscrit < $nbrInscritMax) {
+                $etat = $etatRepository->findOneBy([
+                    "id" => 2
+                ]);
+                $updateEvent->updateEtatFlush($etat, $sortie);
+            }
+            return $this->render('sortie/show.html.twig', [
+                'sortie' => $sortie,
             ]);
-            $updateEvent->updateEtatFlush($etat, $sortie);
+        } else {
+            $this->addFlash('notice', 'Vous n\'avez pas acces à cette page ');
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('sortie/show.html.twig', [
-            'sortie' => $sortie,
-        ]);
     }
-
 }
 
 
