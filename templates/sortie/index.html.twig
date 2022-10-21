@@ -145,7 +145,8 @@
 
 
                                             // Affichage du cd
-                                            document.getElementById("{{ sortie.id }}").innerHTML = minutes + "m " + seconds + "s ";
+                                            document.getElementById("{{ sortie.id }}").innerHTML = days + "d " + hours + "h "
+                                                + minutes + "m " + seconds + "s ";
                                             document.getElementById("{{ sortie.id }}").style.color = 'green';
                                         } else {
                                             // Si le cd est = 0

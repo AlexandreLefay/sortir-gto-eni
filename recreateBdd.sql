@@ -160,7 +160,7 @@ INSERT INTO user (site_id,photo,email, pseudo, nom, prenom, telephone, actif, ro
 VALUES
 
 
-    (3,'uploads/pikachu.jpg','rose@flower.fr','rose','rosa','hong','0240987582',true,'["ROLE_ADMIN"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (3,'uploads/pikachu.jpg','eni@eni.fr','rose','rosa','hong','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (3,'uploads/pikachu.jpg','pivoine@blanche.fr','pivoine','peony','mudan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (3,'uploads/pikachu.jpg','passiflore@flower.fr','passiflore','passiflora','Passiflorette','0941987582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (3,'uploads/pikachu.jpg','petunia@flower.fr','petunia','petuniana','petuniala','0741997782',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
@@ -189,7 +189,7 @@ INSERT INTO sortie (user_id, site_id, etat_id, lieu_id, nom, date_debut, duree, 
 VALUES
 
     (1,3,3,1,'Soirée Jacky & Michelle','2022-10-20 17:58:00',10,'2022-10-20 17:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-    (1,3,2,1,'Attraper les Pokemons','2022-10-30 17:13:00',1,'2022-10-27 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
+    (1,3,2,1,'Attraper les Pokemons','2022-10-30 17:13:00',1,'2022-10-22 15:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '),
     (2,3,1,2,'Butter le crud','2022-11-27 18:13:00',1,'2022-11-12 14:13:00',3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,3,7,2,'Admirer les lapins','2021-10-30 17:13:00',1,'2021-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
     (2,3,3,1,'Chasser les pythons','2021-10-27 17:13:00',1,'2022-10-12 17:13:00',10,'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'),
