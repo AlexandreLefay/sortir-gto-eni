@@ -173,6 +173,7 @@ VALUES
     (2,'uploads/pikachu.jpg','muguet@flower.fr','muguet','mugueti','mugueta','0928965582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (2,'uploads/pikachu.jpg','magnolia@flower.fr','magnolia','magnolii','magnoliana','0928765582',1,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
     (1,'uploads/pikachu.jpg','refectory@yopmail.com','refectory','Chang','mulan','0240987582',true,'["ROLE_USER"]','$2y$13$2S0Rbadd7zQNoQhC/2BeruZi6VBnGzAuI2mEei0em7FF3iKQMxvYW'),
+    (1,'uploads/pikachu.jpg','admin@admin.fr','admin','admin','admin','0240987582',true,'["ROLE_ADMIN"]','$2y$13$dHAGOhvy.49jcArSAy5BieeVWMmLBYBvnNRLIhKzh4WImkYlLUvAu'),
     (1,'uploads/loup-634826e5c0fe4.jpg','tbs@gmail.com', 'tbs', 'Wick', 'John', '0123456987',true,'["ROLE_ADMIN"]','$2y$13$mH1cu9cw6wTh7sbIrqm4XOEDFFIDiN5hBB1yFkhCbgb9Wfg.CjMBa')
 
 ;
