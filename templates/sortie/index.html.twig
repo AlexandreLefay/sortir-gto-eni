@@ -99,8 +99,10 @@
 
                                     {% if sortie.user.id != app.user.id %}
                                         {% if app.user in sortie.users %}
+                                            {% if sortie.etat.id == 3 or sortie.etat.id == 2 %}
                                             <a href="{{ path('app_sortie_desinscription', {'id': sortie.id}) }}">Se
                                                 désister{# <img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"> #}</a>
+                                            {% endif %}
                                         {% elseif sortie.users|length < sortie.nbInscriptionsMax and  sortie.etat.libelle == "Ouverte" %}
                                             <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{# <img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"> #}</a>
                                         {% endif %}
