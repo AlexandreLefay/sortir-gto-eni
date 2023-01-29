@@ -104,7 +104,7 @@
                                                 désister{# <img class="icon" src="{{ asset('img/desister.svg') }}" alt="Se désister"> #}</a>
                                             {% endif %}
                                         {% elseif sortie.users|length < sortie.nbInscriptionsMax and  sortie.etat.libelle == "Ouverte" %}
-                                            <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrire{# <img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"> #}</a>
+                                            <a href="{{ path('app_sortie_inscription', {'id': sortie.id}) }}">S'inscrires{# <img class="icon" src="{{ asset('img/inscrire.svg') }}" alt="S'inscrire"> #}</a>
                                         {% endif %}
                                     {% endif %}
 
